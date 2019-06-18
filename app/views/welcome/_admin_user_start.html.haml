@@ -133,10 +133,10 @@
                         %tr
                           %td= image['SYS_DATE_TIME']
                           %td= image['CAPTURE_SEQ_NBR']
-                          %td= link_to image['TICKET_NBR'], root_path(ticket_number: image['TICKET_NBR'])
+                          %td= link_to image['TICKET_NBR'], root_path("search[ticket_number]" => image['TICKET_NBR'])
                           %td= image['CAMERA_NAME']
-                          %td= link_to image['EVENT_CODE'], root_path(event_code: image['EVENT_CODE'])
-                          %td= link_to image['CUST_NAME'], root_path(customer_name: image['CUST_NAME'])
+                          %td= link_to image['EVENT_CODE'], root_path("search[event_code]" => image['EVENT_CODE'])
+                          %td= link_to image['CUST_NAME'], root_path("search[customer_name]" => image['CUST_NAME'])
                           %td
                             %button.btn.btn-sm.btn-warning{"data-target" => "#image_#{image['CAPTURE_SEQ_NBR']}_modal", "data-toggle" => "modal", :type => "button"}
                               %i.fa.fa-photo
