@@ -1,0 +1,41 @@
+.container-fluid
+  = render 'shared/flash_messages'
+  .row
+    .col-sm-6.offset-sm-3
+      .card
+        .card-header
+          %h4.card-title.text-center Log In
+        .card-body
+          = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+            .form-group
+              = f.input :email, required: true, autofocus: true, input_html: { autocomplete: "email", :placeholder => "Enter email"} 
+            .form-group
+              = f.input :password, required: true, input_html: { autocomplete: "current-password", :placeholder => "Enter password" } 
+            -#
+              .form-check
+                = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
+            .form-check
+              %label.form-check-label
+                -# %input.form-check-input{:type => "checkbox", :value => ""}/
+                = f.check_box :remember_me, class: 'form-check-input'
+                Remember me
+                %span.form-check-sign
+                  %span.check
+            = f.submit "Log in", class: 'btn btn-primary'
+          = render "devise/shared/links"
+          -#
+            %form
+              .form-group
+                %label{:for => "exampleInputEmail1"} Email address
+                %input#exampleInputEmail1.form-control{"aria-describedby" => "emailHelp", :placeholder => "Enter email", :type => "email"}/
+                %small#emailHelp.form-text.text-muted We'll never share your email with anyone else.
+              .form-group
+                %label{:for => "exampleInputPassword1"} Password
+                %input#exampleInputPassword1.form-control{:placeholder => "Password", :type => "password"}/
+              .form-check
+                %label.form-check-label
+                  %input.form-check-input{:type => "checkbox", :value => ""}/
+                  Option one is this
+                  %span.form-check-sign
+                    %span.check
+              %button.btn.btn-primary{:type => "submit"} Submit
