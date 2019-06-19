@@ -1,0 +1,52 @@
+= simple_form_for(@user, url: @user.new_record? ? users_admin_index_path : users_admin_path)  do |f|
+  = f.error_notification
+  .form-inputs
+    = f.input :company_id, :as => :hidden, :input_html => { :value => "#{@user.new_record? ? current_user.company_id : @user.company_id}" }
+    =# f.input :role, as: :radio_buttons, collection: [['admin', " Admin"], ['external', " External"]], label_method: :second, value_method: :first, label: false
+    .row
+      .col-xs-12.col-sm-6
+        .form-check.form-check-radio.form-check-inline
+          %label.form-check-label
+            -# %input#exampleRadios1.form-check-input{:name => "exampleRadios", :type => "radio", :value => "option1"}/
+            = f.radio_button :role, 'admin', class: 'form-check-input', checked: true
+            Admin
+            %span.circle
+              %span.check
+        .form-check.form-check-radio.form-check-inline
+          %label.form-check-label
+            -# %input#exampleRadios2.form-check-input{:checked => "checked", :name => "exampleRadios", :type => "radio", :value => "option2"}/
+            = f.radio_button :role, 'external', class: 'form-check-input'
+            External
+            %span.circle
+              %span.check
+    %br
+    .row
+      .col-xs-12.col-sm-6
+        = f.input :first_name, label: 'First Name'
+      .col-xs-12.col-sm-6
+        = f.input :last_name, label: 'Last Name'
+    .row
+      .col-xs-12.col-sm-6
+        = f.input :email, label: 'Email'
+    .row{id: 'customer_name_row', style: "#{@user.external? ? 'display:block;' : 'display:none;'}"}
+      .col-xs-12.col-sm-6
+        = f.input :customer_name, label: 'Customer Name'
+    .form-check
+      %label.form-check-label
+        = f.check_box :active, class: 'form-check-input', checked: true
+        Active
+        %span.form-check-sign
+          %span.check
+    %button.btn.btn-primary{:type => "submit", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Save"}} 
+      Save
+
+:javascript
+
+  $(document).on("click", '#user_role_external' , function() {
+    $('#customer_name_row').show();
+  });
+
+  $(document).on("click", '#user_role_admin' , function() {
+    $('#user_customer_name').val('');
+    $('#customer_name_row').hide();
+  });

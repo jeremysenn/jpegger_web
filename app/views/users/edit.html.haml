@@ -1,0 +1,13 @@
+.container-fluid
+  = render 'shared/flash_messages'
+  .row
+    .col-sm-6.offset-sm-3
+      .card
+        .card-header
+          %h4.card-title.text-center 
+            %i.fa.fa-user
+            Edit User
+            .pull-right
+              = link_to "<i class='fa fa-close fa-lg'></i>".html_safe, :back
+        .card-body
+          = render 'form'

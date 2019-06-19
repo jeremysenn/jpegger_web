@@ -1,0 +1,48 @@
+.sidebar{"data-background-color" => "white", "data-color" => "purple", "data-image" => asset_path("sidebar-1.jpg")}
+  /
+    Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+    Tip 2: you can also add an image using data-image tag
+  .logo
+    %a.simple-text.logo-normal{:href => "#"}
+      %i.material-icons image
+      JPEGger WEB
+  .sidebar-wrapper
+    %ul.nav
+      %li.nav-item{:class => (current_page? root_path) ? "active" : ""}
+        %a.nav-link{:href => root_path}
+          %i.material-icons dashboard
+          %p Dashboard
+      %li.nav-item{:class => (params[:controller] == 'users') ?  "active" : ""}
+        %a.nav-link{:href => users_admin_index_path}
+          %i.material-icons person
+          %p Users
+      -#
+        %li.nav-item
+          %a.nav-link{:href => "./user.html"}
+            %i.material-icons person
+            %p User Profile
+        %li.nav-item
+          %a.nav-link{:href => "./tables.html"}
+            %i.material-icons content_paste
+            %p Table List
+        %li.nav-item
+          %a.nav-link{:href => "./typography.html"}
+            %i.material-icons library_books
+            %p Typography
+        %li.nav-item
+          %a.nav-link{:href => "./icons.html"}
+            %i.material-icons bubble_chart
+            %p Icons
+        %li.nav-item
+          %a.nav-link{:href => "./map.html"}
+            %i.material-icons location_ons
+            %p Maps
+        %li.nav-item
+          %a.nav-link{:href => "./notifications.html"}
+            %i.material-icons notifications
+            %p Notifications
+        %li.nav-item
+          %a.nav-link{:href => "./rtl.html"}
+            %i.material-icons language
+            %p RTL Support

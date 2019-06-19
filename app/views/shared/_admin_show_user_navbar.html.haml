@@ -1,0 +1,27 @@
+/ Navbar
+%nav.navbar.navbar-expand-lg.navbar-transparent.navbar-absolute.fixed-top
+  .container-fluid
+    %button.navbar-toggler{"aria-controls" => "navigation-index", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-toggle" => "collapse", :type => "button"}
+      %span.sr-only Toggle navigation
+      %span.navbar-toggler-icon.icon-bar
+      %span.navbar-toggler-icon.icon-bar
+      %span.navbar-toggler-icon.icon-bar
+    #navbarNav.collapse.navbar-collapse
+      %ul.navbar-nav
+        %li.nav-item
+          %a.nav-link{:href => edit_users_admin_path(@user)}
+            %i.material-icons edit
+            Edit
+            %span.sr-only (current)
+        - if @user.external? and @user.customer_name.present?
+          %li.nav-item
+            %a.nav-link{:href => root_path("search[customer_name]" => @user.customer_name)}
+              %i.material-icons image
+              Images
+    -#
+      .collapse.navbar-collapse.justify-content-end
+        = form_tag users_admin_index_path, :method => 'get', :class => "navbar-form" do
+          = text_field_tag "search[name]", nil, :placeholder => "Search users", value: @ticket_number, class: "form-control"
+          = button_tag(:type => 'submit', :class => 'btn btn-white btn-round btn-just-icon') do
+            %i.material-icons search
+/ End Navbar

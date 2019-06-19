@@ -1,0 +1,62 @@
+/ Navbar
+%nav.navbar.navbar-expand-lg.navbar-transparent.navbar-absolute.fixed-top
+  .container-fluid
+    .navbar-wrapper
+      %a.navbar-brand{:href => "#pablo"} Dashboard
+    %button.navbar-toggler{"aria-controls" => "navigation-index", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-toggle" => "collapse", :type => "button"}
+      %span.sr-only Toggle navigation
+      %span.navbar-toggler-icon.icon-bar
+      %span.navbar-toggler-icon.icon-bar
+      %span.navbar-toggler-icon.icon-bar
+    .collapse.navbar-collapse.justify-content-end
+      -#
+        %form.navbar-form
+          .input-group.no-border
+            %input.form-control{:placeholder => "Search...", :type => "text", :value => ""}/
+            %button.btn.btn-white.btn-round.btn-just-icon{:type => "submit"}
+              %i.material-icons search
+              .ripple-container
+      = form_tag root_path, :method => 'get', :class => "navbar-form" do
+        = text_field_tag "search[ticket_number]", nil, :placeholder => "Ticket Number", value: @ticket_number, class: "form-control"
+        = text_field_tag "search[customer_name]", nil, :placeholder => "Customer Name", value: @customer_name, class: "form-control"
+        = text_field_tag "search[event_code]", nil, :placeholder => "Event Code", value: @event_code, class: "form-control"
+        = text_field_tag "search[start_date]", nil, :placeholder => "Start Date", value: @start_date, class: "start_datepicker form-control", readonly: true
+        %span.navbar-text To
+        &nbsp;
+        = text_field_tag "search[end_date]", nil, :placeholder => "End Date", value: @end_date, class: "end_datepicker form-control", readonly: true
+        &nbsp;
+        = button_tag(:type => 'submit', :class => 'btn btn-white btn-round btn-just-icon') do
+          %i.material-icons search
+      %ul.navbar-nav
+        -#
+          %li.nav-item
+            %a.nav-link{:href => "#pablo"}
+              %i.material-icons dashboard
+              %p.d-lg-none.d-md-block
+                Stats
+          %li.nav-item.dropdown
+            %a#navbarDropdownMenuLink.nav-link{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "http://example.com"}
+              %i.material-icons notifications
+              %span.notification 5
+              %p.d-lg-none.d-md-block
+                Some Actions
+            .dropdown-menu.dropdown-menu-right{"aria-labelledby" => "navbarDropdownMenuLink"}
+              %a.dropdown-item{:href => "#"} Mike John responded to your email
+              %a.dropdown-item{:href => "#"} You have 5 new tasks
+              %a.dropdown-item{:href => "#"} You're now friend with Andrew
+              %a.dropdown-item{:href => "#"} Another Notification
+              %a.dropdown-item{:href => "#"} Another One
+        %li.nav-item.dropdown
+          %a#navbarDropdownProfile.nav-link{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#pablo"}
+            %i.material-icons person
+            %p.d-lg-none.d-md-block
+              Account
+          .dropdown-menu.dropdown-menu-right{"aria-labelledby" => "navbarDropdownProfile"}
+            %a.dropdown-item{:href => edit_user_registration_path(current_user)}
+              = current_user.full_name
+              %br
+              %small.text-muted= "(#{current_user.role})"
+            %a.dropdown-item{:href => "#"} Settings
+            .dropdown-divider
+            = link_to 'Log out', destroy_user_session_path, class: 'dropdown-item', method: :delete, data: { confirm: 'Are you sure you want to log out?' }
+/ End Navbar

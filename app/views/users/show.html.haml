@@ -1,0 +1,43 @@
+.wrapper
+  = render 'shared/admin_sidebar'
+  .main-panel
+    = render 'shared/admin_show_user_navbar'
+    .content
+      .container-fluid
+        = render 'shared/flash_messages'
+        .row
+          .col-lg-12.col-md-12
+            .card
+              .card-header.card-header-primary
+                %h4.card-title
+                  = "#{@user.full_name}"
+              .card-body
+                - if @user.confirmed?
+                  Sign In Count:
+                  = @user.sign_in_count
+                  %br
+                  Current Sign In At:
+                  =# @user.current_sign_in_at.in_time_zone(current_user.time_zone).strftime('%-m/%-d/%Y')
+                  = @user.current_sign_in_at.strftime('%-m/%-d/%Y')
+                  %br
+                  Last Sign In At:
+                  =# @user.last_sign_in_at.in_time_zone(current_user.time_zone).strftime('%-m/%-d/%Y')
+                  = @user.last_sign_in_at.strftime('%-m/%-d/%Y')
+                  %br
+                  Current Sign In IP:
+                  = @user.current_sign_in_ip
+                  %br
+                  Last Sign In IP:
+                  = @user.last_sign_in_ip
+                - else
+                  .text-danger Waiting for user to confirm account
+                %br
+                Email:
+                = @user.email
+                %br
+                Role:
+                = @user.role
+                - unless @user.customer_name.blank?
+                  %br
+                  Customer Name:
+                  = @user.customer_name

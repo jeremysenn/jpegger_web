@@ -4,4 +4,14 @@ Rails.application.routes.draw do
   get 'welcome/dashboard'
   root 'welcome#dashboard'
   
+  resources :users_admin, :controller => 'users'
+#  resources :users_admin, :controller => 'users' do
+#    collection do
+#      get 'forgot_password'
+#    end
+#    member do
+#      get 'confirm'
+#    end
+#  end
+  
 end
