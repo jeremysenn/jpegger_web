@@ -2,3 +2,5 @@
   = render 'no_user_start'
 - elsif current_user.admin?
   = render 'admin_user_start'
+- elsif current_user.external?
+  = render 'external_user_start'

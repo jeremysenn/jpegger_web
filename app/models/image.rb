@@ -105,8 +105,8 @@ class Image
     end
   end
   
-  def self.find_all_by_date_range(start_date, end_date, company_id)
-    company = Company.find(company_id)
+  def self.find_all_by_date_range(start_date, end_date, user)
+    company = Company.find(user.company_id)
     require 'socket'
     host = company.jpegger_service_ip
     port = company.jpegger_service_port
@@ -114,6 +114,44 @@ class Image
     # SQL command that gets sent to jpegger service
 #    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME >= '#{start_date}' AND SYS_DATE_TIME <= '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
     command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
+    
+    # SSL TCP socket communication with jpegger
+    tcp_client = TCPSocket.new host, port
+    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
+    ssl_client.connect
+    ssl_client.sync_close = true
+    ssl_client.puts command
+
+    results = ""
+    while response = ssl_client.sysread(1000) # Read 1000 bytes at a time
+      results = results + response
+      break if (response.include?("</RESULT>"))
+    end
+    
+    ssl_client.close
+    
+    data= Hash.from_xml(results.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
+    
+    unless data["RESULT"]["ROW"].blank?
+      if data["RESULT"]["ROW"].is_a? Hash # Only one result returned, so put it into an array
+        return [data["RESULT"]["ROW"]]
+      else
+        return data["RESULT"]["ROW"]
+      end
+    else
+      return [] # No images found
+    end
+  end
+  
+  def self.external_user_find_all_by_date_range(start_date, end_date, user)
+    company = Company.find(user.company_id)
+    require 'socket'
+    host = company.jpegger_service_ip
+    port = company.jpegger_service_port
+    
+    # SQL command that gets sent to jpegger service
+#    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME >= '#{start_date}' AND SYS_DATE_TIME <= '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
+    command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port
@@ -220,8 +258,8 @@ class Image
   end
   
   # Search jpegger images for this company
-  def self.search(search_params, company_id)
-    company = Company.find(company_id)
+  def self.search(search_params, user)
+    company = Company.find(user.company_id)
     require 'socket'
     host = company.jpegger_service_ip
     port = company.jpegger_service_port
@@ -254,6 +292,62 @@ class Image
       command = "<FETCH><SQL>select * from images where event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
     elsif start_date.present? and end_date.present?
       command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
+    end
+    
+    # SSL TCP socket communication with jpegger
+    tcp_client = TCPSocket.new host, port
+    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
+    ssl_client.connect
+    ssl_client.sync_close = true
+    ssl_client.puts command
+
+    results = ""
+    while response = ssl_client.sysread(1000) # Read 1000 bytes at a time
+      results = results + response
+      break if (response.include?("</RESULT>"))
+    end
+    
+    ssl_client.close
+    
+    data= Hash.from_xml(results.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
+    
+    unless data["RESULT"]["ROW"].blank?
+      if data["RESULT"]["ROW"].is_a? Hash # Only one result returned, so put it into an array
+        return [data["RESULT"]["ROW"]]
+      else
+        return data["RESULT"]["ROW"]
+      end
+    else
+      return [] # No images found
+    end
+  end
+  
+  # Search jpegger images for external user
+  def self.external_user_search(search_params, user)
+    company = Company.find(user.company_id)
+    require 'socket'
+    host = company.jpegger_service_ip
+    port = company.jpegger_service_port
+    
+    ticket_number = search_params[:ticket_number]
+    event_code = search_params[:event_code]
+    start_date = search_params[:start_date]
+    end_date = search_params[:end_date]
+    
+    date_search_string = (start_date.present? and end_date.present?) ? "AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'" : ''
+    
+    if ticket_number.present?
+      if event_code.present?
+        command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND ticket_nbr='#{ticket_number}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+      else
+        command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND ticket_nbr='#{ticket_number}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+      end
+    elsif event_code.present?
+      command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+    elsif start_date.present? and end_date.present?
+      command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
+    else
+      command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}'</SQL><ROWS>1000</ROWS></FETCH>"
     end
     
     # SSL TCP socket communication with jpegger

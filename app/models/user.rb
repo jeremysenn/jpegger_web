@@ -27,6 +27,10 @@ class User < ApplicationRecord
     role == "admin"
   end
   
+  def external?
+    role == "external"
+  end
+  
   #############################
   #     Class Methods         #
   #############################
