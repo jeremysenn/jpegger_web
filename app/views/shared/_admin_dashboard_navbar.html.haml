@@ -3,6 +3,9 @@
   .container-fluid
     .navbar-wrapper
       %a.navbar-brand{:href => "#pablo"} Dashboard
+      / Button trigger modal
+      %button.btn.btn-primary.btn-round.btn-just-icon{"data-target" => "#new_image", "data-toggle" => "modal", :type => "button"}
+        %i.material-icons camera
     %button.navbar-toggler{"aria-controls" => "navigation-index", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-toggle" => "collapse", :type => "button"}
       %span.sr-only Toggle navigation
       %span.navbar-toggler-icon.icon-bar
@@ -16,6 +19,8 @@
             %button.btn.btn-white.btn-round.btn-just-icon{:type => "submit"}
               %i.material-icons search
               .ripple-container
+      
+
       = form_tag root_path, :method => 'get', :class => "navbar-form" do
         = text_field_tag "search[ticket_number]", nil, :placeholder => "Ticket Number", value: @ticket_number, class: "form-control"
         = text_field_tag "search[customer_name]", nil, :placeholder => "Customer Name", value: @customer_name, class: "form-control"
@@ -60,3 +65,38 @@
             .dropdown-divider
             = link_to 'Log out', destroy_user_session_path, class: 'dropdown-item', method: :delete, data: { confirm: 'Are you sure you want to log out?' }
 / End Navbar
+
+/ Modal
+#new_image.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5#exampleModalLabel.modal-title New Image
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        .form-group
+          %label.bmd-label-floating{:for => "exampleInput1"} Ticket Number
+          %input#exampleInput1.form-control{value: @ticket_number}
+        .form-group
+          %label.bmd-label-floating{:for => "exampleInput2"} Customer Name
+          %input#exampleInput2.form-control{value: @customer_name}
+        .form-group
+          %label.bmd-label-floating{:for => "exampleInput3"} Event Code
+          %input#exampleInput3.form-control{value: @event_code}
+        
+
+        -#
+          = simple_form_for(@user, url: @user.new_record? ? users_admin_index_path : users_admin_path)  do |f|
+            = f.error_notification
+            .form-inputs
+              = f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id }
+              .row
+                .col-xs-12
+                = f.input :ticket_number, label: 'Ticket Number'
+              .row
+                .col-xs-12
+                  = f.input :customer_name, label: 'Customer Name'
+      .modal-footer
+        %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
+        %button.btn.btn-primary{:type => "button"} Save changes
