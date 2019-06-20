@@ -10,13 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_18_203246) do
+ActiveRecord::Schema.define(version: 2019_06_20_184627) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name", null: false
     t.string "phone"
     t.string "jpegger_service_ip", null: false
     t.string "jpegger_service_port", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "image_files", force: :cascade do |t|
+    t.string "name"
+    t.string "file"
+    t.integer "user_id"
+    t.string "ticket_number"
+    t.string "customer_number"
+    t.string "customer_name"
+    t.string "branch_code"
+    t.string "location"
+    t.string "event_code"
+    t.integer "event_code_id"
+    t.integer "image_id"
+    t.string "container_number"
+    t.string "booking_number"
+    t.string "contract_number"
+    t.boolean "hidden"
+    t.string "tare_seq_nbr"
+    t.string "commodity_name"
+    t.decimal "weight"
+    t.string "tag_number"
+    t.string "vin_number"
+    t.string "yard_id"
+    t.string "contract_verbiage"
+    t.string "service_request_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

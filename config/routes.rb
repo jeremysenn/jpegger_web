@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   get 'welcome/dashboard'
   root 'welcome#dashboard'
   
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+  
   resources :users_admin, :controller => 'users'
 #  resources :users_admin, :controller => 'users' do
 #    collection do
@@ -13,5 +16,7 @@ Rails.application.routes.draw do
 #      get 'confirm'
 #    end
 #  end
+
+  resources :image_files
   
 end
