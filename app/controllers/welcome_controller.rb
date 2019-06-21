@@ -1,6 +1,7 @@
 class WelcomeController < ApplicationController
   
   def dashboard
+    @image_file = ImageFile.find(params[:image_file_id])
     unless current_user.blank?
       unless params[:search].blank?
         @customer_name = params[:search][:customer_name]

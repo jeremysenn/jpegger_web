@@ -32,8 +32,9 @@ class ImageFilesController < ApplicationController
       format.html { 
         @image_file = ImageFile.new(image_file_params)
         if @image_file.save
-          flash[:notice] = 'Image was successfully created and is being processed.' 
-          redirect_back fallback_location: root_path
+          flash[:notice] = 'Image was successfully created and is being processed by JPEGger.' 
+#          redirect_back fallback_location: root_path
+          redirect_to root_path(image_file_id: @image_file.id)
         else
           render :new
         end
