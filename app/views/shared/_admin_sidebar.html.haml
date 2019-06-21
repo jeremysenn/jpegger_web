@@ -9,7 +9,8 @@
       JPEGger WEB
   .sidebar-wrapper
     %ul.nav
-      %li.nav-item{:class => (current_page? root_path) ? "active" : ""}
+      -# %li.nav-item{:class => (current_page? root_path) ? "active" : ""}
+      %li.nav-item{:class => (params[:controller] == 'welcome') ?  "active" : ""}
         %a.nav-link{:href => root_path}
           %i.material-icons dashboard
           %p Dashboard

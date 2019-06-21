@@ -53,6 +53,8 @@ gem 'haml-rails'
 gem 'jquery-rails'
 gem 'popper_js', '~> 1.12.9'
 
+gem 'jquery-ui-rails'
+
 # Set environment variables within application.yml
 gem "figaro"
 
@@ -69,9 +71,6 @@ gem 'kaminari'
 
 # Authorization
 gem 'cancancan'
-
-# https://github.com/Nerian/bootstrap-datepicker-rails
-gem 'bootstrap-datepicker-rails'
 
 # Provide a clear syntax for writing and deploying cron jobs.
 gem 'whenever', :require => false

@@ -614,20 +614,4 @@
    // md.initDashboardPageCharts();
   //});
 
-  window.addEventListener('DOMContentLoaded', function()
-    {
-        var $start = document.querySelector('.start_datepicker'),
-            $end = document.querySelector('.end_datepicker');
-        $start.DatePickerX.init({
-            mondayFirst: true,
-            format: 'yyyy-mm-dd',
-            minDate    : new Date(2012, 1, 1),
-            maxDate    : $end
-        });
-        $end.DatePickerX.init({
-            mondayFirst: true,
-            format: 'yyyy-mm-dd',
-            minDate    : $start,
-            //maxDate    : new Date(2017, 4, 25)
-        });
-    });
+  

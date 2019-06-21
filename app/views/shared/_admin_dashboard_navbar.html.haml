@@ -25,10 +25,10 @@
         = text_field_tag "search[ticket_number]", nil, :placeholder => "Ticket Number", value: @ticket_number, class: "form-control"
         = text_field_tag "search[customer_name]", nil, :placeholder => "Customer Name", value: @customer_name, class: "form-control"
         = text_field_tag "search[event_code]", nil, :placeholder => "Event Code", value: @event_code, class: "form-control"
-        = text_field_tag "search[start_date]", nil, :placeholder => "Start Date", value: @start_date, class: "start_datepicker form-control", readonly: true
+        = text_field_tag "search[start_date]", nil, :placeholder => "Start Date", value: @start_date, class: "form-control", readonly: true
         %span.navbar-text To
         &nbsp;
-        = text_field_tag "search[end_date]", nil, :placeholder => "End Date", value: @end_date, class: "end_datepicker form-control", readonly: true
+        = text_field_tag "search[end_date]", nil, :placeholder => "End Date", value: @end_date, class: "form-control", readonly: true
         &nbsp;
         = button_tag(:type => 'submit', :class => 'btn btn-white btn-round btn-just-icon') do
           %i.material-icons search
@@ -105,3 +105,5 @@
       document.getElementById("file_image").src = oFREvent.target.result;
     };
   };
+
+  
