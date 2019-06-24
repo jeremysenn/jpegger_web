@@ -7,18 +7,20 @@
       .container-fluid
         = render 'shared/flash_messages'
         - unless @image_file.blank?
-          .card{:style => "width: 18rem;"}
-            %img.card-img-top{:alt => "Image File #{@image_file.id}", :src => @image_file.file.url(:thumb)}/
-            .card-body
-              %p.card-text
-                - unless @image_file.ticket_number.blank?
-                  = @image_file.ticket_number
-                  %br
-                - unless @image_file.customer_name.blank?
-                  = @image_file.customer_name
-                  %br
-                - unless @image_file.event_code.blank?
-                  = @image_file.event_code
+          %div{:class => "alert alert-dismissible alert-primary col-lg-3"}
+            %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+            .card{:style => "width: 18rem;"}
+              %img.card-img-top{:alt => "Image File #{@image_file.id}", :src => @image_file.file.url(:thumb)}/
+              .card-body
+                %p.card-text
+                  - unless @image_file.ticket_number.blank?
+                    = @image_file.ticket_number
+                    %br
+                  - unless @image_file.customer_name.blank?
+                    = @image_file.customer_name
+                    %br
+                  - unless @image_file.event_code.blank?
+                    = @image_file.event_code
           -#
             %div{:class => "alert alert-dismissible alert-primary col-lg-3"}
               %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
