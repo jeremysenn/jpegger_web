@@ -78,9 +78,9 @@
                         %tr
                           %td= image['SYS_DATE_TIME']
                           %td= image['CAPTURE_SEQ_NBR']
-                          %td= link_to image['TICKET_NBR'], root_path("search[ticket_number]" => image['TICKET_NBR'])
+                          %td= link_to image['TICKET_NBR'], root_path("search[ticket_number]" => image['TICKET_NBR']) unless image['TICKET_NBR'].blank?
                           %td= image['CAMERA_NAME']
-                          %td= link_to image['EVENT_CODE'], root_path("search[event_code]" => image['EVENT_CODE'])
+                          %td= link_to image['EVENT_CODE'], root_path("search[event_code]" => image['EVENT_CODE']) unless image['EVENT_CODE'].blank?
                           %td= image['CUST_NAME']
                           %td
                             -#
