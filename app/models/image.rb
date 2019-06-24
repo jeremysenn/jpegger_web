@@ -113,7 +113,7 @@ class Image
     
     # SQL command that gets sent to jpegger service
 #    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME >= '#{start_date}' AND SYS_DATE_TIME <= '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
-    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date } 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
+    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port
@@ -151,7 +151,7 @@ class Image
     
     # SQL command that gets sent to jpegger service
 #    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME >= '#{start_date}' AND SYS_DATE_TIME <= '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
-    command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
+    command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port
