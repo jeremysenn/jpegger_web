@@ -1,7 +1,7 @@
 class WelcomeController < ApplicationController
   
   def dashboard
-    @image_file = ImageFile.find(params[:image_file_id]) unless params[:image_file_id].blank?
+    @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
     unless current_user.blank?
       unless params[:search].blank?
         @customer_name = params[:search][:customer_name]
@@ -26,6 +26,7 @@ class WelcomeController < ApplicationController
       @images = Kaminari.paginate_array(@all_images).page(params[:page]).per(10)
 #      @images = []
     end
+    session.delete(:image_file_id)
   end
   
 end

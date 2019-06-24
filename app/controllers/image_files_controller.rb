@@ -32,9 +32,10 @@ class ImageFilesController < ApplicationController
       format.html { 
         @image_file = ImageFile.new(image_file_params)
         if @image_file.save
-          flash[:notice] = 'Image was successfully created and is being processed by JPEGger.' 
-#          redirect_back fallback_location: root_path
-          redirect_to root_path(image_file_id: @image_file.id)
+          flash[:image_file_id] = @image_file.id
+          flash[:notice] = 'Image was successfully created and is being saved by JPEGger.' 
+          redirect_back fallback_location: root_path
+#          redirect_to root_path(image_file_id: @image_file.id)
         else
           render :new
         end
@@ -48,23 +49,7 @@ class ImageFilesController < ApplicationController
         end
         }
       format.js {
-        @signature = params[:output]
-        unless @signature.blank?
-          @image_file = ImageFile.new(image_file_params)
-          instructions = JSON.parse(@signature).map { |h| "line #{h['mx'].to_i},#{h['my'].to_i} #{h['lx'].to_i},#{h['ly'].to_i}" } * ' '
-          if @image_file.container_number.blank?
-            tempfile = Tempfile.new(["ticket_#{@image_file.ticket_number}_signature", '.png'])
-          else
-            tempfile = Tempfile.new(["container_#{@image_file.container_number}_signature", '.png'])
-          end
-          Open3.popen3("convert -size 598x165 xc:transparent -stroke black -draw @- #{tempfile.path}") do |input, output, error|
-              input.puts instructions
-          end
-          @image_file.file = tempfile
-          @image_file.save
-        else
-          @image_file = ImageFile.create(image_file_params)
-        end
+        @image_file = ImageFile.create(image_file_params)
       }
     end
   end

@@ -7,8 +7,18 @@
       .container-fluid
         = render 'shared/flash_messages'
         - unless @image_file.blank?
-          .col-lg-3.col-md-6.col-sm-12
-            = image_tag(@image_file.file_url, id: 'file_image', class: 'img-fluid img-thumbnail')
+          %div{:class => "alert alert-dismissible alert-primary col-lg-3"}
+            %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+            = image_tag(@image_file.file.url(:thumb), id: 'file_image', class: 'img-fluid img-thumbnail')
+            %p.text-center
+              - unless @image_file.ticket_number.blank?
+                = @image_file.ticket_number
+                %br
+              - unless @image_file.customer_name.blank?
+                = @image_file.customer_name
+                %br
+              - unless @image_file.event_code.blank?
+                = @image_file.event_code
         .row
           .col-lg-12.col-md-12
             .card
@@ -35,7 +45,7 @@
                           %td= link_to image['TICKET_NBR'], root_path("search[ticket_number]" => image['TICKET_NBR']) unless image['TICKET_NBR'].blank?
                           %td= image['CAMERA_NAME']
                           %td= link_to image['EVENT_CODE'], root_path("search[event_code]" => image['EVENT_CODE']) unless image['EVENT_CODE'].blank?
-                          %td= link_to image['CUST_NAME'], root_path("search[customer_name]" => image['CUST_NAME']) unless image['CUST_NAME']
+                          %td= link_to image['CUST_NAME'], root_path("search[customer_name]" => image['CUST_NAME']) unless image['CUST_NAME'].blank?
                           %td
                             %button.btn.btn-sm.btn-warning{"data-target" => "#image_#{image['CAPTURE_SEQ_NBR']}_modal", "data-toggle" => "modal", :type => "button"}
                               %i.fa.fa-photo

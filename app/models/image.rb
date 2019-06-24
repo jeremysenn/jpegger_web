@@ -113,7 +113,7 @@ class Image
     
     # SQL command that gets sent to jpegger service
 #    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME >= '#{start_date}' AND SYS_DATE_TIME <= '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
-    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
+    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date } 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port
@@ -151,7 +151,7 @@ class Image
     
     # SQL command that gets sent to jpegger service
 #    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME >= '#{start_date}' AND SYS_DATE_TIME <= '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
-    command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
+    command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port
@@ -270,7 +270,7 @@ class Image
     start_date = search_params[:start_date]
     end_date = search_params[:end_date]
     
-    date_search_string = (start_date.present? and end_date.present?) ? "AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'" : ''
+    date_search_string = (start_date.present? and end_date.present?) ? "AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'" : ''
     
     if ticket_number.present?
       if customer_name.present? and event_code.present?
@@ -291,7 +291,7 @@ class Image
     elsif event_code.present?
       command = "<FETCH><SQL>select * from images where event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
     elsif start_date.present? and end_date.present?
-      command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
+      command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
     end
     
     # SSL TCP socket communication with jpegger
@@ -334,7 +334,7 @@ class Image
     start_date = search_params[:start_date]
     end_date = search_params[:end_date]
     
-    date_search_string = (start_date.present? and end_date.present?) ? "AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'" : ''
+    date_search_string = (start_date.present? and end_date.present?) ? "AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'" : ''
     
     if ticket_number.present?
       if event_code.present?
@@ -345,7 +345,7 @@ class Image
     elsif event_code.present?
       command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
     elsif start_date.present? and end_date.present?
-      command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
+      command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
     else
       command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}'</SQL><ROWS>1000</ROWS></FETCH>"
     end
