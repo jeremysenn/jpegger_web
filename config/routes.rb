@@ -18,5 +18,6 @@ Rails.application.routes.draw do
 #  end
 
   resources :image_files
+  resources :images
   
 end

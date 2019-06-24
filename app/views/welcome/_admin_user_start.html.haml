@@ -62,10 +62,13 @@
                           %td= link_to image['EVENT_CODE'], root_path("search[event_code]" => image['EVENT_CODE']) unless image['EVENT_CODE'].blank?
                           %td= link_to image['CUST_NAME'], root_path("search[customer_name]" => image['CUST_NAME']) unless image['CUST_NAME'].blank?
                           %td
-                            %button.btn.btn-sm.btn-warning{"data-target" => "#image_#{image['CAPTURE_SEQ_NBR']}_modal", "data-toggle" => "modal", :type => "button"}
+                            -#
+                              %button.btn.btn-sm.btn-warning{"data-target" => "#image_#{image['CAPTURE_SEQ_NBR']}_modal", "data-toggle" => "modal", :type => "button"}
+                                %i.fa.fa-photo
+                            %a.btn.btn-sm.btn-warning{href: image_path(image['CAPTURE_SEQ_NBR'])}
                               %i.fa.fa-photo
 
-                        = render partial: 'images/modal', locals: {image: image}
+                        =# render partial: 'images/modal', locals: {image: image}
                 - else
                   %p None
               .card-footer

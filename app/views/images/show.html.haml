@@ -1,0 +1,32 @@
+.container-fluid
+  = render 'shared/flash_messages'
+  .row
+    .col-sm-6.offset-sm-3
+      .card
+        .card-header
+          %h4.card-title.text-center 
+            %i.fa.fa-photo
+            = @image['CAPTURE_SEQ_NBR']
+            .pull-right
+              = link_to "<i class='fa fa-close fa-lg'></i>".html_safe, :back
+        -# %img.card-img-top{:alt => "Image File #{@image_file.id}", :src => @image_file.file.url(:thumb)}/
+        = image_tag(Image.jpeg_image_source(@image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: @image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+        .card-body
+          %p.card-text
+            = @image['SYS_DATE_TIME']
+            %br
+            - unless @image['TICKET_NBR'].blank?
+              %strong Ticket
+              = link_to @image['TICKET_NBR'], root_path("search[ticket_number]" => @image['TICKET_NBR'])
+              %br
+            - unless @image['CAMERA_NAME'].blank?
+              %strong Camera
+              = @image['CAMERA_NAME']
+              %br
+            - unless @image['EVENT_CODE'].blank?
+              %strong Event
+              = link_to @image['EVENT_CODE'], root_path("search[event_code]" => @image['EVENT_CODE']) 
+              %br
+            - unless @image['CUST_NAME'].blank?
+              %strong Cutomer
+              = link_to @image['CUST_NAME'], root_path("search[customer_name]" => @image['CUST_NAME']) 
