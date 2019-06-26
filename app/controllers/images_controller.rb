@@ -20,7 +20,7 @@ class ImagesController < ApplicationController
           @all_images = Image.external_user_search(params[:search], current_user).reverse
         end
       else
-        @start_date = Date.today.last_week
+        @start_date = Date.today
         @end_date = Date.today
         if current_user.admin?
           @all_images = Image.find_all_by_date_range(@start_date, @end_date, current_user).reverse
