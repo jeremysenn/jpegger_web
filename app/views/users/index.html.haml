@@ -1,7 +1,7 @@
 .wrapper
   = render 'shared/admin_sidebar'
   .main-panel
-    = render 'shared/admin_users_navbar'
+    =# render 'shared/admin_users_navbar'
     .content
       .container-fluid
         = render 'shared/flash_messages'
@@ -9,7 +9,12 @@
           .col-lg-12.col-md-12
             .card
               .card-header.card-header-primary
-                %h4.card-title Users
+                %h4.card-title 
+                  Users
+                  .pull-right
+                    %a.nav-link{:href => new_users_admin_path}
+                      %i.material-icons add
+                      New
               .card-body.table-responsive
                 - unless @users.blank?
                   %table.table.table-hover
