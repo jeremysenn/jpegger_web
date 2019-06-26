@@ -1,0 +1,24 @@
+.wrapper
+  = render 'shared/admin_sidebar'
+  .main-panel
+    .content
+      .container-fluid
+        = render 'shared/flash_messages'
+        .col-lg-12.col-md-12
+          .card
+            .card-header.card-header-primary
+              %h4.card-title
+                = "#{@company.name} Settings"
+                .pull-right 
+                  %a{href: edit_company_path(@company)}
+                    %i.fa.fa-pencil-square-o
+                    Edit
+            .card-body
+              Phone:
+              = @company.phone
+              %br
+              JPEGger Service IP:
+              = @company.jpegger_service_ip
+              %br
+              JPEGger Service Port:
+              = @company.jpegger_service_port

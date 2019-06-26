@@ -38,6 +38,12 @@ class Ability
       end
       can :create, User
       
+      # Companies
+      ############
+      can :manage, Company do |company|
+        user.company == company
+      end
+      
     elsif user.external?
       
       # Users

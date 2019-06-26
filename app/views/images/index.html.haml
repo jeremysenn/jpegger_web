@@ -1,0 +1,59 @@
+.wrapper
+  = render 'shared/admin_sidebar'
+  .main-panel
+    = render 'shared/admin_images_navbar'
+    .content
+      .container-fluid
+        = render 'shared/flash_messages'
+        - unless @image_file.blank?
+          %div{:class => "alert alert-dismissible alert-primary col-lg-4"}
+            %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+            .card{:style => "width: 18rem;"}
+              %img.card-img-top{:alt => "Image File #{@image_file.id}", :src => @image_file.file.url(:thumb)}/
+              .card-body
+                %p.card-text
+                  - unless @image_file.ticket_number.blank?
+                    = @image_file.ticket_number
+                    %br
+                  - unless @image_file.customer_name.blank?
+                    = @image_file.customer_name
+                    %br
+                  - unless @image_file.event_code.blank?
+                    = @image_file.event_code
+        .row
+          .col-lg-12.col-md-12
+            .card
+              .card-header.card-header-primary
+                %h4.card-title Images
+                %p.card-category
+                  = "#{pluralize(number_with_delimiter(@all_images.count), 'image')} found."
+              .card-body
+                .row
+                  - @images.each do |image|
+                    .col-sm-12.col-md-3
+                      .card
+                        = image_tag(Image.preview_source(image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+                        .card-body
+                          %h5.card-title= image['CAPTURE_SEQ_NBR']
+                          %p.card-text
+                            = image['SYS_DATE_TIME']
+                            %br
+                            %strong Ticket
+                            = link_to image['TICKET_NBR'], images_path("search[ticket_number]" => image['TICKET_NBR']) unless image['TICKET_NBR'].blank?
+                            %br
+                            %strong Camera
+                            = image['CAMERA_NAME']
+                            %br
+                            %strong Event
+                            = link_to image['EVENT_CODE'], images_path("search[event_code]" => image['EVENT_CODE']) unless image['EVENT_CODE'].blank?
+                            %br
+                            %strong Customer
+                            - unless image['CUST_NAME'].blank?
+                              %br
+                              = link_to image['CUST_NAME'], images_path("search[customer_name]" => image['CUST_NAME']) 
+
+                          %a.btn.btn-primary{href: image_path(image['CAPTURE_SEQ_NBR'])} 
+                            %i.fa.fa-image
+                            Show
+
+              .card-footer= paginate @images

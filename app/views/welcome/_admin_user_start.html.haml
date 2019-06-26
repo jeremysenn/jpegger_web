@@ -1,6 +1,5 @@
 .wrapper
   = render 'shared/admin_sidebar'
-        
   .main-panel
     = render 'shared/admin_dashboard_navbar'
     .content
@@ -40,7 +39,7 @@
               .card-header.card-header-warning
                 %h4.card-title Images
                 %p.card-category
-                  = "#{pluralize(number_with_delimiter(@all_images.count), 'image')} found"
+                  = "#{pluralize(number_with_delimiter(@all_images.count), 'image')} found."
               .card-body.table-responsive
                 - unless @images.blank?
                   %table.table.table-hover
@@ -71,8 +70,7 @@
                         =# render partial: 'images/modal', locals: {image: image}
                 - else
                   %p None
-              .card-footer
-                = paginate @images
+              .card-footer= paginate @images
         -#
           .row
             .col-lg-3.col-md-6.col-sm-6

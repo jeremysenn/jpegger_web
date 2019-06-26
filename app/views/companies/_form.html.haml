@@ -1,0 +1,15 @@
+= simple_form_for @company  do |f|
+  = f.error_notification
+  .form-inputs
+    .row
+      .col-xs-12.col-sm-6
+        = f.input :name, label: 'Name'
+      .col-xs-12.col-sm-6
+        = f.input :phone, label: 'Phone'
+    .row
+      .col-xs-12.col-sm-6
+        = f.input :jpegger_service_ip, label: 'JPEGger Service IP'
+      .col-xs-12.col-sm-6
+        = f.input :jpegger_service_port, label: 'JPEGger Service Port'
+    %button.btn.btn-primary{:type => "submit", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Save"}} 
+      Save

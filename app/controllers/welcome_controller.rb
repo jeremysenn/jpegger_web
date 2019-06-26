@@ -15,7 +15,7 @@ class WelcomeController < ApplicationController
           @all_images = Image.external_user_search(params[:search], current_user).reverse
         end
       else
-        @start_date = Date.today.last_week
+        @start_date = Date.today
         @end_date = Date.today
         if current_user.admin?
           @all_images = Image.find_all_by_date_range(@start_date, @end_date, current_user).reverse
@@ -23,10 +23,9 @@ class WelcomeController < ApplicationController
           @all_images = Image.external_user_find_all_by_date_range(@start_date, @end_date, current_user).reverse
         end
       end
-      @images = Kaminari.paginate_array(@all_images).page(params[:page]).per(10)
+      @images = Kaminari.paginate_array(@all_images).page(params[:page]).per(20)
 #      @images = []
     end
-    session.delete(:image_file_id)
   end
   
 end

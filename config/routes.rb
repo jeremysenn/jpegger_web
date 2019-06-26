@@ -19,5 +19,6 @@ Rails.application.routes.draw do
 
   resources :image_files
   resources :images
+  resources :companies
   
 end

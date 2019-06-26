@@ -1,0 +1,16 @@
+/ Navbar
+%nav.navbar.navbar-expand-lg.navbar-transparent.navbar-absolute.fixed-top
+  .container-fluid
+    %button.navbar-toggler{"aria-controls" => "navigation-index", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-toggle" => "collapse", :type => "button"}
+      %span.sr-only Toggle navigation
+      %span.navbar-toggler-icon.icon-bar
+      %span.navbar-toggler-icon.icon-bar
+      %span.navbar-toggler-icon.icon-bar
+    #navbarNav.collapse.navbar-collapse
+      %ul.navbar-nav
+        %li.nav-item
+          %a.nav-link{:href => edit_company_path(@company)}
+            %i.material-icons edit
+            Edit
+            %span.sr-only (current)
+/ End Navbar

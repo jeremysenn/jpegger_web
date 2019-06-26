@@ -1,7 +1,7 @@
 .wrapper
   = render 'shared/admin_sidebar'
   .main-panel
-    = render 'shared/admin_show_user_navbar'
+    =# render 'shared/admin_show_user_navbar'
     .content
       .container-fluid
         = render 'shared/flash_messages'
@@ -11,6 +11,10 @@
               .card-header.card-header-primary
                 %h4.card-title
                   = "#{@user.full_name}"
+                  .pull-right
+                    %a{href: edit_users_admin_path(@user)}
+                      %i.fa.fa-pencil-square-o
+                      Edit
               .card-body
                 - if @user.confirmed?
                   Sign In Count:
