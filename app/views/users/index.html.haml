@@ -12,8 +12,8 @@
                 %h4.card-title 
                   Users
                   .pull-right
-                    %a.nav-link{:href => new_users_admin_path}
-                      %i.material-icons add
+                    %a{:href => new_users_admin_path}
+                      %i.fa.fa-plus
                       New
               .card-body.table-responsive
                 - unless @users.blank?
