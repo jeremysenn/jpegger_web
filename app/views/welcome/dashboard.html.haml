@@ -1,6 +1,19 @@
 - if current_user.blank?
   = render 'no_user_start'
-- elsif current_user.admin?
-  = render 'admin_user_start'
-- elsif current_user.external?
-  = render 'external_user_start'
+- else
+  - if not current_user.temporary_password.blank?
+    = render 'shared/admin_dashboard_navbar'
+    .container-fluid
+      .row
+        .col-sm-6.offset-sm-3
+          .text-center
+            %h1.bd-title
+              %i.material-icons{style: 'font-size: 60px;' } image
+              %br
+              JPEGger WEB
+            %p.bd-lead
+              = link_to 'Please update your password', edit_user_registration_path(current_user), class: 'btn btn-danger btn-lg'
+  - elsif current_user.admin?
+    = render 'admin_user_start'
+  - elsif current_user.external?
+    = render 'external_user_start'

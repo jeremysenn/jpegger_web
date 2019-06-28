@@ -29,6 +29,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     temporary_password = SecureRandom.random_number(10**6).to_s
+    @user.temporary_password = temporary_password
     @user.password = temporary_password
     @user.password_confirmation = temporary_password
     respond_to do |format|
