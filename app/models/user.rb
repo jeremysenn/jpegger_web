@@ -31,6 +31,10 @@ class User < ApplicationRecord
     role == "external"
   end
   
+  def super?
+    role == "super"
+  end
+  
   #############################
   #     Class Methods         #
   #############################

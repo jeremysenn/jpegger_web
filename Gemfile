@@ -95,6 +95,9 @@ gem 'rack-protection'
 # Integrate Select2 javascript library with Rails asset pipeline https://github.com/argerim/select2-rails
 gem "select2-rails"
 
+# A Rails engine that helps you put together a super-flexible admin dashboard.
+gem "administrate"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

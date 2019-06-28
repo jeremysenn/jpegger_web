@@ -17,3 +17,15 @@
     = render 'admin_user_start'
   - elsif current_user.external?
     = render 'external_user_start'
+  - elsif current_user.super?
+    = render 'shared/admin_dashboard_navbar'
+    .container-fluid
+      .row
+        .col-sm-6.offset-sm-3
+          .text-center
+            %h1.bd-title
+              %i.material-icons{style: 'font-size: 60px;' } image
+              %br
+              JPEGger WEB
+            %p.bd-lead
+              = link_to 'Super User Admin Console', admin_root_path, class: 'btn btn-primary btn-lg'
