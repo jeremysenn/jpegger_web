@@ -1,7 +1,7 @@
 class ImagesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_image, only: [:show, :edit, :update, :destroy]
-#  load_and_authorize_resource
+  load_and_authorize_resource only: [:index]
 
   # GET /images
   # GET /images.json
@@ -59,7 +59,7 @@ class ImagesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_image
-      @image = Image.find_by_capture_sequence_number(params[:id], current_user.company_id)
+      @image = Image.find_by_capture_sequence_number(params[:id], current_user)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

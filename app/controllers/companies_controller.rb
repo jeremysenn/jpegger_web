@@ -13,6 +13,7 @@ class CompaniesController < ApplicationController
   # GET /companies/1
   # GET /companies/1.json
   def show
+    @image_event_codes = LookupDef.image_event_codes(current_user)
   end
 
   # GET /companies/new

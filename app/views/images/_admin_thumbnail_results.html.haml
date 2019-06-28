@@ -1,0 +1,38 @@
+.card
+  .card-header.card-header-warning
+    %h4.card-title 
+      Images
+      .pull-right
+        %a.btn.btn-sm.btn-primary{href: '#new_image', "data-target" => "#new_image", "data-toggle" => "modal"}
+          %i.fa.fa-plus
+  = render 'image_files/new_modal'
+  .card-body
+    .row
+      - @images.each do |image|
+        .col-sm-12.col-md-3
+          .card
+            = image_tag(Image.preview_source(image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+            .card-body
+              %h5.card-title= image['CAPTURE_SEQ_NBR']
+              %p.card-text
+                = image['SYS_DATE_TIME']
+                %br
+                %strong Ticket
+                = link_to image['TICKET_NBR'], images_path("search[ticket_number]" => image['TICKET_NBR']) unless image['TICKET_NBR'].blank?
+                %br
+                %strong Camera
+                = image['CAMERA_NAME']
+                %br
+                %strong Event
+                = link_to image['EVENT_CODE'], images_path("search[event_code]" => image['EVENT_CODE']) unless image['EVENT_CODE'].blank?
+                %br
+                %strong Customer
+                - unless image['CUST_NAME'].blank?
+                  %br
+                  = link_to image['CUST_NAME'], images_path("search[customer_name]" => image['CUST_NAME']) 
+
+              %a.btn.btn-info{href: image_path(image['CAPTURE_SEQ_NBR'])} 
+                %i.fa.fa-image
+                Show
+
+  .card-footer= paginate @images

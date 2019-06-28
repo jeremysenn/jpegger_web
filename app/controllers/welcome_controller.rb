@@ -1,5 +1,8 @@
 class WelcomeController < ApplicationController
-  
+  before_action :set_image_field_descriptions, if: -> { current_user and FieldDescription.search_images_table?(current_user)}
+  before_action :set_shipment_field_descriptions, if: -> { current_user and FieldDescription.search_shipments_table?(current_user)}
+  before_action :set_searchable_tables, if: -> { current_user }
+      
   def dashboard
     @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
     unless current_user.blank?
@@ -25,6 +28,37 @@ class WelcomeController < ApplicationController
       end
       @images = Kaminari.paginate_array(@all_images).page(params[:page]).per(20)
 #      @images = []
+    end
+  end
+  
+  private
+  
+  def set_image_field_descriptions
+    if image_field_descriptions.blank?
+      field_descriptions_hash = Hash.new
+      FieldDescription.all_for_images_table(current_user).each do |f| 
+        field_descriptions_hash[f['FIELDNAME']] = f["DISPLAYNAME"]
+      end
+      session[:image_field_descriptions] = field_descriptions_hash
+    end
+  end
+  
+  def set_shipment_field_descriptions
+    if shipment_field_descriptions.blank?
+      field_descriptions_hash = Hash.new
+      FieldDescription.all_for_shipments_table(current_user).each do |f| 
+        field_descriptions_hash[f['FIELDNAME']] = f["DISPLAYNAME"]
+      end
+      session[:shipment_field_descriptions] = field_descriptions_hash
+    end
+  end
+  
+  def set_searchable_tables
+    if FieldDescription.search_images_table?(current_user)
+      session[:images_table] = true
+    end
+    if FieldDescription.search_shipments_table?(current_user)
+      session[:shipments_table] = true
     end
   end
   

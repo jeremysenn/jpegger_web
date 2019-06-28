@@ -5,7 +5,6 @@
       JPEGger WEB
   .sidebar-wrapper
     %ul.nav
-      -# %li.nav-item{:class => (current_page? root_path) ? "active" : ""}
       %li.nav-item{:class => (params[:controller] == 'welcome') ?  "active" : ""}
         %a.nav-link{:href => root_path}
           %i.material-icons dashboard
@@ -20,7 +19,3 @@
           %a.nav-link{:href => '#'}
             %i.fa.fa-truck
             %p Shipments
-      %li.nav-item{:class => (params[:controller] == 'users') ?  "active" : ""}
-        %a.nav-link{:href => users_admin_index_path}
-          %i.material-icons person
-          %p Users

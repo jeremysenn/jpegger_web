@@ -44,6 +44,10 @@ class Ability
         user.company == company
       end
       
+      # Images
+      ############
+      can :index, Image
+      
     elsif user.external?
       
       # Users
@@ -51,6 +55,10 @@ class Ability
       can :manage, User do |user_record|
         user == user_record
       end
+      
+      # Images
+      ############
+      can :index, Image
       
     elsif user.basic?
       

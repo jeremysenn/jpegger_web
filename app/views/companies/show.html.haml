@@ -1,24 +1,34 @@
 .wrapper
   = render 'shared/admin_sidebar'
   .main-panel
-    .content
+    = render 'shared/admin_dashboard_navbar'
+    .content{style: 'margin-top: 0px'}
       .container-fluid
         = render 'shared/flash_messages'
         .col-lg-12.col-md-12
           .card
-            .card-header.card-header-primary
+            .card-header.card-header-warning
               %h4.card-title
                 = "#{@company.name} Settings"
                 .pull-right 
-                  %a{href: edit_company_path(@company)}
+                  %a.btn.btn-sm.btn-primary{href: edit_company_path(@company)}
                     %i.fa.fa-pencil-square-o
-                    Edit
             .card-body
-              Phone:
-              = @company.phone
-              %br
-              JPEGger Service IP:
-              = @company.jpegger_service_ip
-              %br
-              JPEGger Service Port:
-              = @company.jpegger_service_port
+              %p
+                %strong Phone:
+                = @company.phone
+                %br
+                %strong JPEGger Service IP:
+                = @company.jpegger_service_ip
+                %br
+                %strong JPEGger Service Port:
+                = @company.jpegger_service_port
+              %p
+                %strong= image_event_code_field_description
+                - unless @image_event_codes.blank?
+                  %br
+                  - @image_event_codes.each do |event_code|
+                    = event_code
+                    %br
+                - else
+                  None

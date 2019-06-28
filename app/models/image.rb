@@ -40,8 +40,8 @@ class Image
     end
   end
   
-  def self.find_by_capture_sequence_number(capture_sequence_number, company_id)
-    company = Company.find(company_id)
+  def self.find_by_capture_sequence_number(capture_sequence_number, user)
+    company = user.company
     require 'socket'
     host = company.jpegger_service_ip
     port = company.jpegger_service_port
@@ -67,46 +67,8 @@ class Image
     end
   end
   
-  # Get all jpegger images for this company with this ticket number
-  def self.find_all_by_ticket_number(ticket_number, company_id)
-    company = Company.find(company_id)
-    require 'socket'
-    host = company.jpegger_service_ip
-    port = company.jpegger_service_port
-    
-    # SQL command that gets sent to jpegger service
-    command = "<FETCH><SQL>select * from images where ticket_nbr='#{ticket_number}'</SQL><ROWS>1000</ROWS></FETCH>"
-    
-    # SSL TCP socket communication with jpegger
-    tcp_client = TCPSocket.new host, port
-    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
-    ssl_client.connect
-    ssl_client.sync_close = true
-    ssl_client.puts command
-
-    results = ""
-    while response = ssl_client.sysread(1000) # Read 1000 bytes at a time
-      results = results + response
-      break if (response.include?("</RESULT>"))
-    end
-    
-    ssl_client.close
-    
-    data= Hash.from_xml(results.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
-    
-    unless data["RESULT"]["ROW"].blank?
-      if data["RESULT"]["ROW"].is_a? Hash # Only one result returned, so put it into an array
-        return [data["RESULT"]["ROW"]]
-      else
-        return data["RESULT"]["ROW"]
-      end
-    else
-      return [] # No images found
-    end
-  end
-  
   def self.find_all_by_date_range(start_date, end_date, user)
-    company = Company.find(user.company_id)
+    company = user.company
     require 'socket'
     host = company.jpegger_service_ip
     port = company.jpegger_service_port
@@ -144,90 +106,14 @@ class Image
   end
   
   def self.external_user_find_all_by_date_range(start_date, end_date, user)
-    company = Company.find(user.company_id)
+    company = user.company
     require 'socket'
     host = company.jpegger_service_ip
     port = company.jpegger_service_port
     
     # SQL command that gets sent to jpegger service
 #    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME >= '#{start_date}' AND SYS_DATE_TIME <= '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
-    command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
-    
-    # SSL TCP socket communication with jpegger
-    tcp_client = TCPSocket.new host, port
-    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
-    ssl_client.connect
-    ssl_client.sync_close = true
-    ssl_client.puts command
-
-    results = ""
-    while response = ssl_client.sysread(1000) # Read 1000 bytes at a time
-      results = results + response
-      break if (response.include?("</RESULT>"))
-    end
-    
-    ssl_client.close
-    
-    data= Hash.from_xml(results.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
-    
-    unless data["RESULT"]["ROW"].blank?
-      if data["RESULT"]["ROW"].is_a? Hash # Only one result returned, so put it into an array
-        return [data["RESULT"]["ROW"]]
-      else
-        return data["RESULT"]["ROW"]
-      end
-    else
-      return [] # No images found
-    end
-  end
-  
-  # Get all jpegger images for this company with this customer name
-  def self.find_all_by_customer_name(customer_name, company_id)
-    company = Company.find(company_id)
-    require 'socket'
-    host = company.jpegger_service_ip
-    port = company.jpegger_service_port
-    
-    # SQL command that gets sent to jpegger service
-    command = "<FETCH><SQL>select * from images where cust_name LIKE '#{customer_name}'</SQL><ROWS>1000</ROWS></FETCH>"
-    
-    # SSL TCP socket communication with jpegger
-    tcp_client = TCPSocket.new host, port
-    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
-    ssl_client.connect
-    ssl_client.sync_close = true
-    ssl_client.puts command
-
-    results = ""
-    while response = ssl_client.sysread(1000) # Read 1000 bytes at a time
-      results = results + response
-      break if (response.include?("</RESULT>"))
-    end
-    
-    ssl_client.close
-    
-    data= Hash.from_xml(results.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
-    
-    unless data["RESULT"]["ROW"].blank?
-      if data["RESULT"]["ROW"].is_a? Hash # Only one result returned, so put it into an array
-        return [data["RESULT"]["ROW"]]
-      else
-        return data["RESULT"]["ROW"]
-      end
-    else
-      return [] # No images found
-    end
-  end
-  
-  # Get all jpegger images for this company with this event_code
-  def self.find_all_by_event_code(event_code, company_id)
-    company = Company.find(company_id)
-    require 'socket'
-    host = company.jpegger_service_ip
-    port = company.jpegger_service_port
-    
-    # SQL command that gets sent to jpegger service
-    command = "<FETCH><SQL>select * from images where event_code LIKE '#{event_code}'</SQL><ROWS>1000</ROWS></FETCH>"
+    command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port
@@ -259,7 +145,7 @@ class Image
   
   # Search jpegger images for this company
   def self.search(search_params, user)
-    company = Company.find(user.company_id)
+    company = user.company
     require 'socket'
     host = company.jpegger_service_ip
     port = company.jpegger_service_port
@@ -293,6 +179,8 @@ class Image
     elsif start_date.present? and end_date.present?
       command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
     end
+
+#    command = "<FETCH><SQL>select * from images_data where hidden != '1'</SQL><ROWS>1000</ROWS></FETCH>"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port
@@ -324,7 +212,7 @@ class Image
   
   # Search jpegger images for external user
   def self.external_user_search(search_params, user)
-    company = Company.find(user.company_id)
+    company = user.company
     require 'socket'
     host = company.jpegger_service_ip
     port = company.jpegger_service_port
@@ -338,16 +226,16 @@ class Image
     
     if ticket_number.present?
       if event_code.present?
-        command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND ticket_nbr='#{ticket_number}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+        command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND ticket_nbr='#{ticket_number}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
       else
-        command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND ticket_nbr='#{ticket_number}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+        command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND ticket_nbr='#{ticket_number}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
       end
     elsif event_code.present?
-      command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+      command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
     elsif start_date.present? and end_date.present?
-      command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
+      command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
     else
-      command = "<FETCH><SQL>select * from images where cust_name='#{user.customer_name}'</SQL><ROWS>1000</ROWS></FETCH>"
+      command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}'</SQL><ROWS>1000</ROWS></FETCH>"
     end
     
     # SSL TCP socket communication with jpegger
@@ -375,232 +263,6 @@ class Image
       end
     else
       return [] # No images found
-    end
-  end
-  
-  ######################################################
-  
-  # Get all jpegger images for this company with this ticket number
-  def self.api_find_all_by_ticket_number(ticket_number, company, yard_id)
-    require 'socket'
-    host = company.jpegger_service_ip
-    port = company.jpegger_service_port
-    
-    # SQL command that gets sent to jpegger service
-    command = "<FETCH><SQL>select * from images where ticket_nbr='#{ticket_number}' and yardid='#{yard_id}'</SQL><ROWS>1000</ROWS></FETCH>"
-    
-    # SSL TCP socket communication with jpegger
-    tcp_client = TCPSocket.new host, port
-    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
-    ssl_client.connect
-    ssl_client.sync_close = true
-    ssl_client.puts command
-#    response = ssl_client.sysread(200000) # Read up to 200,000 bytes
-
-    results = ""
-    while response = ssl_client.sysread(1000) # Read 1000 bytes at a time
-      results = results + response
-#      puts response
-      break if (response.include?("</RESULT>"))
-    end
-    
-    ssl_client.close
-    
-#    Rails.logger.debug "***********Image.api_find_all_by_ticket_number results #{results}"
-    data= Hash.from_xml(results.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
-    
-    unless data["RESULT"]["ROW"].blank?
-      if data["RESULT"]["ROW"].is_a? Hash # Only one result returned, so put it into an array
-        return [data["RESULT"]["ROW"]]
-      else
-        return data["RESULT"]["ROW"]
-      end
-    else
-      return [] # No images found
-    end
-    
-  end
-  
-  # Get all the data for the image with this capture sequence number
-  def self.api_find_by_capture_sequence_number(capture_sequence_number, company, yard_id)
-    require 'socket'
-    host = company.jpegger_service_ip
-    port = company.jpegger_service_port
-    
-    # SQL command that gets sent to jpegger service
-    command = "<FETCH><SQL>select * from images where capture_seq_nbr='#{capture_sequence_number}' and yardid='#{yard_id}'</SQL><ROWS>100</ROWS></FETCH>"
-    
-    # SSL TCP socket communication with jpegger
-    tcp_client = TCPSocket.new host, port
-    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
-    ssl_client.connect
-    ssl_client.sync_close = true
-    ssl_client.puts command
-    response = ssl_client.sysread(200000) # Read up to 200,000 bytes
-    ssl_client.close
-    
-    # Non-SSL TCP socket communication with jpegger
-#    socket = TCPSocket.open(host,port) # Connect to server
-#    socket.send(command, 0)
-#    response = socket.recvfrom(200000)
-#    socket.close
-    
-#    Rails.logger.debug "***********response: #{response}"
-#    data= Hash.from_xml(response.first) # Get first element of array response and convert xml response to a hash
-#    data= Hash.from_xml(response) # Convert xml response to a hash
-    data= Hash.from_xml(response.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
-    
-    unless data["RESULT"]["ROW"].blank?
-      return data["RESULT"]["ROW"] # SQL response comes back in <RESULT><ROW>
-    else
-      return nil # No image found
-    end
-
-  end
-  
-  # Get all jpegger images for this company with this receipt number
-  def self.api_find_all_by_receipt_number(receipt_number, company, yard_id)
-    require 'socket'
-    host = company.jpegger_service_ip
-    port = company.jpegger_service_port
-    
-    # SQL command that gets sent to jpegger service
-    command = "<FETCH><SQL>select * from images where receipt_nbr='#{receipt_number}' and yardid='#{yard_id}'</SQL><ROWS>100</ROWS></FETCH>"
-    
-    # SSL TCP socket communication with jpegger
-    tcp_client = TCPSocket.new host, port
-    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
-    ssl_client.connect
-    ssl_client.sync_close = true
-    ssl_client.puts command
-    response = ssl_client.sysread(200000) # Read up to 200,000 bytes
-    ssl_client.close
-    
-    Rails.logger.debug "*********** Image.api_find_all_by_receipt_number response: #{response}"
-#    data= Hash.from_xml(response) # Convert xml response to a hash
-    data= Hash.from_xml(response.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
-    
-    unless data["RESULT"]["ROW"].blank?
-      if data["RESULT"]["ROW"].is_a? Hash # Only one result returned, so put it into an array
-        return [data["RESULT"]["ROW"]]
-      else
-        return data["RESULT"]["ROW"]
-      end
-    else
-      return [] # No images found
-    end
-  end
-  
-  # Get first jpegger image for this company with this ticket number and event code
-  def self.api_find_first_by_ticket_number_and_event_code(ticket_number, company, yard_id, event_code)
-    require 'socket'
-    host = company.jpegger_service_ip
-    port = company.jpegger_service_port
-    
-    # SQL command that gets sent to jpegger service
-    command = "<FETCH><SQL>SELECT TOP 1 [images].* from images where ticket_nbr='#{ticket_number}' and event_code='#{event_code}' and yardid='#{yard_id}'</SQL><ROWS>100</ROWS></FETCH>"
-    
-    # SSL TCP socket communication with jpegger
-    tcp_client = TCPSocket.new host, port
-    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
-    ssl_client.connect
-    ssl_client.sync_close = true
-    ssl_client.puts command
-    response = ssl_client.sysread(200000) # Read up to 200,000 bytes
-    ssl_client.close
-    
-    Rails.logger.debug "***********Image.api_find_first_by_ticket_number_and_event_code response: #{response}"
-#    data= Hash.from_xml(response.first) # Convert xml response to a hash
-#    data= Hash.from_xml(response) # Convert xml response to a hash
-    data= Hash.from_xml(response.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
-    
-    unless data["RESULT"]["ROW"].blank?
-      return data["RESULT"]["ROW"]
-    else
-      return nil # No image found
-    end
-    
-  end
-  
-  # Get all jpegger images for this company with this service request number
-  def self.api_find_all_by_service_request_number(service_request_number, company, yard_id)
-    require 'socket'
-    host = company.jpegger_service_ip
-    port = company.jpegger_service_port
-    
-    # SQL command that gets sent to jpegger service
-    command = "<FETCH><SQL>select * from images where service_req_nbr='#{service_request_number}' and yardid='#{yard_id}'</SQL><ROWS>100</ROWS></FETCH>"
-    
-    # SSL TCP socket communication with jpegger
-    tcp_client = TCPSocket.new host, port
-    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
-    ssl_client.connect
-    ssl_client.sync_close = true
-    ssl_client.puts command
-    response = ssl_client.sysread(200000) # Read up to 200,000 bytes
-    ssl_client.close
-    
-    Rails.logger.debug "*********** Image.api_find_all_by_service_request_number response: #{response}"
-#    data= Hash.from_xml(response) # Convert xml response to a hash
-    data= Hash.from_xml(response.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
-    
-    unless data["RESULT"]["ROW"].blank?
-      if data["RESULT"]["ROW"].is_a? Hash # Only one result returned, so put it into an array
-        return [data["RESULT"]["ROW"]]
-      else
-        return data["RESULT"]["ROW"]
-      end
-    else
-      return [] # No images found
-    end
-  end
-  
-  # Get all jpegger images for this company with this ticket number
-  def self.api_find_all_by_container_number_and_service_request_number(container_number, service_request_number, company, yard_id)
-    require 'socket'
-    host = company.jpegger_service_ip
-    port = company.jpegger_service_port
-    
-    # SQL command that gets sent to jpegger service
-    command = "<FETCH><SQL>select * from images where container_nbr='#{container_number}' and service_req_nbr='#{service_request_number}' and yardid='#{yard_id}'</SQL><ROWS>1000</ROWS></FETCH>"
-    
-    # SSL TCP socket communication with jpegger
-    tcp_client = TCPSocket.new host, port
-    ssl_client = OpenSSL::SSL::SSLSocket.new tcp_client
-    ssl_client.connect
-    ssl_client.sync_close = true
-    ssl_client.puts command
-#    response = ssl_client.sysread(200000) # Read up to 200,000 bytes
-
-    results = ""
-    while response = ssl_client.sysread(1000) # Read 1000 bytes at a time
-      results = results + response
-#      puts response
-      break if (response.include?("</RESULT>"))
-    end
-    
-    ssl_client.close
-    
-#    Rails.logger.debug "***********Image.api_find_all_by_container_number_and_service_request_number results #{results}"
-    data= Hash.from_xml(results.gsub(/&/, '/&amp;')) # Convert xml response to a hash, escaping ampersands first
-    
-    unless data["RESULT"]["ROW"].blank?
-      if data["RESULT"]["ROW"].is_a? Hash # Only one result returned, so put it into an array
-        return [data["RESULT"]["ROW"]]
-      else
-        return data["RESULT"]["ROW"]
-      end
-    else
-      return [] # No images found
-    end
-    
-  end
-  
-  def self.jpeg_image_data_uri(jpeg_image)
-    unless jpeg_image.blank?
-      "data:image/jpg;base64, #{Base64.encode64(jpeg_image)}"
-    else
-      nil
     end
   end
   

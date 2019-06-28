@@ -1,27 +1,27 @@
-.container-fluid
-  = render 'shared/flash_messages'
-  .row
-    .mx-auto 
-      .card
-        .card-header
-          %h4.card-title.text-center 
-            %i.fa.fa-photo
-            = @image['CAPTURE_SEQ_NBR']
-            .pull-right= link_to "<i class='fa fa-close'></i>".html_safe, :back
-        -# %img.card-img-top{:alt => "Image File #{@image_file.id}", :src => @image_file.file.url(:thumb)}/
-        = image_tag(Image.jpeg_image_source(@image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: @image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
-        .card-body
-          %p.card-text
-            = @image['SYS_DATE_TIME']
-            %br
-            %strong Ticket
-            = link_to @image['TICKET_NBR'], root_path("search[ticket_number]" => @image['TICKET_NBR']) unless @image['TICKET_NBR'].blank?
-            %br
-            %strong Camera
-            = @image['CAMERA_NAME']
-            %br
-            %strong Event
-            = link_to @image['EVENT_CODE'], root_path("search[event_code]" => @image['EVENT_CODE']) unless @image['EVENT_CODE'].blank?
-            %br
-            %strong Customer
-            = link_to @image['CUST_NAME'], root_path("search[customer_name]" => @image['CUST_NAME']) unless @image['CUST_NAME'].blank?
+.content
+  .container-fluid
+    = render 'shared/flash_messages'
+    .row
+      .col-sm-12.col-md-12.mx-auto 
+        .card
+          .card-header
+            %h4.card-title.text-center 
+              %i.fa.fa-photo
+              = @image['CAPTURE_SEQ_NBR']
+              .pull-right= link_to "<i class='fa fa-close'></i>".html_safe, :back
+          = image_tag(Image.jpeg_image_source(@image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: @image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+          .card-body
+            %p.card-text
+              = @image['SYS_DATE_TIME']
+              %br
+              %strong Ticket
+              = link_to @image['TICKET_NBR'], root_path("search[ticket_number]" => @image['TICKET_NBR']) unless @image['TICKET_NBR'].blank?
+              %br
+              %strong Camera
+              = @image['CAMERA_NAME']
+              %br
+              %strong Event
+              = link_to @image['EVENT_CODE'], root_path("search[event_code]" => @image['EVENT_CODE']) unless @image['EVENT_CODE'].blank?
+              %br
+              %strong Customer
+              = link_to @image['CUST_NAME'], root_path("search[customer_name]" => @image['CUST_NAME']) unless @image['CUST_NAME'].blank?

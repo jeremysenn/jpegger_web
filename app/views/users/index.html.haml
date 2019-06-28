@@ -1,8 +1,8 @@
 .wrapper
   = render 'shared/admin_sidebar'
   .main-panel
-    =# render 'shared/admin_users_navbar'
-    .content
+    = render 'shared/admin_dashboard_navbar'
+    .content{style: 'margin-top: 0px;'}
       .container-fluid
         = render 'shared/flash_messages'
         .row
