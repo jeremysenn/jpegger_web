@@ -16,7 +16,8 @@
           .form-group
             = f.input :customer_name, label: 'Customer Name', :input_html => { :value => @customer_name}
           .form-group
-            = f.input :event_code, label: 'Event Code', :input_html => { :value => @event_code}
+            =# f.input :event_code, label: 'Event Code', :input_html => { :value => @event_code}
+            = f.input :event_code, collection: LookupDef.image_event_codes(current_user), as: :select, selected: @event_code, label: image_event_code_field_description
           .form-group
             =# f.input :file, as: :file, label: 'Choose Image', :input_html => {class: 'form-control-file'}
             = f.input :file, as: :file, input_html: {onchange: "PreviewImage();"}, label: "<i class='material-icons text-primary'>camera</i> Choose Image".html_safe, required: true
