@@ -14,14 +14,14 @@
             %p.card-text
               = @image['SYS_DATE_TIME']
               %br
-              %strong Ticket
+              %strong= image_ticket_nbr_field_description
               = link_to @image['TICKET_NBR'], root_path("search[ticket_number]" => @image['TICKET_NBR']) unless @image['TICKET_NBR'].blank?
               %br
               %strong Camera
               = @image['CAMERA_NAME']
               %br
-              %strong Event
+              %strong= image_event_code_field_description
               = link_to @image['EVENT_CODE'], root_path("search[event_code]" => @image['EVENT_CODE']) unless @image['EVENT_CODE'].blank?
               %br
-              %strong Customer
+              %strong= image_cust_name_field_description
               = link_to @image['CUST_NAME'], root_path("search[customer_name]" => @image['CUST_NAME']) unless @image['CUST_NAME'].blank?
