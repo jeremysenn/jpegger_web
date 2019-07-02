@@ -13,7 +13,7 @@
           .card
             = image_tag(Image.preview_source(image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
             .card-body
-              %h5.card-title= image['CAPTURE_SEQ_NBR']
+              %h5.card-title= link_to image['CUST_NAME'], images_path("search[customer_name]" => image['CUST_NAME']) 
               %p.card-text
                 = image['SYS_DATE_TIME']
                 %br
@@ -26,10 +26,7 @@
                 %strong Event
                 = link_to image['EVENT_CODE'], images_path("search[event_code]" => image['EVENT_CODE']) unless image['EVENT_CODE'].blank?
                 %br
-                %strong Customer
-                - unless image['CUST_NAME'].blank?
-                  %br
-                  = link_to image['CUST_NAME'], images_path("search[customer_name]" => image['CUST_NAME']) 
+                = image['CAPTURE_SEQ_NBR']
 
               %a.btn.btn-info{href: image_path(image['CAPTURE_SEQ_NBR'])} 
                 %i.fa.fa-image
