@@ -10,7 +10,6 @@
           %th= image_ticket_nbr_field_description
           %th Camera Name
           %th= image_event_code_field_description
-          %th= image_cust_name_field_description
           %th= image_capture_seq_nbr_field_description
           %th
         %tbody
@@ -20,7 +19,6 @@
               %td= link_to image['TICKET_NBR'], root_path("search[ticket_number]" => image['TICKET_NBR']) unless image['TICKET_NBR'].blank?
               %td= image['CAMERA_NAME']
               %td= link_to image['EVENT_CODE'], root_path("search[event_code]" => image['EVENT_CODE']) unless image['EVENT_CODE'].blank?
-              %td= link_to image['CUST_NAME'], root_path("search[customer_name]" => image['CUST_NAME']) unless image['CUST_NAME'].blank?
               %td= image['CAPTURE_SEQ_NBR']
               %td
                 %a.btn.btn-sm.btn-info{href: image_path(image['CAPTURE_SEQ_NBR'])}

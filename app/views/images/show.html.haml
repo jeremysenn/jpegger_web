@@ -22,6 +22,7 @@
               %br
               %strong= image_event_code_field_description
               = link_to @image['EVENT_CODE'], root_path("search[event_code]" => @image['EVENT_CODE']) unless @image['EVENT_CODE'].blank?
-              %br
-              %strong= image_cust_name_field_description
-              = link_to @image['CUST_NAME'], root_path("search[customer_name]" => @image['CUST_NAME']) unless @image['CUST_NAME'].blank?
+              - unless current_user.external?
+                %br
+                %strong= image_cust_name_field_description
+                = link_to @image['CUST_NAME'], root_path("search[customer_name]" => @image['CUST_NAME']) unless @image['CUST_NAME'].blank?
