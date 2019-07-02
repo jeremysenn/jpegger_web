@@ -11,23 +11,23 @@
       %table.table.table-hover
         %thead.text-warning
           %th Date
-          %th= image_capture_seq_nbr_field_description
+          %th= image_cust_name_field_description
           %th= image_ticket_nbr_field_description
           %th Camera Name
           %th= image_event_code_field_description
-          %th= image_cust_name_field_description
           %th Hidden
+          %th= image_capture_seq_nbr_field_description
           %td
         %tbody
           - @images.each do |image|
             %tr
               %td= image['SYS_DATE_TIME']
-              %td= image['CAPTURE_SEQ_NBR']
+              %td= link_to image['CUST_NAME'], root_path("search[customer_name]" => image['CUST_NAME']) unless image['CUST_NAME'].blank?
               %td= link_to image['TICKET_NBR'], root_path("search[ticket_number]" => image['TICKET_NBR']) unless image['TICKET_NBR'].blank?
               %td= image['CAMERA_NAME']
               %td= link_to image['EVENT_CODE'], root_path("search[event_code]" => image['EVENT_CODE']) unless image['EVENT_CODE'].blank?
-              %td= link_to image['CUST_NAME'], root_path("search[customer_name]" => image['CUST_NAME']) unless image['CUST_NAME'].blank?
               %td= "#{(image['HIDDEN'].blank? or image['HIDDEN'] == '0') ? 'No' : 'Yes'}"
+              %td= image['CAPTURE_SEQ_NBR']
               %td
                 -#
                   %button.btn.btn-sm.btn-warning{"data-target" => "#image_#{image['CAPTURE_SEQ_NBR']}_modal", "data-toggle" => "modal", :type => "button"}
