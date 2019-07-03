@@ -5,14 +5,23 @@ class ImageBlobWorker
     image_file = ImageFile.find(image_file_id)
     image_file.update_attribute(:process, true)
     image_file.file.recreate_versions!
-    unless image_file.event_code_id.blank?
-      event_code = EventCode.find(image_file.event_code_id)
-      event_code_name = event_code.name
-      leads_online_string = "#{event_code.camera_class}#{event_code.camera_position}"
+#    unless image_file.event_code_id.blank?
+#      event_code = EventCode.find(image_file.event_code_id)
+#      event_code_name = event_code.name
+#      leads_online_string = "#{event_code.camera_class}#{event_code.camera_position}"
+#    else
+#      event_code_name = image_file.event_code
+#      leads_online_string = ""
+#    end
+    event_code_name = image_file.event_code
+    unless image_file.camera_class.blank? and image_file.camera_position.blank?
+      leads_online_string = image_file.camera_class + image_file.camera_position
+      leads_online_store_id = image_file.user.company.leads_online_store_id
     else
-      event_code_name = image_file.event_code
       leads_online_string = ""
+      leads_online_store_id = ""
     end
+    
     
 
     # Create blob
@@ -32,7 +41,7 @@ class ImageBlobWorker
                 <TICKET_NBR>#{image_file.ticket_number}</TICKET_NBR>
                 <EVENT_CODE>#{event_code_name}</EVENT_CODE>
                 <LEADSONLINE>#{leads_online_string}</LEADSONLINE>
-                
+                <LOL_STORE_ID>#{leads_online_store_id}</LOL_STORE_ID>
                 <FILE_NAME>#{File.basename(image_file.file_url)}</FILE_NAME>
                 <BRANCH_CODE>#{image_file.branch_code}</BRANCH_CODE>
                 <YARDID>#{image_file.yard_id}</YARDID>
