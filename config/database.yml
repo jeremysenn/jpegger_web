@@ -16,5 +16,6 @@ test:
 
 production:
   <<: *default
-  database: db/development.sqlite3_production
+#  database: db/development.sqlite3_production
+  database: db/development.sqlite3
 
