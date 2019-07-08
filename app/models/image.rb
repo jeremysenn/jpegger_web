@@ -31,7 +31,7 @@ class Image
   def self.jpeg_image_source(capture_sequence_number, company_id)
     company = Company.find(company_id)
     require "open-uri"
-    url = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?image=y&table=images&capture_seq_nbr=#{capture_sequence_number}"
+    url = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?image=y&table=images&capture_seq_nbr=#{capture_sequence_number}&yardid=#{company.yard_id}"
     image = open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
     unless image.blank?
       "data:image/jpg;base64, #{Base64.encode64(image)}"
