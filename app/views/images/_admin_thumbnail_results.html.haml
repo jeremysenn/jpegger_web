@@ -13,7 +13,7 @@
           .card
             = image_tag(Image.preview_source(image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
             .card-body
-              %h5.card-title= link_to image['CUST_NAME'], images_path("search[customer_name]" => image['CUST_NAME']) 
+              %h5.card-title= link_to image['CUST_NAME'], images_path("search[customer_name]" => image['CUST_NAME']) unless image['CUST_NAME'].blank?
               %p.card-text
                 = image['SYS_DATE_TIME']
                 %br
