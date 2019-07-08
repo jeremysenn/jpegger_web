@@ -4,14 +4,14 @@ class Image
   def self.preview(capture_sequence_number, company_id)
     company = Company.find(company_id)
     require "open-uri"
-    url = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?preview=y&table=images&capture_seq_nbr=#{capture_sequence_number}"
+    url = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?preview=y&table=images&capture_seq_nbr=#{capture_sequence_number}&yardid=#{company.yard_id}"
     return open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
   end
   
   def self.preview_source(capture_sequence_number, company_id)
     company = Company.find(company_id)
     require "open-uri"
-    url = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?preview=y&table=images&capture_seq_nbr=#{capture_sequence_number}"
+    url = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?preview=y&table=images&capture_seq_nbr=#{capture_sequence_number}&yardid=#{company.yard_id}"
     image =  open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
     unless image.blank?
       "data:image/jpg;base64, #{Base64.encode64(image)}"
@@ -24,7 +24,7 @@ class Image
   def self.jpeg_image(capture_sequence_number, company_id)
     company = Company.find(company_id)
     require "open-uri"
-    url = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?image=y&table=images&capture_seq_nbr=#{capture_sequence_number}"
+    url = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?image=y&table=images&capture_seq_nbr=#{capture_sequence_number}&yardid=#{company.yard_id}"
     return open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
   end
   
@@ -75,7 +75,7 @@ class Image
     
     # SQL command that gets sent to jpegger service
 #    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME >= '#{start_date}' AND SYS_DATE_TIME <= '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
-    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
+    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999' AND yardid='#{company.yard_id}'</SQL><ROWS>1000</ROWS></FETCH>"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port
@@ -113,7 +113,7 @@ class Image
     
     # SQL command that gets sent to jpegger service
 #    command = "<FETCH><SQL>select * from images where SYS_DATE_TIME >= '#{start_date}' AND SYS_DATE_TIME <= '#{end_date}'</SQL><ROWS>1000</ROWS></FETCH>"
-    command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
+    command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999' AND yardid='#{company.yard_id}'</SQL><ROWS>1000</ROWS></FETCH>"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port
@@ -160,24 +160,24 @@ class Image
     
     if ticket_number.present?
       if customer_name.present? and event_code.present?
-        command = "<FETCH><SQL>select * from images where ticket_nbr='#{ticket_number}' AND cust_name LIKE '#{customer_name}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+        command = "<FETCH><SQL>select * from images where ticket_nbr='#{ticket_number}' AND cust_name LIKE '#{customer_name}' AND event_code LIKE '#{event_code}' AND yardid='#{company.yard_id}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
       elsif customer_name.present?
-        command = "<FETCH><SQL>select * from images where ticket_nbr='#{ticket_number}' AND cust_name LIKE '#{customer_name}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+        command = "<FETCH><SQL>select * from images where ticket_nbr='#{ticket_number}' AND cust_name LIKE '#{customer_name}' AND yardid='#{company.yard_id}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
       elsif event_code.present?
-        command = "<FETCH><SQL>select * from images where ticket_nbr='#{ticket_number}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+        command = "<FETCH><SQL>select * from images where ticket_nbr='#{ticket_number}' AND event_code LIKE '#{event_code}' AND yardid='#{company.yard_id}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
       else
-        command = "<FETCH><SQL>select * from images where ticket_nbr='#{ticket_number}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+        command = "<FETCH><SQL>select * from images where ticket_nbr='#{ticket_number}' AND yardid='#{company.yard_id}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
       end
     elsif customer_name.present?
       if event_code.present?
-        command = "<FETCH><SQL>select * from images where cust_name LIKE '#{customer_name}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+        command = "<FETCH><SQL>select * from images where cust_name LIKE '#{customer_name}' AND event_code LIKE '#{event_code}' AND yardid='#{company.yard_id}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
       else
-        command = "<FETCH><SQL>select * from images where cust_name LIKE '#{customer_name}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+        command = "<FETCH><SQL>select * from images where cust_name LIKE '#{customer_name}' AND yardid='#{company.yard_id}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
       end
     elsif event_code.present?
-      command = "<FETCH><SQL>select * from images where event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+      command = "<FETCH><SQL>select * from images where event_code LIKE '#{event_code}' AND yardid='#{company.yard_id}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
     elsif start_date.present? and end_date.present?
-      command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
+      command = "<FETCH><SQL>select * from images where SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999' AND yardid='#{company.yard_id}'</SQL><ROWS>1000</ROWS></FETCH>"
     end
 
 #    command = "<FETCH><SQL>select * from images_data where hidden != '1'</SQL><ROWS>1000</ROWS></FETCH>"
@@ -226,16 +226,16 @@ class Image
     
     if ticket_number.present?
       if event_code.present?
-        command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND ticket_nbr='#{ticket_number}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+        command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND ticket_nbr='#{ticket_number}' AND event_code LIKE '#{event_code}' AND yardid='#{company.yard_id}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
       else
-        command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND ticket_nbr='#{ticket_number}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+        command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND ticket_nbr='#{ticket_number}' AND yardid='#{company.yard_id}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
       end
     elsif event_code.present?
-      command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND event_code LIKE '#{event_code}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
+      command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND event_code LIKE '#{event_code}' AND yardid='#{company.yard_id}' " + date_search_string + "</SQL><ROWS>1000</ROWS></FETCH>"
     elsif start_date.present? and end_date.present?
-      command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'</SQL><ROWS>1000</ROWS></FETCH>"
+      command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999' AND yardid='#{company.yard_id}'</SQL><ROWS>1000</ROWS></FETCH>"
     else
-      command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}'</SQL><ROWS>1000</ROWS></FETCH>"
+      command = "<FETCH><SQL>select * from images where hidden IS NULL AND cust_name='#{user.customer_name}' AND yardid='#{company.yard_id}'</SQL><ROWS>1000</ROWS></FETCH>"
     end
     
     # SSL TCP socket communication with jpegger
@@ -266,9 +266,9 @@ class Image
     end
   end
   
-  def self.latitude_and_longitude(company, capture_sequence_number, yard_id)
+  def self.latitude_and_longitude(company, capture_sequence_number)
     require "open-uri"
-    url = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?image=y&table=images&capture_seq_nbr=#{capture_sequence_number}&yardid=#{yard_id}"
+    url = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?image=y&table=images&capture_seq_nbr=#{capture_sequence_number}&yardid=#{company.yard_id}"
     
     begin
       data = Exif::Data.new(open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))

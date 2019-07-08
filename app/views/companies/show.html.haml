@@ -15,6 +15,9 @@
                     %i.fa.fa-pencil-square-o
             .card-body
               %p
+                %strong ID:
+                = @company.yard_id.blank? ? 'None' : @company.yard_id
+                %br
                 %strong Phone:
                 = @company.phone
                 %br
