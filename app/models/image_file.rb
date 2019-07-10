@@ -7,9 +7,9 @@ class ImageFile < ActiveRecord::Base
   
   after_commit :sidekiq_blob_and_image_creation, :on => :create # To circumvent "Can't find ModelName with ID=12345" Sidekiq error, use after_commit
   
-  validates :ticket_number, presence: true
+#  validates :ticket_number, presence: true
   validates :file, presence: true
-  validates :event_code, presence: true
+#  validates :event_code, presence: true
   
   attr_accessor :process # Virtual attribute to determine if ready to process versions
   attr_accessor :leads_online # Virtual attribute to determine if saving leads online information
