@@ -9,8 +9,8 @@
       .modal-body
         = simple_form_for ImageFile.new do |f|
           = f.error_notification
-          .form-group
-            = f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id}
+          = f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id}
+          = f.input :yard_id, :as => :hidden, :input_html => { :value => current_user.company.yard_id}
           .form-group
             = f.input :ticket_number, label: 'Ticket Number', :input_html => { :value => @ticket_number}, required: true
           .form-group
