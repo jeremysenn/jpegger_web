@@ -7,6 +7,7 @@ class WelcomeController < ApplicationController
     @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
     unless current_user.blank? or current_user.super?
       unless params[:search].blank?
+        @search_params = params[:search]
         @customer_name = params[:search][:customer_name]
         @event_code = params[:search][:event_code]
         @ticket_number = params[:search][:ticket_number]
