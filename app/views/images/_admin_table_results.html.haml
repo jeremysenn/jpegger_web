@@ -37,12 +37,12 @@
               - unless browser.device.mobile?
                 %td= image['CAPTURE_SEQ_NBR']
               %td
-                -#
-                  %button.btn.btn-sm.btn-warning{"data-target" => "#image_#{image['CAPTURE_SEQ_NBR']}_modal", "data-toggle" => "modal", :type => "button"}
+                - unless browser.device.mobile?
+                  %a.btn.btn-sm.btn-info{href: image_path(image['CAPTURE_SEQ_NBR'])}
+                    Show
+                - else
+                  %a{href: image_path(image['CAPTURE_SEQ_NBR'])}
                     %i.fa.fa-photo
-                %a.btn.btn-sm.btn-info{href: image_path(image['CAPTURE_SEQ_NBR'])}
-                  Show
-                  -# %i.fa.fa-photo
 
             =# render partial: 'images/modal', locals: {image: image}
     - else
