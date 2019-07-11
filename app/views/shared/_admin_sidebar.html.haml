@@ -12,14 +12,15 @@
           %p Dashboard
       - unless images_table.blank?
         %li.nav-item{:class => (params[:controller] == 'images') ?  "active" : ""}
-          %a.nav-link{:href => images_path}
+          %a.nav-link{:href => images_path(request.params)}
             %i.fa.fa-image
             %p Images
-      - unless shipments_table.blank?
-        %li.nav-item{:class => (params[:controller] == 'shipments') ?  "active" : ""}
-          %a.nav-link{:href => '#'}
-            %i.fa.fa-truck
-            %p Shipments
+      -#
+        - unless shipments_table.blank?
+          %li.nav-item{:class => (params[:controller] == 'shipments') ?  "active" : ""}
+            %a.nav-link{:href => '#'}
+              %i.fa.fa-truck
+              %p Shipments
       %li.nav-item{:class => (params[:controller] == 'users') ?  "active" : ""}
         %a.nav-link{:href => users_admin_index_path}
           %i.material-icons person
