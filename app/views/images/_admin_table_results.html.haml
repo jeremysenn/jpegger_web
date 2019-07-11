@@ -25,11 +25,7 @@
         %tbody
           - @images.each do |image|
             %tr
-              %td
-                - unless browser.device.mobile?
-                  = image['SYS_DATE_TIME']
-                - else
-                  = image['SYS_DATE_TIME'].to_date.strftime("%-m/%-d/%y")
+              %td= image['SYS_DATE_TIME']
               %td= link_to image['CUST_NAME'], root_path("search[customer_name]" => image['CUST_NAME']) unless image['CUST_NAME'].blank?
               %td= link_to image['TICKET_NBR'], root_path("search[ticket_number]" => image['TICKET_NBR']) unless image['TICKET_NBR'].blank?
               - unless browser.device.mobile?
@@ -45,7 +41,8 @@
                   %button.btn.btn-sm.btn-warning{"data-target" => "#image_#{image['CAPTURE_SEQ_NBR']}_modal", "data-toggle" => "modal", :type => "button"}
                     %i.fa.fa-photo
                 %a.btn.btn-sm.btn-info{href: image_path(image['CAPTURE_SEQ_NBR'])}
-                  %i.fa.fa-photo
+                  Show
+                  -# %i.fa.fa-photo
 
             =# render partial: 'images/modal', locals: {image: image}
     - else
