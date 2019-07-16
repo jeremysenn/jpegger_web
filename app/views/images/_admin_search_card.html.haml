@@ -5,26 +5,28 @@
     %p.card-category Image Search
     %h3.card-title= "#{pluralize(number_with_delimiter(@all_images.count), 'image')} found."
   .card-body
-    = form_tag url, :method => 'get', :class => "navbar-form #{browser.device.mobile? ? '' : 'form-inline'}" do
-      .input-group
-        = text_field_tag "search[ticket_number]", nil, :placeholder => image_ticket_nbr_field_description, value: @ticket_number, class: "form-control"
-      &nbsp;
-      .input-group
-        = text_field_tag "search[customer_name]", nil, :placeholder => image_cust_name_field_description, value: @customer_name, class: "form-control"
-      &nbsp;
-      .input-group
-        =# text_field_tag "search[event_code]", nil, :placeholder => image_event_code_field_description, value: @event_code, class: "form-control"
-        = select_tag "search[event_code]", options_for_select(LookupDef.image_event_codes(current_user), @event_code), prompt: image_event_code_field_description, class: "form-control"
-      &nbsp;
-      .input-group
-        = text_field_tag "search[start_date]", nil, :placeholder => "Start Date", value: @start_date, class: "form-control", style: "z-index: 2;", readonly: true
-      &nbsp;
-      .input-group
-        = text_field_tag "search[end_date]", nil, :placeholder => "End Date", value: @end_date, class: "form-control", style: "z-index: 2;", readonly: true
-      &nbsp;
-      .input-group
-        = button_tag(:type => 'submit', :class => 'btn btn-info btn-round btn-just-icon') do
-          %i.material-icons search
+    = form_tag url, :method => 'get' do
+      .row
+        .col-sm-12.col-md-4
+          .form-group
+            = text_field_tag "search[ticket_number]", nil, :placeholder => image_ticket_nbr_field_description, value: @ticket_number, class: "form-control"
+          .form-group
+            = text_field_tag "search[customer_name]", nil, :placeholder => image_cust_name_field_description, value: @customer_name, class: "form-control"
+        .col-sm-12.col-md-4
+          .form-group
+            %label{:for => "search[start_date]"} Start
+            = text_field_tag "search[start_date]", nil, type: 'date', :placeholder => "yyyy-mm-dd", value: @start_date, class: "form-control"
+          .form-group
+            = text_field_tag "search[end_date]", nil, type: 'date', :placeholder => "yyyy-mm-dd", value: @end_date, class: "form-control"
+        .col-sm-12.col-md-4
+          .form-group
+            =# text_field_tag "search[event_code]", nil, :placeholder => image_event_code_field_description, value: @event_code, class: "form-control"
+            = select_tag "search[event_code]", options_for_select(LookupDef.image_event_codes(current_user), @event_code), prompt: image_event_code_field_description, class: "form-control"
+          .form-group
+            .pull-right
+              = button_tag(:type => 'submit', :class => 'btn btn-info') do
+                %i.material-icons search
+                Search
   -#
     .card-footer
       .stats

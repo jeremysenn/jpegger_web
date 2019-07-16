@@ -17,9 +17,9 @@ class Company < ApplicationRecord
     self.jpegger_service_ip ||= "#{ENV['JPEGGER_SERVICE']}"
   end
   
-  # Set the default Jpegger service port to 3332
+  # Set the default Jpegger service port to 3334
   def default_jpegger_service_port
-    self.jpegger_service_port ||= "3332"
+    self.jpegger_service_port ||= "3334"
   end
   
   #############################
