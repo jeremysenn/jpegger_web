@@ -25,3 +25,12 @@
         %a.nav-link{:href => users_admin_index_path}
           %i.material-icons person
           %p Users
+      - if browser.device.mobile?
+        %li.nav-item
+          %a.nav-link{:href => company_path(current_user.company)}
+            %i.fa.fa-building
+            %p= current_user.company.name
+        %li.nav-item
+          %a.nav-link{:href => destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure you want to log out?' }}
+            %i.fa.fa-sign-out
+            %p Sign out
