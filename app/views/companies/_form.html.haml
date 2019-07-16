@@ -11,5 +11,16 @@
         = f.input :jpegger_service_ip, label: 'JPEGger Service IP'
       .col-xs-12.col-sm-6
         = f.input :jpegger_service_port, label: 'JPEGger Service Port'
+    .row
+      .col-xs-12.col-sm-6
+        .form-group
+          .form-check
+            %label.form-check-label
+              = f.check_box :leads_online, class: 'form-check-input'
+              Leads Online
+              %span.form-check-sign
+                %span.check
+      .col-xs-12.col-sm-6
+        = f.input :leads_online_store_id, label: 'Leads Online Store ID'
     %button.btn.btn-primary{:type => "submit", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Save"}} 
       Save

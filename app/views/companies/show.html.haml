@@ -26,6 +26,10 @@
                 %br
                 %strong JPEGger Service Port:
                 = @company.jpegger_service_port
+                - if @company.leads_online
+                  %br
+                  %strong Leads Online
+                  = @company.leads_online_store_id
               %p
                 %strong= image_event_code_field_description
                 - unless @image_event_codes.blank?

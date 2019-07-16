@@ -7,6 +7,8 @@ class User < ApplicationRecord
   
   belongs_to :company
   
+  accepts_nested_attributes_for :company
+  
   #############################
   #     Instance Methods      #
   #############################
@@ -15,11 +17,7 @@ class User < ApplicationRecord
     unless self.first_name.blank? and self.last_name.blank?
       "#{first_name} #{last_name}"
     else
-      unless customer.blank?
-        customer.full_name
-      else
-        "First Last"
-      end
+      "First Last"
     end
   end
   
@@ -35,8 +33,16 @@ class User < ApplicationRecord
     role == "super"
   end
   
+  def domain_from_email
+    self.email[/(?<=@)[^.]+/]
+  end
+  
   #############################
   #     Class Methods         #
   #############################
+  
+  def self.domain_from_email(email_address)
+    email_address[/(?<=@)[^.]+/]
+  end
   
 end
