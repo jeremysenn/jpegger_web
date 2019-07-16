@@ -49,7 +49,8 @@ var seq2 = 0,
   delays2 = 80,
   durations2 = 500;
 
-$(document).ready(function() {
+//$(document).ready(function() {
+$(document).on('ready turbolinks:load', function() {
 
   $('body').bootstrapMaterialDesign();
 
