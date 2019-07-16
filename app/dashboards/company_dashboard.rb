@@ -17,6 +17,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     yard_id: Field::String,
+    leads_online: Field::Boolean,
+    leads_online_store_id: Field::String,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -43,6 +45,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     :created_at,
     :updated_at,
     :yard_id,
+    :leads_online,
+    :leads_online_store_id,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -55,6 +59,8 @@ class CompanyDashboard < Administrate::BaseDashboard
     :jpegger_service_ip,
     :jpegger_service_port,
     :yard_id,
+    :leads_online,
+    :leads_online_store_id,
   ].freeze
 
   # Overwrite this method to customize how companies are displayed
