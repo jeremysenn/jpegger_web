@@ -17,6 +17,7 @@
             %label{:for => "search[start_date]"} Start
             = text_field_tag "search[start_date]", nil, type: 'date', :placeholder => "yyyy-mm-dd", value: @start_date, class: "form-control"
           .form-group
+            %label{:for => "search[end_date]"} End
             = text_field_tag "search[end_date]", nil, type: 'date', :placeholder => "yyyy-mm-dd", value: @end_date, class: "form-control"
         .col-sm-12.col-md-4
           .form-group
