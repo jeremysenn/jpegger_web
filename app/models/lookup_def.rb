@@ -7,7 +7,7 @@ class LookupDef
     port = company.jpegger_service_port
     
     # SQL command that gets sent to jpegger service
-    command = "<FETCH><SQL>select * from LookupDefs where TABLENAME='images'</SQL><ROWS>1000</ROWS></FETCH>"
+    command = "<FETCH><SQL>select * from LookupDefs where TABLENAME='images_data'</SQL><ROWS>1000</ROWS></FETCH>"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port
