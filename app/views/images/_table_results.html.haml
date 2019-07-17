@@ -2,9 +2,10 @@
   .card-header.card-header-warning
     %h4.card-title 
       Images
-      .pull-right
-        %a.btn.btn-sm.btn-primary{href: '#new_image', "data-target" => "#new_image", "data-toggle" => "modal"}
-          %i.fa.fa-plus
+      - unless current_user.external?
+        .pull-right
+          %a.btn.btn-sm.btn-primary{href: '#new_image', "data-target" => "#new_image", "data-toggle" => "modal"}
+            %i.fa.fa-plus
   = render 'image_files/new_modal'
   .card-body.table-responsive
     - unless @images.blank?
@@ -12,17 +13,19 @@
         %thead.text-warning
           %th
           %th Date
-          %th= image_cust_name_field_description
+          - unless current_user.external?
+            %th= image_cust_name_field_description
           %th= image_ticket_nbr_field_description
-          - unless browser.device.mobile?
+          - unless browser.device.mobile? or current_user.external?
             %th Camera Name
           - unless browser.device.mobile?
             %th= image_event_code_field_description
-          - unless browser.device.mobile?
+          - unless browser.device.mobile? or current_user.external?
             %th Hidden
           - unless browser.device.mobile?
             %th= image_capture_seq_nbr_field_description
-          %th
+          - unless current_user.external?
+            %th
         %tbody{id: 'image_search_results'}
           - @images.each do |image|
             %tr
@@ -38,19 +41,21 @@
                     %a{href: image_path(image['CAPTURE_SEQ_NBR'])}
                       %i.fa.fa-photo
               %td= image['SYS_DATE_TIME']
-              %td= link_to image['CUST_NAME'], root_path("search[customer_name]" => image['CUST_NAME'], :show_thumbnails => @show_thumbnails) unless image['CUST_NAME'].blank?
+              - unless current_user.external?
+                %td= link_to image['CUST_NAME'], root_path("search[customer_name]" => image['CUST_NAME'], :show_thumbnails => @show_thumbnails) unless image['CUST_NAME'].blank?
               %td= link_to image['TICKET_NBR'], root_path("search[ticket_number]" => image['TICKET_NBR'], :show_thumbnails => @show_thumbnails) unless image['TICKET_NBR'].blank?
-              - unless browser.device.mobile?
+              - unless browser.device.mobile? or current_user.external?
                 %td= image['CAMERA_NAME']
               - unless browser.device.mobile?
                 %td= link_to image['EVENT_CODE'], root_path("search[event_code]" => image['EVENT_CODE'], :show_thumbnails => @show_thumbnails) unless image['EVENT_CODE'].blank?
-              - unless browser.device.mobile?
+              - unless browser.device.mobile? or current_user.external?
                 %td= "#{(image['HIDDEN'].blank? or image['HIDDEN'] == '0') ? 'No' : 'Yes'}"
               - unless browser.device.mobile?
                 %td= image['CAPTURE_SEQ_NBR']
-              %td
-                %a.btn.btn-sm.btn-primary.new_line_item_picture_button{href: '#new_image', "data-target" => "#new_image", "data-toggle" => "modal", "data-ticket-number" => image['TICKET_NBR'], "data-customer-name" => image['CUST_NAME'], "data-event-code" => image['EVENT_CODE']}
-                  %i.fa.fa-plus
+              - unless current_user.external?
+                %td
+                  %a.btn.btn-sm.btn-primary.new_line_item_picture_button{href: '#new_image', "data-target" => "#new_image", "data-toggle" => "modal", "data-ticket-number" => image['TICKET_NBR'], "data-customer-name" => image['CUST_NAME'], "data-event-code" => image['EVENT_CODE']}
+                    %i.fa.fa-plus
                 
 
             =# render partial: 'images/modal', locals: {image: image}
