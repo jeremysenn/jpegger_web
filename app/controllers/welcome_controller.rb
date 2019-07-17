@@ -5,6 +5,7 @@ class WelcomeController < ApplicationController
       
   def dashboard
     @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
+    @show_thumbnails = params[:show_thumbnails]
     unless current_user.blank? or current_user.super?
       unless params[:search].blank?
         @search_params = params[:search]

@@ -6,28 +6,42 @@
     %h3.card-title= "#{pluralize(number_with_delimiter(@all_images.count), 'image')} found."
   .card-body
     = form_tag url, :method => 'get' do
-      .row
-        .col-sm-12.col-md-4
-          .form-group
-            = text_field_tag "search[ticket_number]", nil, :placeholder => image_ticket_nbr_field_description, value: @ticket_number, class: "form-control"
-          .form-group
-            = text_field_tag "search[customer_name]", nil, :placeholder => image_cust_name_field_description, value: @customer_name, class: "form-control"
-        .col-sm-12.col-md-4
+      %ul.nav.justify-content-center
+        %li.nav-item
           .form-group
             %label{:for => "search[start_date]"} Start
             = text_field_tag "search[start_date]", nil, type: 'date', :placeholder => "yyyy-mm-dd", value: @start_date, class: "form-control"
+        %li.nav-item
+          &nbsp;
+        %li.nav-item
           .form-group
             %label{:for => "search[end_date]"} End
             = text_field_tag "search[end_date]", nil, type: 'date', :placeholder => "yyyy-mm-dd", value: @end_date, class: "form-control"
-        .col-sm-12.col-md-4
+      .row
+        .col-sm-12.col-md-3
+          .form-group
+            = text_field_tag "search[ticket_number]", nil, :placeholder => image_ticket_nbr_field_description, value: @ticket_number, class: "form-control"
+        .col-sm-12.col-md-3
+          .form-group
+            = text_field_tag "search[customer_name]", nil, :placeholder => image_cust_name_field_description, value: @customer_name, class: "form-control"
+        .col-sm-12.col-md-3
           .form-group
             =# text_field_tag "search[event_code]", nil, :placeholder => image_event_code_field_description, value: @event_code, class: "form-control"
             = select_tag "search[event_code]", options_for_select(LookupDef.image_event_codes(current_user), @event_code), prompt: image_event_code_field_description, class: "form-control"
+        .col-sm-12.col-md-3
+          .form-check
+            %label.form-check-label
+              %input.form-check-input{id: 'show_thumbnails', name: 'show_thumbnails', :type => "checkbox", :value => 1, checked: @show_thumbnails}/
+              =# check_box_tag :show_thumbnails, class: 'form-check-input', type: 'checkbox'
+              Thumbnails
+              %span.form-check-sign
+                %span.check
           .form-group
-            .pull-right
-              = button_tag(:type => 'submit', :class => 'btn btn-info') do
-                %i.material-icons search
-                Search
+            = button_tag(:type => 'submit', :class => 'btn btn-info') do
+              %i.material-icons search
+              Search
+          
+
   -#
     .card-footer
       .stats
