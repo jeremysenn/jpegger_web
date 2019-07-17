@@ -7,8 +7,8 @@
         - unless browser.device.mobile?
           %ul.nav.justify-content-center
             %li.nav-item
-              %a.nav-link{:href => "https://www.tranact.com", target: '_blank;'}
-                %span.text-danger JPEGger Web Powered by
+              %h3
+                JPEGger Web Powered by
                 = image_tag('tranact_logo_small.png')
 
         = render 'shared/flash_messages'

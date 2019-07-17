@@ -156,7 +156,7 @@ class Image
     start_date = search_params[:start_date]
     end_date = search_params[:end_date]
     
-    date_search_string = (start_date.present? and end_date.present?) ? "AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'" : ''
+    date_search_string = (start_date.present? and end_date.present?) ? "AND SYS_DATE_TIME BETWEEN '#{start_date}' AND '#{end_date} 23:59:59.999'" : ""
     
     if ticket_number.present?
       if customer_name.present? and event_code.present?
@@ -181,6 +181,8 @@ class Image
     end
 
 #    command = "<FETCH><SQL>select * from images_data where hidden != '1'</SQL><ROWS>1000</ROWS></FETCH>"
+
+#    Rails.logger.debug "********************Image.search command: #{command}"
     
     # SSL TCP socket communication with jpegger
     tcp_client = TCPSocket.new host, port

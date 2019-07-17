@@ -14,10 +14,16 @@ class WelcomeController < ApplicationController
         @ticket_number = params[:search][:ticket_number]
         @start_date = params[:search][:start_date]
         @end_date = params[:search][:end_date]
-        if current_user.admin?
-          @all_images = Image.search(params[:search], current_user).reverse
-        elsif current_user.external?
-          @all_images = Image.external_user_search(params[:search], current_user).reverse
+        if @ticket_number.blank? and @customer_name.blank? and @event_code.blank? and (@start_date.blank? or @end_date.blank?)
+          @all_images = []
+          flash[:alert] = "Please enter a search criteria or date range."
+          redirect_to root_path
+        else
+          if current_user.admin?
+            @all_images = Image.search(params[:search], current_user).reverse
+          elsif current_user.external?
+            @all_images = Image.external_user_search(params[:search], current_user).reverse
+          end
         end
       else
         @start_date = Date.today
