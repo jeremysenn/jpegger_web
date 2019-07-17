@@ -17,7 +17,8 @@
         .row
           .col-lg-12.col-md-12.col-sm-12
             - if current_user.admin?
-              = render partial: 'images/admin_search_card', locals: { url: root_path }
+              =# render partial: 'images/admin_search_card', locals: { url: root_path }
+              = render partial: 'images/search_card', locals: { url: root_path }
         .row
           .col-lg-12.col-md-12
             = render 'images/admin_table_results'
