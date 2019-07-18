@@ -28,6 +28,6 @@
               %p Shipments
       %li.nav-item
         %hr
-        %a.nav-link{:href => destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure you want to log out?' }}
+        %a.nav-link{:href => destroy_user_session_path, rel: "nofollow", data: {method: :delete, confirm: 'Are you sure you want to sign out?' }}
           %i.fa.fa-sign-out
           %p Sign Out
