@@ -5,6 +5,12 @@
     / End Navbar
     .content{style: 'margin-top: 0px;'}
       %div{class: browser.device.mobile? ? 'container-fluid' : 'container' }
+        - unless browser.device.mobile?
+          %ul.nav.justify-content-center
+            %li.nav-item
+              %h3
+                JPEGger Web Powered by
+                = image_tag('tranact_logo_small.png')
         = render 'shared/flash_messages'
         .row
           .col-lg-12.col-md-12.col-sm-12
