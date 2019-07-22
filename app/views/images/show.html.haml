@@ -2,7 +2,7 @@
   .container-fluid
     = render 'shared/flash_messages'
     .row
-      = "https://#{company.jpegger_service_ip}:#{company.jpegger_service_port}/sdcgi?preview=y&table=images&capture_seq_nbr=#{capture_sequence_number}&yardid=#{company.yard_id}"
+      = "https://#{current_user.company.jpegger_service_ip}:#{current_user.company.jpegger_service_port}/sdcgi?preview=y&table=images&capture_seq_nbr=#{@image['CAPTURE_SEQ_NBR']}&yardid=#{current_user.company.yard_id}"
       .col-sm-9.col-md-9.mx-auto 
         .card
           .card-header
