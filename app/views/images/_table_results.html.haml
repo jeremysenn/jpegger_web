@@ -32,7 +32,7 @@
               %td
                 - if @show_thumbnails == '1'
                   %a{href: image_path(image['CAPTURE_SEQ_NBR'])}
-                    = image_tag(Image.preview_source(image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: image['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
+                    = image_tag(show_preview_image_path(@image['CAPTURE_SEQ_NBR']), alt: image['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
                 - else
                   - unless browser.device.mobile?
                     %a.btn.btn-sm.btn-info{href: image_path(image['CAPTURE_SEQ_NBR'])}
