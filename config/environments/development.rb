@@ -12,7 +12,7 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
   
-  config.public_file_server.enabled = true
+  config.assets.compile = true
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
@@ -31,7 +31,6 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
-  
   
 #  config.action_mailer.default_url_options = { host: 'http://dev-jpg.tranact.com', port: 80 }
   config.action_mailer.default_url_options = { host: ENV["APPLICATION_HOST"] }
