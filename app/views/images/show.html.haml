@@ -9,7 +9,8 @@
               %i.fa.fa-photo
               = @image['CAPTURE_SEQ_NBR']
               .pull-right= link_to "<i class='fa fa-close'></i>".html_safe, :back
-          = image_tag(show_jpeg_image_image_path(@image['CAPTURE_SEQ_NBR']), alt: @image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+          =# image_tag(show_jpeg_image_image_path(@image['CAPTURE_SEQ_NBR']), alt: @image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+          = image_tag(Image.jpeg_image_source(@image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: @image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
           .card-body
             %p.card-text
               = @image['SYS_DATE_TIME']
