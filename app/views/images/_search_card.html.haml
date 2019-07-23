@@ -13,11 +13,11 @@
               = text_field_tag "search[ticket_number]", nil, :placeholder => image_ticket_nbr_field_description, value: @ticket_number, class: "form-control"
           .row
             .col-md-6
-              - unless current_user.external?
-                = text_field_tag "search[customer_name]", nil, :placeholder => image_cust_name_field_description, value: @customer_name, class: "form-control"
-            .col-md-6
               =# text_field_tag "search[event_code]", nil, :placeholder => image_event_code_field_description, value: @event_code, class: "form-control"
               = select_tag "search[event_code]", options_for_select(LookupDef.image_event_codes(current_user), @event_code), prompt: image_event_code_field_description, class: "form-control"
+            .col-md-6
+              - unless current_user.external?
+                = text_field_tag "search[customer_name]", nil, :placeholder => image_cust_name_field_description, value: @customer_name, class: "form-control"
           - if browser.device.mobile?
             %br
         .col-sm-12.col-md-6

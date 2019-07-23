@@ -9,8 +9,10 @@
           %ul.nav.justify-content-center
             %li.nav-item
               %h3
-                JPEGger Web Powered by
-                = image_tag('tranact_logo_small.png')
+                -#
+                  JPEGger Web Powered by
+                  = image_tag('tranact_logo_small.png')
+                = link_to image_tag('JPEGger_powered_by_Tranact_Logo_medium.png'), 'https://www.tranact.com', target: '_blank;'
         = render 'shared/flash_messages'
         .row
           .col-lg-12.col-md-12.col-sm-12
