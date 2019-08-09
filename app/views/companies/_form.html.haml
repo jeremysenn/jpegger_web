@@ -20,7 +20,7 @@
               Leads Online
               %span.form-check-sign
                 %span.check
-      .col-xs-12.col-sm-6{id: 'leads_online_row'}
+      .col-xs-12.col-sm-6{id: 'leads_online_row', style: @company.leads_online? ? 'display:block;' : 'display:none;'}
         = f.input :leads_online_store_id, label: 'Leads Online Store ID'
     %button.btn.btn-primary{:type => "submit", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Save"}} 
       Save
