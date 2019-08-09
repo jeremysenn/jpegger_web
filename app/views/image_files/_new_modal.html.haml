@@ -22,11 +22,11 @@
             .form-group
               .form-check
                 %label.form-check-label
-                  = f.check_box :leads_online, class: 'form-check-input', checked: false
+                  = f.check_box :leads_online, class: 'form-check-input', checked: true
                   Leads Online
                   %span.form-check-sign
                     %span.check
-            .card{id: 'leads_online_row', style: 'display:none; margin-top: 0px;'}
+            .card{id: 'leads_online_row', style: 'display:block; margin-top: 0px;'}
               .form-group.col-xs-12.col-sm-6
                 = f.input :camera_class, collection: camera_classes, as: :select, prompt: "Camera Class", label: false
               .form-group.col-xs-12.col-sm-6
