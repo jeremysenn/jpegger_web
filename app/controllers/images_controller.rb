@@ -55,6 +55,20 @@ class ImagesController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def show_jpeg_image
+    blob = Image.jpeg_image(params[:id], current_user.company_id)
+    unless blob[0..3] == "%PDF" 
+      send_data blob, :type => 'image/jpeg',:disposition => 'inline'
+    else
+      # PDF file
+      send_data blob, :type => 'application/pdf',:disposition => 'inline'
+    end
+  end
+  
+  def show_preview_image
+    send_data Image.preview(params[:id], current_user.company_id), :type => 'image/jpeg',:disposition => 'inline'
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

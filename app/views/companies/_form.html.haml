@@ -20,7 +20,18 @@
               Leads Online
               %span.form-check-sign
                 %span.check
-      .col-xs-12.col-sm-6
+      .col-xs-12.col-sm-6{id: 'leads_online_row'}
         = f.input :leads_online_store_id, label: 'Leads Online Store ID'
     %button.btn.btn-primary{:type => "submit", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Save"}} 
       Save
+
+:javascript
+
+  $(document).on("click", '#company_leads_online' , function() {
+    if($(this).is(":checked")){
+      $('#leads_online_row').fadeIn();
+    }
+    else if($(this).is(":not(:checked)")){
+      $('#leads_online_row').fadeOut();
+    }
+  });
