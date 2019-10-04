@@ -30,6 +30,11 @@
                   %br
                   %strong Leads Online
                   = @company.leads_online_store_id
+                - unless @company.logo.url.blank?
+                  %br
+                  %strong Logo
+                  %br
+                  = image_tag(@company.logo.url(:thumb), id: 'current_logo_image', class: 'img-fluid', style: "max-width: 100%; and height: auto;")
               %p
                 %strong= image_event_code_field_description
                 - unless @image_event_codes.blank?

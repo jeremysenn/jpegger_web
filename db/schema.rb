@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_03_153738) do
+ActiveRecord::Schema.define(version: 2019_10_03_183726) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name", null: false
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2019_07_03_153738) do
     t.string "yard_id"
     t.boolean "leads_online"
     t.string "leads_online_store_id"
+    t.string "logo"
   end
 
   create_table "image_files", force: :cascade do |t|

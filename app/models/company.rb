@@ -4,6 +4,8 @@ class Company < ApplicationRecord
   
   has_many :users
   
+  mount_uploader :logo, LogoUploader
+  
 #  mount_uploader :logo, LogoUploader
   
   validates_presence_of :name #, :jpegger_service_ip, :jpegger_service_port
