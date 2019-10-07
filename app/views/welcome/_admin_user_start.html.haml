@@ -11,7 +11,10 @@
                 -#
                   JPEGger Web Powered by
                   = image_tag('tranact_logo_small.png')
-                = link_to image_tag('JPEGger_powered_by_Tranact_Logo_medium.png'), 'https://www.tranact.com', target: '_blank;'
+                - unless current_user.company.logo.url.blank?
+                  = image_tag(current_user.company.logo.url(:medium), class: 'img-fluid')
+                - else
+                  = link_to image_tag('JPEGger_powered_by_Tranact_Logo_medium.png'), 'https://www.tranact.com', target: '_blank;'
 
         = render 'shared/flash_messages'
         - unless @image_file.blank?

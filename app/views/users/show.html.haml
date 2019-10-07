@@ -16,18 +16,31 @@
                       %i.fa.fa-pencil-square-o
                       Edit
               .card-body
+                Email:
+                = @user.email
+                %br
+                Role:
+                = @user.role
+                %br
+                Active:
+                = @user.active? ? 'Yes' : 'No'
+                - unless @user.customer_name.blank?
+                  %br
+                  Customer Name:
+                  = @user.customer_name
                 - if @user.confirmed?
+                  %br
                   - if @user.sign_in_count > 0
                     Sign In Count:
                     = @user.sign_in_count
                     %br
                     Current Sign In At:
-                    =# @user.current_sign_in_at.in_time_zone(current_user.time_zone).strftime('%-m/%-d/%Y')
-                    = @user.current_sign_in_at.strftime('%-m/%-d/%Y')
+                    =# @user.current_sign_in_at.in_time_zone(current_user.time_zone).strftime('%-m/%-d/%Y %l:%M %p')
+                    = @user.current_sign_in_at.strftime('%-m/%-d/%Y %l:%M %p')
                     %br
                     Last Sign In At:
-                    =# @user.last_sign_in_at.in_time_zone(current_user.time_zone).strftime('%-m/%-d/%Y')
-                    = @user.last_sign_in_at.strftime('%-m/%-d/%Y')
+                    =# @user.last_sign_in_at.in_time_zone(current_user.time_zone).strftime('%-m/%-d/%Y %l:%M %p')
+                    = @user.last_sign_in_at.strftime('%-m/%-d/%Y %l:%M %p')
                     %br
                     Current Sign In IP:
                     = @user.current_sign_in_ip
@@ -37,15 +50,7 @@
                 - else
                   .text-danger Waiting for user to confirm account
                 %br
-                Email:
-                = @user.email
-                %br
-                Role:
-                = @user.role
-                - unless @user.customer_name.blank?
-                  %br
-                  Customer Name:
-                  = @user.customer_name
+                
               .card-footer
                 %a{href: users_admin_index_path}
                   %i.fa.fa-angle-left

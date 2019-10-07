@@ -2,12 +2,18 @@ class UsersController < ApplicationController
   before_action :authenticate_user!, except: :forgot_password
   before_action :set_user, only: [:show, :edit, :update, :destroy, :pin_verification, :verify_phone, :confirm]
   load_and_authorize_resource
+  helper_method :users_sort_column, :users_sort_direction
 
 
   # GET /users
   # GET /users.json
   def index
-    @users = current_user.company.users
+    unless params[:role].blank?
+      @role = params[:role]
+    else
+      @role = ['admin', 'basic', 'external']
+    end
+    @users = current_user.company.users.where(role: @role).order("#{users_sort_column} #{users_sort_direction}")
   end
 
   # GET /users/1
@@ -95,6 +101,16 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:first_name, :last_name, :company_id, :email, :password, :active, :role, :customer_name)
+    end
+    
+    ### Secure the users sort direction ###
+    def users_sort_direction
+      %w[asc desc].include?(params[:users_direction]) ?  params[:users_direction] : "asc"
+    end
+
+    ### Secure the users sort column name ###
+    def users_sort_column
+      ["email", "first_name", "last_name", "role", "customer_name", "active", "sign_in_count", "current_sign_in_at", "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip"].include?(params[:users_column]) ? params[:users_column] : "first_name"
     end
     
 end

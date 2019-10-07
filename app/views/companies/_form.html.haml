@@ -22,6 +22,24 @@
                 %span.check
       .col-xs-12.col-sm-6{id: 'leads_online_row', style: @company.leads_online? ? 'display:block;' : 'display:none;'}
         = f.input :leads_online_store_id, label: 'Leads Online Store ID'
+    .row
+      .col-xs-12.col-sm-6
+        .form-group
+          -# if @company.logo.url.blank?
+          = f.label :logo, "<i class='fa fa-upload fa-lg text-primary'></i> --Choose Logo--".html_safe, :class => "control-label"
+          = f.file_field :logo, class: 'form-control-file', onchange: "PreviewLogo();", required: true
+          = f.hidden_field :logo_cache
+          = image_tag('', id: 'logo_image', class: 'img-fluid', style: "max-width: 100%; and height: auto;")
+          - unless @company.logo.url.blank?
+            = image_tag(@company.logo.url(:thumb), id: 'current_logo_image', class: 'img-fluid', style: "max-width: 100%; and height: auto;")
+            %br
+            .form-group
+              .form-check
+                %label.form-check-label
+                  = f.check_box :remove_logo, class: 'form-check-input'
+                  Remove Logo
+                  %span.form-check-sign
+                    %span.check
     %button.btn.btn-primary{:type => "submit", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Save"}} 
       Save
 
@@ -35,3 +53,13 @@
       $('#leads_online_row').fadeOut();
     }
   });
+
+  function PreviewLogo() {
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("company_logo").files[0]);
+    $('#current_logo_image').hide();
+
+    oFReader.onload = function (oFREvent) {
+      document.getElementById("logo_image").src = oFREvent.target.result;
+    };
+  };
