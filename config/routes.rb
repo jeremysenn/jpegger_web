@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     end
   end
   
-  
   resources :companies
+  resources :searches
   
 end

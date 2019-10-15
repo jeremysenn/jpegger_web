@@ -48,6 +48,13 @@ class Ability
       ############
       can :index, Image
       
+      # Searches
+      ############
+      can :manage, Search do |search|
+        user.company == search.user.company
+      end
+      can :index, Search
+      
     elsif user.external?
       
       # Users

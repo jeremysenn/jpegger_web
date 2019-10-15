@@ -6,6 +6,7 @@ class User < ApplicationRecord
   ROLES = %w[admin basic external].freeze
   
   belongs_to :company
+  has_many :searches
   
   accepts_nested_attributes_for :company
   

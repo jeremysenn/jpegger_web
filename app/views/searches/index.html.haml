@@ -1,0 +1,39 @@
+.wrapper
+  = render 'shared/admin_sidebar'
+  .main-panel
+    = render 'shared/admin_dashboard_navbar'
+    .content{style: 'margin-top: 0px;'}
+      .container-fluid
+        = render 'shared/flash_messages'
+        .row
+          .col-lg-12.col-md-12
+            .card
+              .card-header.card-header-info
+                %h4.card-title 
+                  %i.fa.fa-search
+                  User Searches
+              .card-body.table-responsive
+                - unless @searches.blank?
+                  %table.table.table-hover
+                    %thead
+                      %th= searches_sort_link 'user_id'
+                      %th= searches_sort_link 'table_name', 'Table'
+                      %th= searches_sort_link 'event_code'
+                      %th= searches_sort_link 'customer_name', 'Customer'
+                      %th= searches_sort_link 'ticket_number', 'Ticket'
+                      %th= searches_sort_link 'start_date'
+                      %th= searches_sort_link 'end_date'
+                    %tbody
+                      - @searches.each do |search|
+                        %tr
+                          %td= search.user.full_name
+                          %td= search.table_name
+                          %td= search.event_code
+                          %td= search.customer_name
+                          %td= search.ticket_number
+                          %td= search.start_date
+                          %td= search.end_date
+                - else
+                  %p None
+              .card-footer
+                = paginate @searches

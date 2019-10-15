@@ -3,6 +3,7 @@ class Company < ApplicationRecord
   before_save :default_jpegger_service_port
   
   has_many :users
+  has_many :searches, through: :users
   
   mount_uploader :logo, LogoUploader
   
