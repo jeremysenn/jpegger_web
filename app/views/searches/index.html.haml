@@ -16,16 +16,18 @@
                 - unless @searches.blank?
                   %table.table.table-hover
                     %thead
+                      %th= searches_sort_link 'created_at', 'Date'
                       %th= searches_sort_link 'user_id'
                       %th= searches_sort_link 'table_name', 'Table'
                       %th= searches_sort_link 'event_code'
                       %th= searches_sort_link 'customer_name', 'Customer'
                       %th= searches_sort_link 'ticket_number', 'Ticket'
-                      %th= searches_sort_link 'start_date'
-                      %th= searches_sort_link 'end_date'
+                      %th= searches_sort_link 'start_date', 'Search Start'
+                      %th= searches_sort_link 'end_date', 'Search End'
                     %tbody
                       - @searches.each do |search|
                         %tr
+                          %td= search.created_at
                           %td= search.user.full_name
                           %td= search.table_name
                           %td= search.event_code

@@ -80,12 +80,12 @@ class SearchesController < ApplicationController
     
     ### Secure the searches sort direction ###
     def searches_sort_direction
-      %w[asc desc].include?(params[:searches_direction]) ?  params[:searches_direction] : "asc"
+      %w[asc desc].include?(params[:searches_direction]) ?  params[:searches_direction] : "desc"
     end
 
     ### Secure the searches sort column name ###
     def searches_sort_column
-      ["user_id", "table_name", "event_code", "customer_name", "ticket_number", "start_date", "end_date"].include?(params[:searches_column]) ? params[:searches_column] : "user_id"
+      ["created_at", "user_id", "table_name", "event_code", "customer_name", "ticket_number", "start_date", "end_date"].include?(params[:searches_column]) ? params[:searches_column] : "created_at"
     end
     
 end
