@@ -1,0 +1,34 @@
+.card
+  .card-header.card-header-success
+    %h4.card-title 
+      Shipments
+      .pull-right
+        %a.btn.btn-sm.btn-primary{href: '#new_shipment', "data-target" => "#new_shipment", "data-toggle" => "modal"}
+          %i.fa.fa-plus
+  = render 'shipment_files/new_modal'
+  .card-body
+    .row
+      - @shipments.each do |shipment|
+        .col-sm-12.col-md-3
+          .card
+            = image_tag(Shipment.preview_source(shipment['CAPTURE_SEQ_NBR'], current_user.company_id), alt: shipment['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+            .card-body
+              %h5.card-title= link_to shipment['CUST_NAME'], images_path("search[customer_name]" => shipment['CUST_NAME']) unless shipment['CUST_NAME'].blank?
+              %p.card-text
+                = shipment['SYS_DATE_TIME']
+                %br
+                %strong Ticket
+                = link_to shipment['TICKET_NBR'], shipments_path("search[ticket_number]" => shipment['TICKET_NBR']) unless shipment['TICKET_NBR'].blank?
+                %br
+                %strong Camera
+                = shipment['CAMERA_NAME']
+                %br
+                %strong Event
+                = link_to shipment['EVENT_CODE'], shipments_path("search[event_code]" => shipment['EVENT_CODE']) unless shipment['EVENT_CODE'].blank?
+                %br
+                = shipment['CAPTURE_SEQ_NBR']
+
+              %a.btn.btn-info{href: shipment_path(shipment['CAPTURE_SEQ_NBR'])} 
+                Show
+
+  .card-footer= paginate @shipments

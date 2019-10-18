@@ -49,6 +49,16 @@
     };
   };
 
+  function PreviewShipment() {
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("shipment_file_file").files[0]);
+
+    oFReader.onload = function (oFREvent) {
+      document.getElementById("file_shipment").src = oFREvent.target.result;
+
+    };
+  };
+
   function showNotification(from, align){
     $.notify({
         icon: "add_alert",

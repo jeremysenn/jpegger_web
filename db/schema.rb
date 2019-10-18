@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_10_132019) do
+ActiveRecord::Schema.define(version: 2019_10_16_184439) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name", null: false
@@ -63,6 +63,30 @@ ActiveRecord::Schema.define(version: 2019_10_10_132019) do
     t.string "ticket_number"
     t.date "start_date"
     t.date "end_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shipment_files", force: :cascade do |t|
+    t.string "name"
+    t.integer "capture_sequence_number"
+    t.string "file"
+    t.integer "user_id"
+    t.string "ticket_number"
+    t.string "customer_number"
+    t.string "customer_name"
+    t.string "branch_code"
+    t.string "location"
+    t.string "event_code"
+    t.integer "event_code_id"
+    t.integer "shipment_id"
+    t.string "container_number"
+    t.string "booking_number"
+    t.string "contract_number"
+    t.boolean "hidden"
+    t.string "yard_id"
+    t.string "camera_name"
+    t.string "camera_group"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

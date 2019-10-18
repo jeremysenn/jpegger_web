@@ -24,18 +24,16 @@
           %i.fa.fa-user
           = current_user.full_name
           %small.text-muted= "(#{current_user.role})"
-      -#
-        - unless images_table.blank?
-          %li.nav-item{:class => (params[:controller] == 'images') ?  "active" : ""}
-            %a.nav-link{:href => images_path(request.params)}
-              %i.fa.fa-image
-              %p Images
-      -#
-        - unless shipments_table.blank?
-          %li.nav-item{:class => (params[:controller] == 'shipments') ?  "active" : ""}
-            %a.nav-link{:href => '#'}
-              %i.fa.fa-truck
-              %p Shipments
+      - unless images_table.blank?
+        %li.nav-item{:class => (params[:controller] == 'images') ?  "active" : ""}
+          %a.nav-link{:href => images_path}
+            %i.fa.fa-image
+            %p Images
+      - unless shipments_table.blank?
+        %li.nav-item{:class => (params[:controller] == 'shipments') ?  "active" : ""}
+          %a.nav-link{:href => shipments_path}
+            %i.fa.fa-truck
+            %p Shipments
       %li.nav-item
         %a.nav-link{:href => company_path(current_user.company)}
           %i.fa.fa-building

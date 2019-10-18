@@ -7,6 +7,7 @@ class ImagesController < ApplicationController
   # GET /images.json
   def index
     @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
+    @show_thumbnails = params[:show_thumbnails]
     unless current_user.blank?
       unless params[:search].blank?
         @customer_name = params[:search][:customer_name]
@@ -19,7 +20,8 @@ class ImagesController < ApplicationController
         elsif current_user.external?
           @all_images = Image.external_user_search(params[:search], current_user).reverse
         end
-        Search.create(user_id: current_user.id, table_name: 'images', event_code: @event_code, customer_name: @customer_name, ticket_number: @ticket_number, start_date: @start_date, end_date: @end_date)
+        SaveSearchWorker.perform_async(current_user.id, 'images', @event_code, @customer_name, @ticket_number, @start_date, @end_date)
+#        Search.create(user_id: current_user.id, table_name: 'images', event_code: @event_code, customer_name: @customer_name, ticket_number: @ticket_number, start_date: @start_date, end_date: @end_date)
       else
         @start_date = Date.today
         @end_date = Date.today

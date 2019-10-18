@@ -1,0 +1,43 @@
+/ Modal
+#new_shipment.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.modal-sm{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5#exampleModalLabel.modal-title New Shipment
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        = simple_form_for ShipmentFile.new do |f|
+          = f.error_notification
+          = f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id}
+          = f.input :yard_id, :as => :hidden, :input_html => { :value => current_user.company.yard_id}
+          .form-group
+            = f.input :ticket_number, label: 'Ticket Number', :input_html => { :value => @ticket_number}, required: true
+          .form-group
+            = f.input :customer_name, label: 'Customer Name', :input_html => { :value => @customer_name}
+          .form-group
+            =# f.input :event_code, label: 'Event Code', :input_html => { :value => @event_code}
+            = f.input :event_code, collection: LookupDef.shipment_event_codes(current_user), as: :select, selected: @event_code, prompt: "--Choose #{shipment_event_code_field_description}--", required: true, label: shipment_event_code_field_description
+          -#
+            - if current_user.company.leads_online?
+              .form-group
+                .form-check
+                  %label.form-check-label
+                    = f.check_box :leads_online, class: 'form-check-input', checked: true
+                    Leads Online
+                    %span.form-check-sign
+                      %span.check
+              .card{id: 'leads_online_row', style: 'display:block; margin-top: 0px;'}
+                .form-group.col-xs-12.col-sm-6
+                  = f.input :camera_class, collection: camera_classes, as: :select, prompt: "Camera Class", label: false
+                .form-group.col-xs-12.col-sm-6
+                  = f.input :camera_position, collection: camera_positions, as: :select, prompt: "Camera Position", label: false
+          .form-group
+            =# f.input :file, as: :file, label: 'Choose Image', :input_html => {class: 'form-control-file'}
+            = f.input :file, as: :file, input_html: {class: 'form-control-file', onchange: "PreviewShipment();"}, label: "<i class='fa fa-camera fa-lg text-primary'></i> --Choose Image--".html_safe, required: true
+            = f.input :file_cache, as: :hidden
+            .col-xs-6
+              = image_tag('', id: 'file_shipment', class: 'img-fluid', style: "max-width: 100%; and height: auto;")
+          .modal-footer
+            %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Cancel
+            %button.btn.btn-primary{:type => "submit", :onclick => "showNotification('top','right')"} Save

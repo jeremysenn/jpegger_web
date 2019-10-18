@@ -48,6 +48,10 @@ class Ability
       ############
       can :index, Image
       
+      # Shipments
+      ############
+      can :index, Shipment
+      
       # Searches
       ############
       can :manage, Search do |search|

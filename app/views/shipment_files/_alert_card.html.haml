@@ -1,0 +1,14 @@
+%div{:class => "alert alert-dismissible alert-success col-lg-4"}
+  %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+  .card{:style => "width: 18rem;"}
+    %img.card-img-top{:alt => "Shipment File #{@shipment_file.id}", :src => @shipment_file.file.url(:thumb)}/
+    .card-body
+      %p.card-text
+        - unless @shipment_file.ticket_number.blank?
+          = @shipment_file.ticket_number
+          %br
+        - unless @shipment_file.customer_name.blank?
+          = @shipment_file.customer_name
+          %br
+        - unless @shipment_file.event_code.blank?
+          = @shipment_file.event_code

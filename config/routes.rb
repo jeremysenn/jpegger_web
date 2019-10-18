@@ -25,8 +25,17 @@ Rails.application.routes.draw do
 #  end
 
   resources :image_files
+  resources :shipment_files
   
   resources :images do
+    member do
+      get 'show_jpeg_image'
+      get 'show_preview_image'
+      get 'send_pdf_data'
+    end
+  end
+  
+  resources :shipments do
     member do
       get 'show_jpeg_image'
       get 'show_preview_image'

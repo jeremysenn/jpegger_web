@@ -7,6 +7,7 @@ class ShipmentsController < ApplicationController
   # GET /shipments.json
   def index
     @shipment_file = ShipmentFile.find(flash[:shipment_file_id]) unless flash[:shipment_file_id].blank?
+    @show_thumbnails = params[:show_thumbnails]
     unless current_user.blank?
       unless params[:search].blank?
         @customer_name = params[:search][:customer_name]
@@ -19,6 +20,7 @@ class ShipmentsController < ApplicationController
         elsif current_user.external?
           @all_shipments = Shipment.external_user_search(params[:search], current_user).reverse
         end
+        SaveSearchWorker.perform_async(current_user.id, 'shipments', @event_code, @customer_name, @ticket_number, @start_date, @end_date)
       else
         @start_date = Date.today
         @end_date = Date.today
