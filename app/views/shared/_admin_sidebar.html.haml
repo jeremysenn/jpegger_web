@@ -34,7 +34,7 @@
           %a.nav-link{:href => shipments_path}
             %i.fa.fa-truck
             %p Shipments
-      %li.nav-item
+      %li.nav-item{:class => (params[:controller] == 'companies') ?  "active" : ""}
         %a.nav-link{:href => company_path(current_user.company)}
           %i.fa.fa-building
           %p= current_user.company.name
