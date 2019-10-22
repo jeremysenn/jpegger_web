@@ -69,7 +69,11 @@ class Ability
       
       # Images
       ############
-      can :index, Image
+      can :index, Image if user.images?
+      
+      # Shipments
+      ############
+      can :index, Shipment if user.shipments?
       
     elsif user.basic?
       

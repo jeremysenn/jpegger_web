@@ -100,7 +100,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :company_id, :email, :password, :active, :role, :customer_name)
+      params.require(:user).permit(:first_name, :last_name, :company_id, :email, :password, :active, :role, :customer_name, :images, :shipments)
     end
     
     ### Secure the users sort direction ###
@@ -110,7 +110,8 @@ class UsersController < ApplicationController
 
     ### Secure the users sort column name ###
     def users_sort_column
-      ["email", "first_name", "last_name", "role", "customer_name", "active", "sign_in_count", "current_sign_in_at", "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip"].include?(params[:users_column]) ? params[:users_column] : "first_name"
+      ["email", "first_name", "last_name", "role", "customer_name", "active", "sign_in_count", "current_sign_in_at", 
+        "last_sign_in_at", "current_sign_in_ip", "last_sign_in_ip"].include?(params[:users_column]) ? params[:users_column] : "first_name"
     end
     
 end

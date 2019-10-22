@@ -17,15 +17,27 @@
                 - else
                   = link_to image_tag('JPEGger_powered_by_Tranact_Logo_medium.png'), 'https://www.tranact.com', target: '_blank;'
         = render 'shared/flash_messages'
-        .row
-          .col-lg-12.col-md-12.col-sm-12
-            - if current_user.external?
-              =# render partial: 'images/external_user_search_card', locals: { url: root_path }
-              = render partial: 'images/search_card', locals: { url: root_path }
-        .row
-          .col-lg-12.col-md-12
-            =# render 'images/external_user_table_results'
-            = render 'images/table_results'
+        - if current_user.shipments? and shipments_table.present?
+          .col-sm-6.offset-sm-3
+            .row
+              .col-sm-6
+                %a.btn.btn-secondary.btn-block{:href => images_path}
+                  %i.fa.fa-image
+                  Images
+              .col-sm-6
+                %a.btn.btn-secondary.btn-block{:href => shipments_path}
+                  %i.fa.fa-truck
+                  Shipments
+        - else
+          .row
+            .col-lg-12.col-md-12.col-sm-12
+              - if current_user.external?
+                =# render partial: 'images/external_user_search_card', locals: { url: root_path }
+                = render partial: 'images/search_card', locals: { url: root_path }
+          .row
+            .col-lg-12.col-md-12
+              =# render 'images/external_user_table_results'
+              = render 'images/table_results'
 
     = render partial: 'shared/footer'
 -#

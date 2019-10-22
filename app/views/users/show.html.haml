@@ -22,6 +22,11 @@
                 Role:
                 = @user.role
                 %br
+                - if @user.external?
+                  Tables:
+                  = @user.images? ? 'Images' : ''
+                  = @user.shipments? ? 'Shipments' : ''
+                  %br
                 Active:
                 = @user.active? ? 'Yes' : 'No'
                 - unless @user.customer_name.blank?
