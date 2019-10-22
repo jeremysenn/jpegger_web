@@ -88,4 +88,17 @@ class SearchesController < ApplicationController
       ["created_at", "user_id", "table_name", "event_code", "customer_name", "ticket_number", "start_date", "end_date"].include?(params[:searches_column]) ? params[:searches_column] : "created_at"
     end
     
+    def set_searchable_tables
+      if images_table.blank?
+        if FieldDescription.search_images_table?(current_user)
+          session[:images_table] = true
+        end
+      end
+      if shipments_table.blank?
+        if FieldDescription.search_shipments_table?(current_user)
+          session[:shipments_table] = true
+        end
+      end
+    end
+    
 end

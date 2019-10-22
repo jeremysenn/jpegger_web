@@ -20,7 +20,7 @@
               %i.fa.fa-user
               &nbsp;
               = current_user.full_name
-              %br
+              &nbsp;
               %small.text-muted= "(#{current_user.role})"
             %a.dropdown-item{:href => company_path(current_user.company)}
               %i.fa.fa-building

@@ -66,11 +66,15 @@ class WelcomeController < ApplicationController
   end
   
   def set_searchable_tables
-    if FieldDescription.search_images_table?(current_user)
-      session[:images_table] = true
+    if images_table.blank?
+      if FieldDescription.search_images_table?(current_user)
+        session[:images_table] = true
+      end
     end
-    if FieldDescription.search_shipments_table?(current_user)
-      session[:shipments_table] = true
+    if shipments_table.blank?
+      if FieldDescription.search_shipments_table?(current_user)
+        session[:shipments_table] = true
+      end
     end
   end
   

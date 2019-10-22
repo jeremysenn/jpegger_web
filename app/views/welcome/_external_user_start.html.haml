@@ -12,7 +12,10 @@
                 -#
                   JPEGger Web Powered by
                   = image_tag('tranact_logo_small.png')
-                = link_to image_tag('JPEGger_powered_by_Tranact_Logo_medium.png'), 'https://www.tranact.com', target: '_blank;'
+                - unless current_user.company.logo.url.blank?
+                  = image_tag(current_user.company.logo.url(:medium), class: 'img-fluid')
+                - else
+                  = link_to image_tag('JPEGger_powered_by_Tranact_Logo_medium.png'), 'https://www.tranact.com', target: '_blank;'
         = render 'shared/flash_messages'
         .row
           .col-lg-12.col-md-12.col-sm-12
@@ -25,22 +28,22 @@
             = render 'images/table_results'
 
     = render partial: 'shared/footer'
-
-:javascript
-  window.addEventListener('DOMContentLoaded', function()
-    {
-        var $start = document.querySelector('.start_datepicker'),
-            $end = document.querySelector('.end_datepicker');
-        $start.DatePickerX.init({
-            mondayFirst: true,
-            format: 'yyyy-mm-dd',
-            minDate    : new Date(2012, 1, 1),
-            maxDate    : $end
-        });
-        $end.DatePickerX.init({
-            mondayFirst: true,
-            format: 'yyyy-mm-dd',
-            minDate    : $start,
-            //maxDate    : new Date(2017, 4, 25)
-        });
-    });
+-#
+  :javascript
+    window.addEventListener('DOMContentLoaded', function()
+      {
+          var $start = document.querySelector('.start_datepicker'),
+              $end = document.querySelector('.end_datepicker');
+          $start.DatePickerX.init({
+              mondayFirst: true,
+              format: 'yyyy-mm-dd',
+              minDate    : new Date(2012, 1, 1),
+              maxDate    : $end
+          });
+          $end.DatePickerX.init({
+              mondayFirst: true,
+              format: 'yyyy-mm-dd',
+              minDate    : $start,
+              //maxDate    : new Date(2017, 4, 25)
+          });
+      });

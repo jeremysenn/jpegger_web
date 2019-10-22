@@ -1,4 +1,5 @@
 class ImagesController < ApplicationController
+  before_action :set_image_field_descriptions, if: -> { current_user and not current_user.super? and FieldDescription.search_images_table?(current_user)}
   before_action :authenticate_user!
   before_action :set_image, only: [:show, :edit, :update, :destroy]
   load_and_authorize_resource only: [:index]
@@ -74,14 +75,26 @@ class ImagesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_image
-      @image = Image.find_by_capture_sequence_number(params[:id], current_user)
-    end
+  
+  # Use callbacks to share common setup or constraints between actions.
+  def set_image
+    @image = Image.find_by_capture_sequence_number(params[:id], current_user)
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def image_params
-      # order matters here in that to have access to model attributes in uploader methods, they need to show up before the file param in this permitted_params list 
-      params.require(:image).permit()
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def image_params
+    # order matters here in that to have access to model attributes in uploader methods, they need to show up before the file param in this permitted_params list 
+    params.require(:image).permit()
+  end
+
+  def set_image_field_descriptions
+    if image_field_descriptions.blank?
+      field_descriptions_hash = Hash.new
+      FieldDescription.all_for_images_table(current_user).each do |f| 
+        field_descriptions_hash[f['FIELDNAME']] = f["DISPLAYNAME"]
+      end
+      session[:image_field_descriptions] = field_descriptions_hash
     end
+  end
+  
 end

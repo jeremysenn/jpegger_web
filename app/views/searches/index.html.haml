@@ -28,7 +28,7 @@
                       - @searches.each do |search|
                         %tr
                           %td= search.created_at
-                          %td= search.user.full_name
+                          %td= "#{search.user.full_name} (#{search.user.role})"
                           %td= search.table_name
                           %td= search.event_code
                           %td= search.customer_name
