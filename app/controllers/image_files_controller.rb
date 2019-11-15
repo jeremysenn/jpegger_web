@@ -31,13 +31,26 @@ class ImageFilesController < ApplicationController
     respond_to do |format|
       format.html { 
         @image_file = ImageFile.new(image_file_params)
+        unless image_file_params[:signature].blank?
+          metadata = "data:image/png;base64,"
+          base64_string = image_file_params[:signature][metadata.size..-1]
+          blob = Base64.decode64(base64_string)
+          image = MiniMagick::Image.read(blob)
+          @image_file.file = image
+        end
         if @image_file.save
-          flash[:image_file_id] = @image_file.id
-          flash[:notice] = 'Image was successfully created and is being saved by JPEGger.' 
+          if metadata.blank?
+            flash[:image_file_id] = @image_file.id 
+            flash[:notice] = 'Image was successfully created and is being saved by JPEGger.' 
+          else
+            flash[:notice] = 'Signature was successfully created and is being saved by JPEGger.' 
+          end
           redirect_back fallback_location: root_path
 #          redirect_to root_path(image_file_id: @image_file.id)
         else
-          render :new
+          flash[:alert] = 'There was a problem saving the image.' 
+          redirect_back fallback_location: root_path
+#          render :new
         end
         }
       format.json { 
@@ -89,6 +102,6 @@ class ImageFilesController < ApplicationController
       # order matters here in that to have access to model attributes in uploader methods, they need to show up before the file param in this permitted_params list 
       params.require(:image_file).permit(:ticket_number, :name, :file, :user_id, :customer_number, :customer_name, :branch_code, :location, :event_code, :event_code_id, 
         :image_id, :container_number, :booking_number, :contract_number, :hidden, :blob_id, :tare_seq_nbr, :commodity_name, :weight, :vin_number, :tag_number, 
-        :yard_id, :contract_verbiage, :service_request_number, :container_id, :task_id, :leads_online, :camera_class, :camera_position)
+        :yard_id, :contract_verbiage, :service_request_number, :container_id, :task_id, :leads_online, :camera_class, :camera_position, :signature)
     end
 end

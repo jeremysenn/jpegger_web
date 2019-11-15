@@ -59,6 +59,11 @@ class Ability
       end
       can :index, Search
       
+      # Signatures
+      ############
+#      can :manage, Signature
+#      can :create, Signature
+      
     elsif user.external?
       
       # Users

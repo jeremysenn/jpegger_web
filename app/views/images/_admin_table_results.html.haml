@@ -3,9 +3,14 @@
     %h4.card-title 
       Images
       .pull-right
+        %a.btn.btn-sm.btn-primary{href: '#new_signature_image', "data-target" => "#new_signature_image", "data-toggle" => "modal"}
+          %i.fa.fa-pencil
+          Sign
         %a.btn.btn-sm.btn-primary{href: '#new_image', "data-target" => "#new_image", "data-toggle" => "modal"}
           %i.fa.fa-plus
+          Image
   = render 'image_files/new_modal'
+  = render 'image_files/new_signature_modal'
   .card-body.table-responsive
     - unless @images.blank?
       %table.table.table-hover
