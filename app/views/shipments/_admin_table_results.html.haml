@@ -39,12 +39,12 @@
                     %a{href: shipment_path(shipment['CAPTURE_SEQ_NBR'])}
                       %i.fa.fa-photo
               %td= shipment['SYS_DATE_TIME']
-              %td= link_to shipment['CUST_NAME'], root_path("search[customer_name]" => shipment['CUST_NAME'], :show_thumbnails => @show_thumbnails) unless shipment['CUST_NAME'].blank?
-              %td= link_to shipment['TICKET_NBR'], root_path("search[ticket_number]" => shipment['TICKET_NBR'], :show_thumbnails => @show_thumbnails) unless shipment['TICKET_NBR'].blank?
+              %td= link_to shipment['CUST_NAME'], shipments_path("search[customer_name]" => shipment['CUST_NAME'], :show_thumbnails => @show_thumbnails) unless shipment['CUST_NAME'].blank?
+              %td= link_to shipment['TICKET_NBR'], shipments_path("search[ticket_number]" => shipment['TICKET_NBR'], :show_thumbnails => @show_thumbnails) unless shipment['TICKET_NBR'].blank?
               - unless browser.device.mobile?
                 %td= shipment['CAMERA_NAME']
               - unless browser.device.mobile?
-                %td= link_to shipment['EVENT_CODE'], root_path("search[event_code]" => shipment['EVENT_CODE'], :show_thumbnails => @show_thumbnails) unless shipment['EVENT_CODE'].blank?
+                %td= link_to shipment['EVENT_CODE'], shipments_path("search[event_code]" => shipment['EVENT_CODE'], :show_thumbnails => @show_thumbnails) unless shipment['EVENT_CODE'].blank?
               - unless browser.device.mobile?
                 %td= "#{(shipment['HIDDEN'].blank? or shipment['HIDDEN'] == '0') ? 'No' : 'Yes'}"
               - unless browser.device.mobile?
