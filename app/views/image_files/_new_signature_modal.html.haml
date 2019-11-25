@@ -17,6 +17,8 @@
             = f.input :ticket_number, label: 'Ticket Number', :input_html => { :value => @ticket_number}, required: true
           .form-group
             = f.input :customer_name, label: 'Customer Name', :input_html => { :value => @customer_name}
+          .form-group
+            = f.input :contract_number, collection: Contract.all(current_user), as: :select, prompt: "--Choose Contract--", required: true, label: Contract
           .signature_pad.text-center
             .signature_pad_body
               %canvas
