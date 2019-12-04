@@ -34,3 +34,5 @@
 /config/application.yml
 
 /public/uploads/
+
+dump.rdb

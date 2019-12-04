@@ -23,4 +23,5 @@
 //= require material/bootstrap-notify
 //= require material/material-dashboard
 //= require material/demo
+//= require signature_pad.min
 //= require_tree .

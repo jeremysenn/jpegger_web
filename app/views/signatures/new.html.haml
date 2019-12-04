@@ -1,0 +1,24 @@
+.container-fluid
+  = render 'shared/flash_messages'
+  .row
+    .col-sm-6.offset-sm-3
+      = simple_form_for ImageFile.new do |f|
+        = f.error_notification
+
+        = f.input_field :signature, as: :hidden, class: 'signature_pad_input'
+        =# hidden_field_tag :signature, nil, class: 'signature_pad_input'
+        = f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id}
+        = f.input :yard_id, :as => :hidden, :input_html => { :value => current_user.company.yard_id}
+        = f.input :event_code, :as => :hidden, :input_html => { :value => "Signature"}
+        .form-group
+          = f.input :ticket_number, label: 'Ticket Number', :input_html => { :value => @ticket_number}, required: true
+        .form-group
+          = f.input :customer_name, label: 'Customer Name', :input_html => { :value => @customer_name}
+        
+        .signature_pad.text-center
+          .signature_pad_body
+            %canvas
+          .signature_pad_footer
+            .text-muted Sign above
+            %button.btn.btn-default.signature_pad_clear{:type => "button"} Clear
+            = f.button :submit, 'Save', class: 'btn btn-success signature_pad_save'

@@ -5,7 +5,10 @@
         JPEGger WEB
         .text-danger Powered by
         = image_tag('tranact_logo_small.png')
-      = image_tag('JPEGger_powered_by_Tranact_Logo_small.png')
+      - unless current_user.company.logo.url.blank?
+        = image_tag(current_user.company.logo.url(:thumb), class: 'img-fluid')
+      - else
+        = image_tag('JPEGger_powered_by_Tranact_Logo_small.png', class: 'img-fluid')
   .sidebar-wrapper
     %ul.nav
       %li.nav-item{:class => (params[:controller] == 'welcome') ?  "active" : ""}
@@ -17,15 +20,16 @@
           %i.fa.fa-user
           = current_user.full_name
           %small.text-muted= "(#{current_user.role})"
-      -#
-        - unless images_table.blank?
+      - unless images_table.blank?
+        - if current_user.images?
           %li.nav-item{:class => (params[:controller] == 'images') ?  "active" : ""}
             %a.nav-link{:href => images_path}
               %i.fa.fa-image
               %p Images
-        - unless shipments_table.blank?
+      - unless shipments_table.blank?
+        - if current_user.shipments?
           %li.nav-item{:class => (params[:controller] == 'shipments') ?  "active" : ""}
-            %a.nav-link{:href => '#'}
+            %a.nav-link{:href => shipments_path}
               %i.fa.fa-truck
               %p Shipments
       %li.nav-item

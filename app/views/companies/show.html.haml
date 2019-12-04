@@ -36,10 +36,23 @@
                   %br
                   = image_tag(@company.logo.url(:thumb), id: 'current_logo_image', class: 'img-fluid', style: "max-width: 100%; and height: auto;")
               %p
-                %strong= image_event_code_field_description
+                %strong
+                  Images
+                  = image_event_code_field_description
                 - unless @image_event_codes.blank?
                   %br
                   - @image_event_codes.each do |event_code|
+                    = event_code
+                    %br
+                - else
+                  None
+              %p
+                %strong
+                  Shipments
+                  = shipment_event_code_field_description
+                - unless @shipment_event_codes.blank?
+                  %br
+                  - @shipment_event_codes.each do |event_code|
                     = event_code
                     %br
                 - else

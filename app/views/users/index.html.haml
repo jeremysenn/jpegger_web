@@ -15,10 +15,10 @@
                     %a{:href => new_users_admin_path}
                       %i.fa.fa-plus
                       New
-              .card-body.table-responsive
+              .card-body.table-responsive-lg
                 - unless @users.blank?
                   %table.table.table-hover
-                    %thead.text-warning
+                    %thead
                       -# %th Email
                       %th= users_sort_link 'email', 'Email', params[:role]
                       %th= users_sort_link 'first_name', 'First', params[:role]
@@ -28,9 +28,7 @@
                         %th= users_sort_link 'customer_name', 'Customer', params[:role]
                         %th= users_sort_link 'sign_in_count', 'Sign In Count', params[:role]
                         %th= users_sort_link 'current_sign_in_at', 'Current Sign In', params[:role]
-                        %th= users_sort_link 'last_sign_in_at', 'Last Sign In', params[:role]
                         %th= users_sort_link 'current_sign_in_ip', 'Current IP', params[:role]
-                        %th= users_sort_link 'last_sign_in_ip', 'Last IP', params[:role]
                     %tbody
                       - @users.each do |user|
                         %tr{class: user.active? ? '' : 'table-warning'}
@@ -45,9 +43,7 @@
                             %td= user.customer_name.blank? ? 'N/A' : user.customer_name
                             %td= user.sign_in_count
                             %td= user.current_sign_in_at.strftime('%-m/%-d/%Y %l:%M %p') unless user.current_sign_in_at.blank?
-                            %td= user.last_sign_in_at.strftime('%-m/%-d/%Y %l:%M %p') unless user.last_sign_in_at.blank?
                             %td= user.current_sign_in_ip
-                            %td= user.last_sign_in_ip
                 - else
                   %p None
               .card-footer

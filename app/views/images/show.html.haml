@@ -27,3 +27,9 @@
                 %br
                 %strong= image_cust_name_field_description
                 = link_to @image['CUST_NAME'], root_path("search[customer_name]" => @image['CUST_NAME']) unless @image['CUST_NAME'].blank?
+              - unless @image['CONTR_NBR'].blank?
+                - contract = Contract.find_by_contract_number(@image['CONTR_NBR'], current_user)
+                - unless contract.blank?
+                  %br
+                  %strong Contract Verbiage
+                  = contract['TEXT1']

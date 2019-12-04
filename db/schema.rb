@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_03_183726) do
+ActiveRecord::Schema.define(version: 2019_10_22_132744) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name", null: false
@@ -55,6 +55,42 @@ ActiveRecord::Schema.define(version: 2019_10_03_183726) do
     t.string "camera_position"
   end
 
+  create_table "searches", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "table_name"
+    t.string "event_code"
+    t.string "customer_name"
+    t.string "ticket_number"
+    t.date "start_date"
+    t.date "end_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "shipment_files", force: :cascade do |t|
+    t.string "name"
+    t.integer "capture_sequence_number"
+    t.string "file"
+    t.integer "user_id"
+    t.string "ticket_number"
+    t.string "customer_number"
+    t.string "customer_name"
+    t.string "branch_code"
+    t.string "location"
+    t.string "event_code"
+    t.integer "event_code_id"
+    t.integer "shipment_id"
+    t.string "container_number"
+    t.string "booking_number"
+    t.string "contract_number"
+    t.boolean "hidden"
+    t.string "yard_id"
+    t.string "camera_name"
+    t.string "camera_group"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -82,6 +118,8 @@ ActiveRecord::Schema.define(version: 2019_10_03_183726) do
     t.datetime "updated_at", null: false
     t.string "customer_name"
     t.string "temporary_password"
+    t.boolean "images"
+    t.boolean "shipments"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

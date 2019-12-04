@@ -13,6 +13,7 @@ class ImageFile < ActiveRecord::Base
   
   attr_accessor :process # Virtual attribute to determine if ready to process versions
   attr_accessor :leads_online # Virtual attribute to determine if saving leads online information
+  attr_accessor :signature
   
   #############################
   #     Instance Methods      #

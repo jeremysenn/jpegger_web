@@ -20,5 +20,6 @@
             = render partial: 'images/external_user_search_card', locals: { url: images_path } if current_user.external?
         .row
           .col-lg-12.col-md-12
-            = render 'admin_thumbnail_results' if current_user.admin?
+            =# render 'admin_thumbnail_results' if current_user.admin?
+            = render 'admin_table_results' if current_user.admin?
             = render 'external_user_thumbnail_results' if current_user.external?

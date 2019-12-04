@@ -20,7 +20,7 @@
               %i.fa.fa-user
               &nbsp;
               = current_user.full_name
-              %br
+              &nbsp;
               %small.text-muted= "(#{current_user.role})"
             %a.dropdown-item{:href => company_path(current_user.company)}
               %i.fa.fa-building
@@ -45,6 +45,16 @@
 
     oFReader.onload = function (oFREvent) {
       document.getElementById("file_image").src = oFREvent.target.result;
+
+    };
+  };
+
+  function PreviewShipment() {
+    var oFReader = new FileReader();
+    oFReader.readAsDataURL(document.getElementById("shipment_file_file").files[0]);
+
+    oFReader.onload = function (oFREvent) {
+      document.getElementById("file_shipment").src = oFREvent.target.result;
 
     };
   };

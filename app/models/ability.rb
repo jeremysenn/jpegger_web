@@ -48,6 +48,22 @@ class Ability
       ############
       can :index, Image
       
+      # Shipments
+      ############
+      can :index, Shipment
+      
+      # Searches
+      ############
+      can :manage, Search do |search|
+        user.company == search.user.company
+      end
+      can :index, Search
+      
+      # Signatures
+      ############
+#      can :manage, Signature
+#      can :create, Signature
+      
     elsif user.external?
       
       # Users
@@ -58,7 +74,11 @@ class Ability
       
       # Images
       ############
-      can :index, Image
+      can :index, Image if user.images?
+      
+      # Shipments
+      ############
+      can :index, Shipment if user.shipments?
       
     elsif user.basic?
       

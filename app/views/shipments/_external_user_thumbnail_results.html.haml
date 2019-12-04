@@ -1,0 +1,29 @@
+.card
+  .card-header.card-header-success
+    %h4.card-title 
+      Shipments
+  .card-body
+    .row
+      - @shipments.each do |shipment|
+        .col-sm-12.col-md-3
+          .card
+            = image_tag(Shipment.preview_source(shipment['CAPTURE_SEQ_NBR'], current_user.company_id), alt: shipment['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+            .card-body
+              %h5.card-title= shipment['SYS_DATE_TIME']
+              %p.card-text
+                %strong Ticket
+                = link_to shipment['TICKET_NBR'], shipments_path("search[ticket_number]" => shipment['TICKET_NBR']) unless shipment['TICKET_NBR'].blank?
+                %br
+                %strong Camera
+                = shipment['CAMERA_NAME']
+                %br
+                %strong Event
+                = link_to shipment['EVENT_CODE'], shipments_path("search[event_code]" => shipment['EVENT_CODE']) unless shipment['EVENT_CODE'].blank?
+                %br
+                = shipment['CAPTURE_SEQ_NBR']
+
+              %a.btn{href: shipment_path(shipment['CAPTURE_SEQ_NBR'])} 
+                %i.fa.fa-image
+                Show
+
+  .card-footer= paginate @shipments

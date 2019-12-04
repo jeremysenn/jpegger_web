@@ -1,0 +1,29 @@
+.content
+  .container-fluid
+    = render 'shared/flash_messages'
+    .row
+      .col-sm-9.col-md-9.mx-auto 
+        .card
+          .card-header
+            %h4.card-title.text-center 
+              %i.fa.fa-photo
+              = @shipment['CAPTURE_SEQ_NBR']
+              .pull-right= link_to "<i class='fa fa-close'></i>".html_safe, :back
+          =# image_tag(show_jpeg_image_shipment_path(@shipment['CAPTURE_SEQ_NBR']), alt: @shipment['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+          = image_tag(Shipment.jpeg_image_source(@shipment['CAPTURE_SEQ_NBR'], current_user.company_id), alt: @shipment['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+          .card-body
+            %p.card-text
+              = @shipment['SYS_DATE_TIME']
+              %br
+              %strong= shipment_ticket_nbr_field_description
+              = link_to @shipment['TICKET_NBR'], shipments_path("search[ticket_number]" => @shipment['TICKET_NBR']) unless @shipment['TICKET_NBR'].blank?
+              %br
+              %strong Camera
+              = @shipment['CAMERA_NAME']
+              %br
+              %strong= shipment_event_code_field_description
+              = link_to @shipment['EVENT_CODE'], shipments_path("search[event_code]" => @shipment['EVENT_CODE']) unless @shipment['EVENT_CODE'].blank?
+              - unless current_user.external?
+                %br
+                %strong= shipment_cust_name_field_description
+                = link_to @shipment['CUST_NAME'], shipments_path("search[customer_name]" => @shipment['CUST_NAME']) unless @shipment['CUST_NAME'].blank?

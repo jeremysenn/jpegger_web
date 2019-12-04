@@ -19,6 +19,21 @@
             External
             %span.circle
               %span.check
+      .col-xs-12.col-sm-6{id: 'customer_tables_row', style: "#{@user.external? ? 'display:block;' : 'display:none;'}"}
+        - unless images_table.blank?
+          .form-check.form-check-inline
+            %label.form-check-label
+              = f.check_box :images, class: 'form-check-input'
+              Images
+              %span.form-check-sign
+                %span.check
+        - unless shipments_table.blank?
+          .form-check.form-check-inline
+            %label.form-check-label
+              = f.check_box :shipments, class: 'form-check-input'
+              Shipments
+              %span.form-check-sign
+                %span.check
     %br
     .row
       .col-xs-12.col-sm-6
@@ -44,9 +59,11 @@
 
   $(document).on("click", '#user_role_external' , function() {
     $('#customer_name_row').show();
+    $('#customer_tables_row').show();
   });
 
   $(document).on("click", '#user_role_admin' , function() {
     $('#user_customer_name').val('');
     $('#customer_name_row').hide();
+    $('#customer_tables_row').hide();
   });

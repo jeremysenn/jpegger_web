@@ -1,0 +1,60 @@
+.card
+  .card-header.card-header-success
+    %h4.card-title 
+      Shipments
+      .pull-right
+        %a.btn.btn-sm.btn-primary{href: '#new_shipment', "data-target" => "#new_shipment", "data-toggle" => "modal"}
+          %i.fa.fa-plus
+  = render 'shipment_files/new_modal'
+  .card-body.table-responsive
+    - unless @shipments.blank?
+      %table.table.table-hover
+        %thead.text-warning
+          %th Image
+          %th Date
+          %th= shipment_cust_name_field_description
+          %th= shipment_ticket_nbr_field_description
+          - unless browser.device.mobile?
+            %th Camera Name
+          - unless browser.device.mobile?
+            %th= shipment_event_code_field_description
+          - unless browser.device.mobile?
+            %th Hidden
+          - unless browser.device.mobile?
+            %th= shipment_capture_seq_nbr_field_description
+          %th
+        %tbody{id: 'shipment_search_results'}
+          - @shipments.each do |shipment|
+            %tr
+              %td
+                - if @show_thumbnails == '1'
+                  %a{href: shipment_path(shipment['CAPTURE_SEQ_NBR'])}
+                    =# image_tag(show_preview_shipment_shipment_path(shipment['CAPTURE_SEQ_NBR']), alt: shipment['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
+                    = image_tag(Shipment.preview_source(shipment['CAPTURE_SEQ_NBR'], current_user.company_id), alt: shipment['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
+                - else
+                  - unless browser.device.mobile?
+                    %a.btn.btn-sm{href: shipment_path(shipment['CAPTURE_SEQ_NBR'])}
+                      Show
+                  - else
+                    %a{href: shipment_path(shipment['CAPTURE_SEQ_NBR'])}
+                      %i.fa.fa-photo
+              %td= shipment['SYS_DATE_TIME']
+              %td= link_to shipment['CUST_NAME'], shipments_path("search[customer_name]" => shipment['CUST_NAME'], :show_thumbnails => @show_thumbnails) unless shipment['CUST_NAME'].blank?
+              %td= link_to shipment['TICKET_NBR'], shipments_path("search[ticket_number]" => shipment['TICKET_NBR'], :show_thumbnails => @show_thumbnails) unless shipment['TICKET_NBR'].blank?
+              - unless browser.device.mobile?
+                %td= shipment['CAMERA_NAME']
+              - unless browser.device.mobile?
+                %td= link_to shipment['EVENT_CODE'], shipments_path("search[event_code]" => shipment['EVENT_CODE'], :show_thumbnails => @show_thumbnails) unless shipment['EVENT_CODE'].blank?
+              - unless browser.device.mobile?
+                %td= "#{(shipment['HIDDEN'].blank? or shipment['HIDDEN'] == '0') ? 'No' : 'Yes'}"
+              - unless browser.device.mobile?
+                %td= shipment['CAPTURE_SEQ_NBR']
+              %td
+                %a.btn.btn-sm.btn-primary.new_line_item_picture_button{href: '#new_shipment', "data-target" => "#new_shipment", "data-toggle" => "modal", "data-ticket-number" => shipment['TICKET_NBR'], "data-customer-name" => shipment['CUST_NAME'], "data-event-code" => shipment['EVENT_CODE']}
+                  %i.fa.fa-plus
+                
+
+            =# render partial: 'shipments/modal', locals: {shipment: shipment}
+    - else
+      %p None
+  .card-footer= paginate @shipments
