@@ -62,4 +62,4 @@
             =# render partial: 'images/modal', locals: {image: image}
     - else
       %p None
-  .card-footer= paginate @images
+  .card-footer= paginate @images unless @images.blank?
