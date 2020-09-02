@@ -38,6 +38,10 @@
         %a.nav-link{:href => company_path(current_user.company)}
           %i.fa.fa-building
           %p= current_user.company.name
+      %li.nav-item{:class => (params[:controller] == 'cameras') ?  "active" : ""}
+        %a.nav-link{:href => cameras_path}
+          %i.fa.fa-camera
+          %p Cameras
       %li.nav-item{:class => (params[:controller] == 'users') ?  "active" : ""}
         %a.nav-link{:href => users_admin_index_path}
           %i.fa.fa-users

@@ -1,0 +1,18 @@
+= simple_form_for @camera do |f|
+  = f.error_notification
+  .form-inputs
+    .row
+      .col-xs-12.col-sm-6
+        = f.input :camera_name
+      .col-xs-12.col-sm-6
+        = f.input :device_name
+    .row
+      .col-xs-12.col-sm-6
+        = f.input :ip_address, label: 'IP Address'
+      .col-xs-12.col-sm-6
+        = f.input :port_nbr, label: 'Port Number'
+    .row
+      .col-xs-12.col-sm-6
+        = f.input :yardid, label: 'Yard ID'
+    %button.btn.btn-primary{:type => "submit", data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Save"}} 
+      Save

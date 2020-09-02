@@ -1,0 +1,32 @@
+/ Modal
+#image_capture.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.modal-sm{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5#exampleModalLabel.modal-title Image Capture
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        = form_tag capture_image_camera_path, :method => 'get' do
+          =# text_field_tag "ticket_nbr", nil, :placeholder => image_ticket_nbr_field_description, class: "form-control"
+          .form-group
+            = text_field_tag "ticket_nbr", nil, :placeholder => 'Ticket Number', class: "form-control"
+          .modal-footer
+            %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Cancel
+            %button.btn.btn-primary{:type => "submit", :onclick => "showCameraCapturingNotification('top','right')"} Capture
+
+:javascript
+  function showCameraCapturingNotification(from, align){
+    $.notify({
+        icon: "add_alert",
+        message: "Camera image capture is being processed."
+
+    },{
+        type: 'primary',
+        timer: 4000,
+        placement: {
+            from: from,
+            align: align
+        }
+    });
+  };

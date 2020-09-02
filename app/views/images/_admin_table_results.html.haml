@@ -1,5 +1,7 @@
 .card
-  .card-header.card-header-warning
+  .card-header.card-header-icon
+    .card-icon
+      %i.fa.fa-image.fa-2x
     %h4.card-title 
       Images
       .pull-right
@@ -33,33 +35,32 @@
             %tr
               %td
                 - if @show_thumbnails == '1'
-                  %a{href: image_path(image['CAPTURE_SEQ_NBR'])}
-                    =# image_tag(show_preview_image_image_path(image['CAPTURE_SEQ_NBR']), alt: image['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
-                    = image_tag(Image.preview_source(image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: image['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
+                  %a{href: image_path(image.capture_seq_nbr)}
+                    = image_tag(image.thumbnail_url, alt: image.capture_seq_nbr, class: 'col-sm-6 img img-fluid')
                 - else
                   - unless browser.device.mobile?
-                    %a.btn.btn-sm{href: image_path(image['CAPTURE_SEQ_NBR'])}
+                    %a.btn.btn-sm{href: image_path(image.capture_seq_nbr)}
                       Show
                   - else
-                    %a{href: image_path(image['CAPTURE_SEQ_NBR'])}
+                    %a{href: image_path(image.capture_seq_nbr)}
                       %i.fa.fa-photo
-              %td= image['SYS_DATE_TIME']
-              %td= link_to image['CUST_NAME'], images_path("search[customer_name]" => image['CUST_NAME'], :show_thumbnails => @show_thumbnails) unless image['CUST_NAME'].blank?
-              %td= link_to image['TICKET_NBR'], images_path("search[ticket_number]" => image['TICKET_NBR'], :show_thumbnails => @show_thumbnails) unless image['TICKET_NBR'].blank?
+              %td= image.sys_date_time
+              %td= link_to image.cust_name, images_path("search[customer_name]" => image.cust_name, :show_thumbnails => @show_thumbnails) unless image.cust_name.blank?
+              %td= link_to image.ticket_nbr, images_path("search[ticket_number]" => image.ticket_nbr, :show_thumbnails => @show_thumbnails) unless image.ticket_nbr.blank?
               - unless browser.device.mobile?
-                %td= image['CAMERA_NAME']
+                %td= image.camera_name
               - unless browser.device.mobile?
-                %td= link_to image['EVENT_CODE'], images_path("search[event_code]" => image['EVENT_CODE'], :show_thumbnails => @show_thumbnails) unless image['EVENT_CODE'].blank?
+                %td= link_to image.event_code, images_path("search[event_code]" => image.event_code, :show_thumbnails => @show_thumbnails) unless image.event_code.blank?
               - unless browser.device.mobile?
-                %td= "#{(image['HIDDEN'].blank? or image['HIDDEN'] == '0') ? 'No' : 'Yes'}"
+                %td= "#{(image.hidden.blank? or image.hidden == '0') ? 'No' : 'Yes'}"
               - unless browser.device.mobile?
-                %td= image['CAPTURE_SEQ_NBR']
+                %td= image.capture_seq_nbr
               %td
-                %a.btn.btn-sm.btn-primary.new_line_item_picture_button{href: '#new_image', "data-target" => "#new_image", "data-toggle" => "modal", "data-ticket-number" => image['TICKET_NBR'], "data-customer-name" => image['CUST_NAME'], "data-event-code" => image['EVENT_CODE']}
+                %a.btn.btn-sm.btn-primary.new_line_item_picture_button{href: '#new_image', "data-target" => "#new_image", "data-toggle" => "modal", "data-ticket-number" => image.ticket_nbr, "data-customer-name" => image.cust_name, "data-event-code" => image.event_code}
                   %i.fa.fa-plus
                 
 
             =# render partial: 'images/modal', locals: {image: image}
     - else
       %p None
-  .card-footer= paginate @images unless @images.blank?
+  .card-footer=# paginate @images unless @images.blank?

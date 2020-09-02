@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   helper_method :image_field_descriptions
   
   def image_capture_seq_nbr_field_description
-    @image_capture_seq_nbr_field_description ||= image_field_descriptions["capture_seq_nbr"]
+    @image_capture_seq_nbr_field_description ||= image_field_descriptions.blank? ? nil : image_field_descriptions["capture_seq_nbr"]
   end
   helper_method :image_capture_seq_nbr_field_description
   

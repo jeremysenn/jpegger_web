@@ -26,6 +26,10 @@
               %i.fa.fa-building
               &nbsp;
               = "#{current_user.company.name}"
+            %a.dropdown-item{:href => cameras_path}
+              %i.fa.fa-camera
+              &nbsp;
+              Cameras
             %a.dropdown-item{:href => users_admin_index_path}
               %i.fa.fa-users
               &nbsp;

@@ -46,5 +46,10 @@ Rails.application.routes.draw do
   resources :companies
   resources :searches
   resources :signatures
+  resources :cameras do
+    member do
+      get 'capture_image'
+    end
+  end
   
 end

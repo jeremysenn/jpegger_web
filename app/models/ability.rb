@@ -59,6 +59,9 @@ class Ability
       end
       can :index, Search
       
+      # Cameras
+      can :manage, Camera
+      
       # Signatures
       ############
 #      can :manage, Signature

@@ -7,29 +7,28 @@
           .card-header
             %h4.card-title.text-center 
               %i.fa.fa-photo
-              = @image['CAPTURE_SEQ_NBR']
+              = @image.capture_seq_nbr
               .pull-right= link_to "<i class='fa fa-close'></i>".html_safe, :back
-          =# image_tag(show_jpeg_image_image_path(@image['CAPTURE_SEQ_NBR']), alt: @image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
-          = image_tag(Image.jpeg_image_source(@image['CAPTURE_SEQ_NBR'], current_user.company_id), alt: @image['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
           .card-body
+            %p= image_tag(@image.url, alt: @image.capture_seq_nbr, class: 'img img-fluid img-thumbnail')
             %p.card-text
-              = @image['SYS_DATE_TIME']
+              = @image.sys_date_time
               %br
-              %strong= image_ticket_nbr_field_description
-              = link_to @image['TICKET_NBR'], root_path("search[ticket_number]" => @image['TICKET_NBR']) unless @image['TICKET_NBR'].blank?
+              -# %strong= image_ticket_nbr_field_description
+              = link_to @image.ticket_nbr, root_path("search[ticket_number]" => @image.ticket_nbr) unless @image.ticket_nbr.blank?
               %br
               %strong Camera
-              = @image['CAMERA_NAME']
+              = @image.camera_name
               %br
-              %strong= image_event_code_field_description
-              = link_to @image['EVENT_CODE'], root_path("search[event_code]" => @image['EVENT_CODE']) unless @image['EVENT_CODE'].blank?
+              -# %strong= image_event_code_field_description
+              = link_to @image.event_code, root_path("search[event_code]" => @image.event_code) unless @image.event_code.blank?
               - unless current_user.external?
                 %br
-                %strong= image_cust_name_field_description
-                = link_to @image['CUST_NAME'], root_path("search[customer_name]" => @image['CUST_NAME']) unless @image['CUST_NAME'].blank?
-              - unless @image['CONTR_NBR'].blank?
-                - contract = Contract.find_by_contract_number(@image['CONTR_NBR'], current_user)
+                -# %strong= image_cust_name_field_description
+                = link_to @image.cust_name, root_path("search[customer_name]" => @image.cust_name) unless @image.cust_name.blank?
+              - unless @image.contr_nbr.blank?
+                - contract = Contract.find_by_contract_number(@image.contr_nbr, current_user)
                 - unless contract.blank?
                   %br
                   %strong Contract Verbiage
-                  = contract['TEXT1']
+                  = contract.text1

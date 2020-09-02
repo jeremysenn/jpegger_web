@@ -1,0 +1,42 @@
+.wrapper
+  = render 'shared/admin_sidebar'
+  .main-panel
+    = render 'shared/admin_dashboard_navbar'
+    .content{style: 'margin-top: 0px;'}
+      .container-fluid
+        = render 'shared/flash_messages'
+        .row
+          .col-lg-12.col-md-12
+            .card
+              .card-header.card-header-icon
+                .card-icon
+                  %i.fa.fa-camera.fa-2x
+                %h4.card-title 
+                  Cameras
+                  .pull-right
+                    %a{:href => new_camera_path, class: 'btn btn-primary'}
+                      %i.fa.fa-plus
+                      New
+              .card-body.table-responsive-lg
+                - unless @cameras.blank?
+                  %table.table.table-hover
+                    %thead
+                      %th Name
+                      %th Device
+                      %th Type
+                      %th IP
+                      %th Port
+                      %th Yardid
+                    %tbody
+                      - @cameras.each do |camera|
+                        %tr
+                          %td= link_to camera.camera_name, camera_path(camera)
+                          %td= camera.device_name
+                          %td= camera.camera_type
+                          %td= camera.ip_address
+                          %td= camera.port_nbr
+                          %td= camera.yardid
+                - else
+                  %p None
+              .card-footer
+                =# paginate @cameras
