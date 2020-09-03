@@ -17,9 +17,8 @@ class ImagesController < ApplicationController
     @images = Image.find(:all, :params => { ticket_nbr: @ticket_number, yardid: @yard_id, cust_name: @customer_name,
         event_code: @event_code, start_date:  @start_date, end_date:  @end_date})
     @show_thumbnails = params[:show_thumbnails]
+    @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
     
-#    @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
-#    @show_thumbnails = params[:show_thumbnails]
 #    unless current_user.blank?
 #      unless params[:search].blank?
 #        @customer_name = params[:search][:customer_name]

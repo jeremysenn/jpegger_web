@@ -17,35 +17,57 @@
                   = link_to image_tag('JPEGger_powered_by_Tranact_Logo_medium.png'), 'https://www.tranact.com', target: '_blank;'
 
         = render 'shared/flash_messages'
-        - unless shipments_table.blank?
-          .col-sm-6.offset-sm-3
-            .row
-              .col-sm-6
-                %a.btn.btn-secondary.btn-block{:href => images_path}
-                  %i.fa.fa-image
-                  Images
-              .col-sm-6
-                %a.btn.btn-secondary.btn-block{:href => shipments_path}
-                  %i.fa.fa-truck
-                  Shipments
-            .row
-              .col-sm-6
-                %a.btn.btn-secondary.btn-block{:href => users_admin_index_path}
-                  %i.fa.fa-users
-                  Users
-              .col-sm-6
-                %a.btn.btn-secondary.btn-block{:href => searches_path}
-                  %i.fa.fa-search
-                  Searches
-        - else
-          - unless @image_file.blank?
-            = render 'image_files/alert_card'
+
+        .col-sm-6.offset-sm-3
           .row
-            .col-lg-12.col-md-12.col-sm-12
-              - if current_user.admin?
-                =# render partial: 'images/admin_search_card', locals: { url: root_path }
-                = render partial: 'images/search_card', locals: { url: root_path }
+            .col-sm-6
+              %a.btn.btn-secondary.btn-block{:href => images_path}
+                %i.fa.fa-image
+                Images
+            .col-sm-6
+              %a.btn.btn-secondary.btn-block{:href => shipments_path}
+                %i.fa.fa-truck
+                Shipments
           .row
-            .col-lg-12.col-md-12
-              = render 'images/admin_table_results'
+            .col-sm-6
+              %a.btn.btn-secondary.btn-block{:href => users_admin_index_path}
+                %i.fa.fa-users
+                Users
+            .col-sm-6
+              %a.btn.btn-secondary.btn-block{:href => cameras_path}
+                %i.fa.fa-camera
+                Cameras
+        -#
+          - unless shipments_table.blank?
+            .col-sm-6.offset-sm-3
+              .row
+                .col-sm-6
+                  %a.btn.btn-secondary.btn-block{:href => images_path}
+                    %i.fa.fa-image
+                    Images
+                .col-sm-6
+                  %a.btn.btn-secondary.btn-block{:href => shipments_path}
+                    %i.fa.fa-truck
+                    Shipments
+              .row
+                .col-sm-6
+                  %a.btn.btn-secondary.btn-block{:href => users_admin_index_path}
+                    %i.fa.fa-users
+                    Users
+                .col-sm-6
+                  %a.btn.btn-secondary.btn-block{:href => searches_path}
+                    %i.fa.fa-search
+                    Searches
+          - else
+            - unless @image_file.blank?
+              = render 'image_files/alert_card'
+            .row
+              .col-lg-12.col-md-12.col-sm-12
+                - if current_user.admin?
+                  =# render partial: 'images/admin_search_card', locals: { url: root_path }
+                  = render partial: 'images/search_card', locals: { url: root_path }
+            .row
+              .col-lg-12.col-md-12
+                = render 'images/admin_table_results'
+
     = render partial: 'shared/footer'
