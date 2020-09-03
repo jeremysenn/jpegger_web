@@ -19,12 +19,18 @@
         %thead.text-warning
           %th Image
           %th Date
-          %th= image_cust_name_field_description
-          %th= image_ticket_nbr_field_description
+          %th
+            =# image_cust_name_field_description
+            Customer
+          %th
+            =# image_ticket_nbr_field_description
+            Ticket
           - unless browser.device.mobile?
-            %th Camera Name
+            %th Camera
           - unless browser.device.mobile?
-            %th= image_event_code_field_description
+            %th
+              =# image_event_code_field_description
+              Event Code
           - unless browser.device.mobile?
             %th Hidden
           - unless browser.device.mobile?
@@ -45,12 +51,12 @@
                     %a{href: image_path(image.capture_seq_nbr)}
                       %i.fa.fa-photo
               %td= image.sys_date_time
-              %td= link_to image.cust_name, images_path("search[customer_name]" => image.cust_name, :show_thumbnails => @show_thumbnails) unless image.cust_name.blank?
-              %td= link_to image.ticket_nbr, images_path("search[ticket_number]" => image.ticket_nbr, :show_thumbnails => @show_thumbnails) unless image.ticket_nbr.blank?
+              %td= link_to image.cust_name, images_path(:customer_name => image.cust_name, :show_thumbnails => @show_thumbnails) unless image.cust_name.blank?
+              %td= link_to image.ticket_nbr, images_path(:ticket_number => image.ticket_nbr, :show_thumbnails => @show_thumbnails) unless image.ticket_nbr.blank?
               - unless browser.device.mobile?
                 %td= image.camera_name
               - unless browser.device.mobile?
-                %td= link_to image.event_code, images_path("search[event_code]" => image.event_code, :show_thumbnails => @show_thumbnails) unless image.event_code.blank?
+                %td= link_to image.event_code, images_path(:event_code => image.event_code, :show_thumbnails => @show_thumbnails) unless image.event_code.blank?
               - unless browser.device.mobile?
                 %td= "#{(image.hidden.blank? or image.hidden == '0') ? 'No' : 'Yes'}"
               - unless browser.device.mobile?

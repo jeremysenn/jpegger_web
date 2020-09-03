@@ -7,30 +7,30 @@
         %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
           %span{"aria-hidden" => "true"} ×
       .modal-body
-        = simple_form_for ImageFile.new do |f|
+        = simple_form_for Image.new do |f|
           = f.error_notification
-          = f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id}
-          = f.input :yard_id, :as => :hidden, :input_html => { :value => current_user.company.yard_id}
+          = f.input :yardid, :as => :hidden, :input_html => { :value => current_user.company.yard_id}
           .form-group
-            = f.input :ticket_number, label: 'Ticket Number', :input_html => { :value => @ticket_number}, required: true
+            = f.input :ticket_nbr, label: 'Ticket Number', :input_html => { :value => @ticket_number}, required: true
           .form-group
-            = f.input :customer_name, label: 'Customer Name', :input_html => { :value => @customer_name}
+            = f.input :cust_name, label: 'Customer Name', :input_html => { :value => @customer_name}
           .form-group
             = f.input :event_code, label: 'Event Code', :input_html => { :value => @event_code}
             =# f.input :event_code, collection: LookupDef.image_event_codes(current_user), as: :select, selected: @event_code, prompt: "--Choose #{image_event_code_field_description}--", required: true, label: image_event_code_field_description
-          - if current_user.company.leads_online?
-            .form-group
-              .form-check
-                %label.form-check-label
-                  = f.check_box :leads_online, class: 'form-check-input', checked: true
-                  Leads Online
-                  %span.form-check-sign
-                    %span.check
-            .card{id: 'leads_online_row', style: 'display:block; margin-top: 0px;'}
-              .form-group.col-xs-12.col-sm-6
-                = f.input :camera_class, collection: camera_classes, as: :select, prompt: "Camera Class", label: false
-              .form-group.col-xs-12.col-sm-6
-                = f.input :camera_position, collection: camera_positions, as: :select, prompt: "Camera Position", label: false
+          -#
+            - if current_user.company.leads_online?
+              .form-group
+                .form-check
+                  %label.form-check-label
+                    = f.check_box :leads_online, class: 'form-check-input', checked: true
+                    Leads Online
+                    %span.form-check-sign
+                      %span.check
+              .card{id: 'leads_online_row', style: 'display:block; margin-top: 0px;'}
+                .form-group.col-xs-12.col-sm-6
+                  = f.input :camera_class, collection: camera_classes, as: :select, prompt: "Camera Class", label: false
+                .form-group.col-xs-12.col-sm-6
+                  = f.input :camera_position, collection: camera_positions, as: :select, prompt: "Camera Position", label: false
           .form-group
             =# f.input :file, as: :file, label: 'Choose Image', :input_html => {class: 'form-control-file'}
             = f.input :file, as: :file, input_html: {class: 'form-control-file', onchange: "PreviewImage();"}, label: "<i class='fa fa-camera fa-lg text-primary'></i> --Choose Image--".html_safe, required: true

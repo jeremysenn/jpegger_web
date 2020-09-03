@@ -36,6 +36,11 @@ class ImageFilesController < ApplicationController
           base64_string = image_file_params[:signature][metadata.size..-1]
           blob = Base64.decode64(base64_string)
           image = MiniMagick::Image.read(blob)
+          image.combine_options do |c|
+            c.background '#FFFFFF'
+            c.alpha 'remove'
+          end
+          image.format 'jpg'
           @image_file.file = image
         end
         if @image_file.save

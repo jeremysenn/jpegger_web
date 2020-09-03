@@ -1,0 +1,71 @@
+/ Modal
+#new_signature_image.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.modal-lg{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5#exampleModalLabel.modal-title New Signature
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        = simple_form_for ImageFile.new do |f|
+          = f.error_notification
+          = f.input_field :signature, as: :hidden, class: 'signature_pad_input'
+          = f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id}
+          = f.input :yard_id, :as => :hidden, :input_html => { :value => current_user.company.yard_id}
+          = f.input :event_code, :as => :hidden, :input_html => { :value => "Signature"}
+          .form-group
+            = f.input :ticket_number, label: 'Ticket Number', :input_html => { :value => @ticket_number}, required: true
+          .form-group
+            = f.input :customer_name, label: 'Customer Name', :input_html => { :value => @customer_name}
+          .form-group
+            = f.input :contract_number, collection: Contract.all(current_user), as: :select, prompt: "--Choose Contract--", required: true, label: Contract
+          .signature_pad.text-center
+            .signature_pad_body
+              %canvas
+            .signature_pad_footer
+              .text-muted Sign above
+              %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Cancel
+              %button.btn.btn-default.signature_pad_clear{:type => "button"} Clear
+              =# f.button :submit, 'Save', class: 'btn btn-primary signature_pad_save'
+              %button.btn.btn-primary{:type => "submit", class: 'signature_pad_save', data: {disable_with: "<i class='fa fa-spinner fa-spin'></i> Save"}} Save
+          -#
+            .modal-footer
+              %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Cancel
+              %button.btn.btn-primary{:type => "submit", :onclick => "showNotification('top','right')"} Save
+
+:javascript
+
+  var resizeCanvas;
+
+  resizeCanvas = function(canvas) {
+    var ratio;
+    ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+  };
+
+  //$(document).on('turbolinks:load', function() {
+  $('#new_signature_image').on('shown.bs.modal', function (e) {
+    var canvas, signature_pad;
+    canvas = document.querySelector('canvas');
+    if (canvas) {
+      canvas.height = canvas.offsetHeight;
+      canvas.width = canvas.offsetWidth;
+      window.onresize = resizeCanvas(canvas);
+      resizeCanvas(canvas);
+      signature_pad = new SignaturePad(canvas);
+      $('.signature_pad_clear').click(function() {
+        signature_pad.clear();
+      });
+      $('.signature_pad_save').click(function(event) {
+        if (signature_pad.isEmpty()) {
+          alert('You must fist sign!');
+          event.preventDefault();
+        } else {
+          $('.signature_pad_input').val(signature_pad.toDataURL());
+        }
+      });
+    }
+  });
+

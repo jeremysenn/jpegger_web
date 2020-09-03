@@ -17,25 +17,25 @@ class ImageFileUploader < CarrierWave::Uploader::Base
   end
   
   # Create different versions of your uploaded files:
-  version :thumb do
-    process :rotate
-#    process :cover
+#  version :thumb do
+#    process :rotate
+##    process :cover
+##    process :resize_to_fit => [320, 240]
 #    process :resize_to_fit => [320, 240]
-    process :resize_to_fit => [320, 240]
-    process :convert => :jpg
-
-#    def full_filename (for_file = model.source.file)
-#      super.chomp(File.extname(super)) + '.jpg'
-#    end
-  end
+#    process :convert => :jpg
+#
+##    def full_filename (for_file = model.source.file)
+##      super.chomp(File.extname(super)) + '.jpg'
+##    end
+#  end
   
-  version :large, if: :ready_to_process? do
-    process :rotate
-#    process :resize_to_fit => [2000, 2000]
-#    process :caption, :if => :should_process_caption?
-#    process :contract, :if => :should_process_contract?
-  end
-  
+#  version :large, if: :ready_to_process? do
+#    process :rotate
+##    process :resize_to_fit => [2000, 2000]
+##    process :caption, :if => :should_process_caption?
+##    process :contract, :if => :should_process_contract?
+#  end
+#  
   def rotate
     manipulate! do |image|
       image.auto_orient

@@ -7,7 +7,15 @@ class ImagesController < ApplicationController
   # GET /images
   # GET /images.json
   def index
-    @images = Image.all
+#    @images = Image.all
+    @ticket_number = params[:ticket_number]
+    @yard_id = params[:yardid]
+    @customer_name = params[:customer_name]
+    @event_code = params[:event_code]
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    @images = Image.find(:all, :params => { ticket_nbr: @ticket_number, yardid: @yard_id, cust_name: @customer_name,
+        event_code: @event_code, start_date:  @start_date, end_date:  @end_date})
     @show_thumbnails = params[:show_thumbnails]
     
 #    @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
@@ -47,10 +55,27 @@ class ImagesController < ApplicationController
 
   # GET /images/new
   def new
+    @image = Image.new
   end
 
   # GET /images/1/edit
   def edit
+  end
+  
+  # POST /images
+  # POST /images.json
+  def create
+    @image = Image.new(image_params)
+    respond_to do |format|
+      if @image.save
+        format.html { redirect_to image_path(@image.capture_seq_nbr), notice: 'Image was successfully created.' }
+        format.json { render :show, status: :created, location: @image }
+      else
+#        format.html { render :new }
+        format.html { redirect_back fallback_location: images_path, alert: "There was a problem creating the image: #{@image.errors.full_messages}"}
+        format.json { render json: @image.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # DELETE /images/1
@@ -73,7 +98,7 @@ class ImagesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def image_params
     # order matters here in that to have access to model attributes in uploader methods, they need to show up before the file param in this permitted_params list 
-    params.require(:image).permit(:ticket_nbr, :file)
+    params.require(:image).permit(:ticket_nbr, :event_code, :yardid, :cust_name, :leadsonline, :file)
   end
 
   def set_image_field_descriptions

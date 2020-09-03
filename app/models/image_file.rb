@@ -5,7 +5,8 @@ class ImageFile < ActiveRecord::Base
   belongs_to :user
 #  belongs_to :event_code
   
-  after_commit :sidekiq_blob_and_image_creation, :on => :create # To circumvent "Can't find ModelName with ID=12345" Sidekiq error, use after_commit
+#  after_commit :sidekiq_blob_and_image_creation, :on => :create # To circumvent "Can't find ModelName with ID=12345" Sidekiq error, use after_commit
+  after_commit :api_blob_and_image_creation, :on => :create
   
 #  validates :ticket_number, presence: true
   validates :file, presence: true
@@ -26,6 +27,46 @@ class ImageFile < ActiveRecord::Base
   # Create the image record and the blob in the background
   def sidekiq_blob_and_image_creation
     ImageBlobWorker.perform_async(self.id) 
+  end
+  
+  def api_blob_and_image_creation
+    self.update_attribute(:process, true)
+    event_code_name = self.event_code
+    unless self.camera_class.blank? and self.camera_position.blank?
+      leads_online_string = self.camera_class + self.camera_position
+      leads_online_store_id = self.user.company.leads_online_store_id
+    else
+      leads_online_string = ""
+      leads_online_store_id = ""
+    end
+    large_image_blob_data = MiniMagick::Image.open(Rails.root.to_s + "/public" + self.file_url).to_blob
+    image = Image.create(ticket_nbr: self.ticket_number,
+      event_code: event_code_name,
+      leadsonline: leads_online_string,
+      lol_store_id: leads_online_store_id,
+      file_name: self.file_url,
+      branch_code: self.branch_code,
+      yardid: self.yard_id,
+      container_nbr: self.container_number,
+      booking_nbr: self.booking_number,
+      contr_nbr: self.contract_number,
+      camera_name: self.user.full_name.parameterize.underscore,
+      camera_group: "JPEGger Web",
+      cust_nbr: self.customer_number,
+      cust_name: self.customer_name,
+      tare_seq_nbr: self.tare_seq_nbr,
+      cmdy_nbr: self.tare_seq_nbr,
+      cmdy_name: self.commodity_name,
+      weight: self.weight,
+      vin: self.vin_number,
+      tagnbr: self.tag_number,
+      service_req_nbr: self.service_request_number,
+      file: Base64.encode64(large_image_blob_data))
+            
+    
+#    pn = Pathname.new(self.file_url) # Get the path to the file
+#    self.remove_file! # Remove the file and its versions
+#    FileUtils.remove_dir "#{Rails.root}/public#{pn.dirname}" # Remove the now empty directory
   end
   
   def latitude_and_longitude

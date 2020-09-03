@@ -26,7 +26,15 @@
               %i.fa.fa-building
               &nbsp;
               = "#{current_user.company.name}"
-            %a.dropdown-item{:href => cameras_path}
+            %a.dropdown-item{:href => images_path, :class => (params[:controller] == 'images') ?  "active" : ""}
+              %i.fa.fa-image
+              &nbsp;
+              Images
+            %a.dropdown-item{:href => shipments_path, :class => (params[:controller] == 'shipments') ?  "active" : ""}
+              %i.fa.fa-truck
+              &nbsp;
+              Shipments
+            %a.dropdown-item{:href => cameras_path, :class => (params[:controller] == 'cameras') ?  "active" : ""}
               %i.fa.fa-camera
               &nbsp;
               Cameras
