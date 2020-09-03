@@ -63,10 +63,9 @@ class ImageFile < ActiveRecord::Base
       service_req_nbr: self.service_request_number,
       file: Base64.encode64(large_image_blob_data))
             
-    
-#    pn = Pathname.new(self.file_url) # Get the path to the file
-#    self.remove_file! # Remove the file and its versions
-#    FileUtils.remove_dir "#{Rails.root}/public#{pn.dirname}" # Remove the now empty directory
+    pn = Pathname.new(self.file_url) # Get the path to the file
+    self.remove_file! # Remove the file and its versions
+    FileUtils.remove_dir "#{Rails.root}/public#{pn.dirname}" # Remove the now empty directory
   end
   
   def latitude_and_longitude
