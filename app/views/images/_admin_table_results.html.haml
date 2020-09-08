@@ -34,7 +34,9 @@
           - unless browser.device.mobile?
             %th Hidden
           - unless browser.device.mobile?
-            %th= image_capture_seq_nbr_field_description
+            %th
+              =# image_capture_seq_nbr_field_description
+              Capture Sequence Number
           %th
         %tbody{id: 'image_search_results'}
           - @images.each do |image|
