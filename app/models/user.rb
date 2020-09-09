@@ -30,6 +30,10 @@ class User < ApplicationRecord
     role == "external"
   end
   
+  def basic?
+    role == "basic"
+  end
+  
   def super?
     role == "super"
   end

@@ -18,7 +18,7 @@
   - elsif current_user.external?
     = render 'external_user_start'
   - elsif current_user.super?
-    = render 'shared/admin_dashboard_navbar'
+    = render 'shared/super_user_dashboard_navbar'
     .container-fluid
       .row
         .col-sm-6.offset-sm-3
