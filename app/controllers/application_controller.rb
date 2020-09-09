@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   
   ### Image Table Field Descriptions ###
   def image_field_descriptions
-    @image_field_descriptions ||= session[:image_field_descriptions]
+    @image_field_descriptions ||= session[:image_field_descriptions].blank? ? nil : session[:image_field_descriptions]
   end
   helper_method :image_field_descriptions
   
@@ -25,17 +25,17 @@ class ApplicationController < ActionController::Base
   helper_method :image_capture_seq_nbr_field_description
   
   def image_ticket_nbr_field_description
-    @image_ticket_nbr_field_description ||= image_field_descriptions["ticket_nbr"]
+    @image_ticket_nbr_field_description ||= image_field_descriptions.blank? ? nil : image_field_descriptions["ticket_nbr"]
   end
   helper_method :image_ticket_nbr_field_description
   
   def image_event_code_field_description
-    @image_event_code_field_description ||= image_field_descriptions["event_code"]
+    @image_event_code_field_description ||= image_field_descriptions.blank? ? nil : image_field_descriptions["event_code"]
   end
   helper_method :image_event_code_field_description
   
   def image_cust_name_field_description
-    @image_cust_name_field_description ||= image_field_descriptions["cust_name"]
+    @image_cust_name_field_description ||= image_field_descriptions.blank? ? nil : image_field_descriptions["cust_name"]
   end
   helper_method :image_cust_name_field_description
   ### End Image Table Field Descriptions ###

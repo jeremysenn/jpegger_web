@@ -10,7 +10,7 @@
             %h1.bd-title
               %i.material-icons{style: 'font-size: 60px;' } image
               %br
-              JPEGger WEB
+              JPEGger
             %p.bd-lead
               = link_to 'Please update your password', edit_user_registration_path(current_user), class: 'btn btn-danger btn-lg'
   - elsif current_user.admin?
@@ -26,6 +26,6 @@
             %h1.bd-title
               %i.material-icons{style: 'font-size: 60px;' } image
               %br
-              JPEGger WEB
+              JPEGger
             %p.bd-lead
               = link_to 'Super User Admin Console', admin_root_path, class: 'btn btn-primary btn-lg'

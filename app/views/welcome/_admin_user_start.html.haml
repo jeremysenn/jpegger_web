@@ -9,7 +9,7 @@
             %li.nav-item
               %h3
                 -#
-                  JPEGger Web Powered by
+                  JPEGger Powered by
                   = image_tag('tranact_logo_small.png')
                 - unless current_user.company.logo.url.blank?
                   = image_tag(current_user.company.logo.url(:medium), class: 'img-fluid')
