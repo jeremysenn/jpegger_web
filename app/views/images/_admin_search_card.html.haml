@@ -3,7 +3,7 @@
     .card-icon
       %i.material-icons search
     %p.card-category Image Search
-    %h3.card-title= "#{pluralize(number_with_delimiter(@all_images.count), 'image')} found."
+    %h3.card-title= "#{pluralize(number_with_delimiter(@all_images.count), 'image')} found." unless @all_images.blank?
   .card-body
     = form_tag url, :method => 'get' do
       %ul.nav.justify-content-center
