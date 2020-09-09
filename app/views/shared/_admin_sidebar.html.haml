@@ -46,10 +46,11 @@
         %a.nav-link{:href => users_admin_index_path}
           %i.fa.fa-users
           %p Users
-      %li.nav-item{:class => (params[:controller] == 'searches') ?  "active" : ""}
-        %a.nav-link{:href => searches_path}
-          %i.fa.fa-search
-          %p User Searches
+      -#
+        %li.nav-item{:class => (params[:controller] == 'searches') ?  "active" : ""}
+          %a.nav-link{:href => searches_path}
+            %i.fa.fa-search
+            %p User Searches
       %li.nav-item
         %hr
         %a.nav-link{:href => destroy_user_session_path, rel: "nofollow", data: {method: :delete, confirm: 'Are you sure you want to sign out?' }}
