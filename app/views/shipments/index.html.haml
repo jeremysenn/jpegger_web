@@ -11,8 +11,9 @@
     .content{style: 'margin-top: 0px'}
       .container-fluid
         = render 'shared/flash_messages'
-        - unless @shipment_file.blank?
-          = render 'shipment_files/alert_card'
+        -#
+          - unless @shipment_file.blank?
+            = render 'shipment_files/alert_card'
         .row
           .col-lg-12.col-md-12.col-sm-12
             = render partial: 'shipments/admin_search_card', locals: { url: shipments_path } if current_user.admin?

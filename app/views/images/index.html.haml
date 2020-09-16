@@ -12,8 +12,9 @@
     .content{style: 'margin-top: 0px'}
       .container-fluid
         = render 'shared/flash_messages'
-        - unless @image_file.blank?
-          = render 'image_files/alert_card'
+        -#
+          - unless @image_file.blank?
+            = render 'image_files/alert_card'
         .row
           .col-lg-12.col-md-12.col-sm-12
             = render partial: 'images/admin_search_card', locals: { url: images_path } if current_user.admin?
