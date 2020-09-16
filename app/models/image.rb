@@ -1,5 +1,6 @@
 class Image < ActiveResource::Base
-  self.site = "http://localhost:3000/api/v1"
+#  self.site = "http://localhost:3000/api/v1"
+  self.site = "http://api:3000/api/v1"
   
   validates_presence_of :ticket_nbr
   validates_presence_of :file
