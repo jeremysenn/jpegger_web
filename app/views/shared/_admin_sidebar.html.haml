@@ -38,6 +38,11 @@
         %a.nav-link{:href => shipments_path}
           %i.fa.fa-truck
           %p Shipments
+      -# unless cust_pics_table.blank?
+      %li.nav-item{:class => (params[:controller] == 'cust_pics') ?  "active" : ""}
+        %a.nav-link{:href => cust_pics_path}
+          %i.fa.fa-user-circle
+          %p Cust Pics
       %li.nav-item{:class => (params[:controller] == 'cameras') ?  "active" : ""}
         %a.nav-link{:href => cameras_path}
           %i.fa.fa-camera

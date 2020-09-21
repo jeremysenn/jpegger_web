@@ -1,0 +1,25 @@
+.wrapper
+  - if current_user.admin?
+    = render 'shared/admin_sidebar'
+  - elsif current_user.external?
+    = render 'shared/external_user_sidebar'
+  .main-panel
+    - if current_user.admin?
+      = render 'shared/admin_dashboard_navbar'
+    - elsif current_user.external?
+      = render 'shared/external_user_dashboard_navbar'
+    .content{style: 'margin-top: 0px'}
+      .container-fluid
+        = render 'shared/flash_messages'
+        -#
+          - unless @cust_pic_file.blank?
+            = render 'cust_pic_files/alert_card'
+        .row
+          .col-lg-12.col-md-12.col-sm-12
+            = render partial: 'cust_pics/admin_search_card', locals: { url: cust_pics_path } if current_user.admin?
+            = render partial: 'cust_pics/external_user_search_card', locals: { url: cust_pics_path } if current_user.external?
+        .row
+          .col-lg-12.col-md-12
+            =# render 'admin_thumbnail_results' if current_user.admin?
+            = render 'admin_table_results' if current_user.admin?
+            = render 'external_user_thumbnail_results' if current_user.external?

@@ -1,5 +1,5 @@
 class ShipmentsController < ApplicationController
-  before_action :set_shipment_field_descriptions, if: -> { current_user and not current_user.super? and FieldDescription.search_shipments_table?(current_user)}
+#  before_action :set_shipment_field_descriptions, if: -> { current_user and not current_user.super? and FieldDescription.search_shipments_table?(current_user)}
   before_action :authenticate_user!
   before_action :set_shipment, only: [:show, :edit, :update, :destroy]
   load_and_authorize_resource only: [:index]
@@ -7,33 +7,45 @@ class ShipmentsController < ApplicationController
   # GET /shipments
   # GET /shipments.json
   def index
-    @shipment_file = ShipmentFile.find(flash[:shipment_file_id]) unless flash[:shipment_file_id].blank?
+    @ticket_number = params[:ticket_number]
+    @yard_id = params[:yardid]
+    @customer_name = params[:customer_name]
+    @event_code = params[:event_code]
+    @start_date = params[:start_date]
+    @end_date = params[:end_date]
+    @shipments = Shipment.find(:all, :params => { ticket_nbr: @ticket_number, yardid: @yard_id, cust_name: @customer_name,
+        event_code: @event_code, start_date:  @start_date, end_date:  @end_date, limit: 100})
     @show_thumbnails = params[:show_thumbnails]
-    unless current_user.blank?
-      unless params[:search].blank?
-        @customer_name = params[:search][:customer_name]
-        @event_code = params[:search][:event_code]
-        @ticket_number = params[:search][:ticket_number]
-        @start_date = params[:search][:start_date]
-        @end_date = params[:search][:end_date]
-        if current_user.admin?
-          @all_shipments = Shipment.search(params[:search], current_user).reverse
-        elsif current_user.external?
-          @all_shipments = Shipment.external_user_search(params[:search], current_user).reverse
-        end
-        SaveSearchWorker.perform_async(current_user.id, 'shipments', @event_code, @customer_name, @ticket_number, @start_date, @end_date)
-      else
-        @start_date = Date.today
-        @end_date = Date.today
-        if current_user.admin?
-          @all_shipments = Shipment.find_all_by_date_range(@start_date, @end_date, current_user).reverse
-        elsif current_user.external?
-          @all_shipments = Shipment.external_user_find_all_by_date_range(@start_date, @end_date, current_user).reverse
-        end
-      end
-      @shipments = Kaminari.paginate_array(@all_shipments).page(params[:page]).per(12)
-    end
-    flash[:shipment_file_id] = nil
+    @shipment_file = ShipmentFile.find(flash[:shipment_file_id]) unless flash[:shipment_file_id].blank?
+    
+    
+#    @shipment_file = ShipmentFile.find(flash[:shipment_file_id]) unless flash[:shipment_file_id].blank?
+#    @show_thumbnails = params[:show_thumbnails]
+#    unless current_user.blank?
+#      unless params[:search].blank?
+#        @customer_name = params[:search][:customer_name]
+#        @event_code = params[:search][:event_code]
+#        @ticket_number = params[:search][:ticket_number]
+#        @start_date = params[:search][:start_date]
+#        @end_date = params[:search][:end_date]
+#        if current_user.admin?
+#          @all_shipments = Shipment.search(params[:search], current_user).reverse
+#        elsif current_user.external?
+#          @all_shipments = Shipment.external_user_search(params[:search], current_user).reverse
+#        end
+#        SaveSearchWorker.perform_async(current_user.id, 'shipments', @event_code, @customer_name, @ticket_number, @start_date, @end_date)
+#      else
+#        @start_date = Date.today
+#        @end_date = Date.today
+#        if current_user.admin?
+#          @all_shipments = Shipment.find_all_by_date_range(@start_date, @end_date, current_user).reverse
+#        elsif current_user.external?
+#          @all_shipments = Shipment.external_user_find_all_by_date_range(@start_date, @end_date, current_user).reverse
+#        end
+#      end
+#      @shipments = Kaminari.paginate_array(@all_shipments).page(params[:page]).per(12)
+#    end
+#    flash[:shipment_file_id] = nil
   end
 
   # GET /shipment/1
@@ -77,7 +89,8 @@ class ShipmentsController < ApplicationController
   
   # Use callbacks to share common setup or constraints between actions.
   def set_shipment
-    @shipment = Shipment.find_by_capture_sequence_number(params[:id], current_user)
+#    @shipment = Shipment.find_by_capture_sequence_number(params[:id], current_user)
+    @shipment = Shipment.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

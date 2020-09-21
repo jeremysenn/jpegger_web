@@ -34,6 +34,10 @@
               %i.fa.fa-truck
               &nbsp;
               Shipments
+            %a.dropdown-item{:href => cust_pics_path, :class => (params[:controller] == 'cust_pics') ?  "active" : ""}
+              %i.fa.fa-user-circle
+              &nbsp;
+              Cust Pics
             %a.dropdown-item{:href => cameras_path, :class => (params[:controller] == 'cameras') ?  "active" : ""}
               %i.fa.fa-camera
               &nbsp;

@@ -1,5 +1,7 @@
 .card
-  .card-header.card-header-success
+  .card-header.card-header-icon
+    .card-icon
+      %i.fa.fa-truck.fa-2x
     %h4.card-title 
       Shipments
       .pull-right
@@ -12,49 +14,58 @@
         %thead.text-warning
           %th Image
           %th Date
-          %th= shipment_cust_name_field_description
-          %th= shipment_ticket_nbr_field_description
+          %th
+            =# shipment_cust_name_field_description
+            Customer Name
+          %th
+            =# shipment_ticket_nbr_field_description
+            Ticket Number
           - unless browser.device.mobile?
             %th Camera Name
           - unless browser.device.mobile?
-            %th= shipment_event_code_field_description
+            %th
+              =# shipment_event_code_field_description
+              Event Code
           - unless browser.device.mobile?
             %th Hidden
           - unless browser.device.mobile?
-            %th= shipment_capture_seq_nbr_field_description
+            %th
+              =# shipment_capture_seq_nbr_field_description
+              Capture Sequence Number
           %th
         %tbody{id: 'shipment_search_results'}
           - @shipments.each do |shipment|
             %tr
               %td
                 - if @show_thumbnails == '1'
-                  %a{href: shipment_path(shipment['CAPTURE_SEQ_NBR'])}
+                  %a{href: shipment_path(shipment.capture_seq_nbr)}
                     =# image_tag(show_preview_shipment_shipment_path(shipment['CAPTURE_SEQ_NBR']), alt: shipment['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
-                    = image_tag(Shipment.preview_source(shipment['CAPTURE_SEQ_NBR'], current_user.company_id), alt: shipment['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
+                    =# image_tag(Shipment.preview_source(shipment['CAPTURE_SEQ_NBR'], current_user.company_id), alt: shipment['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
+                    = image_tag("#{request.protocol}#{request.host}#{shipment.thumbnail_url}", alt: shipment.capture_seq_nbr, class: 'col-sm-6 img img-fluid')
                 - else
                   - unless browser.device.mobile?
-                    %a.btn.btn-sm{href: shipment_path(shipment['CAPTURE_SEQ_NBR'])}
+                    %a.btn.btn-sm{href: shipment_path(shipment.capture_seq_nbr)}
                       Show
                   - else
-                    %a{href: shipment_path(shipment['CAPTURE_SEQ_NBR'])}
+                    %a{href: shipment_path(shipment.capture_seq_nbr)}
                       %i.fa.fa-photo
-              %td= shipment['SYS_DATE_TIME']
-              %td= link_to shipment['CUST_NAME'], shipments_path("search[customer_name]" => shipment['CUST_NAME'], :show_thumbnails => @show_thumbnails) unless shipment['CUST_NAME'].blank?
-              %td= link_to shipment['TICKET_NBR'], shipments_path("search[ticket_number]" => shipment['TICKET_NBR'], :show_thumbnails => @show_thumbnails) unless shipment['TICKET_NBR'].blank?
+              %td= shipment.sys_date_time
+              %td= link_to shipment.cust_name, shipments_path(customer_name: shipment.cust_name, :show_thumbnails => @show_thumbnails) unless shipment.cust_name.blank?
+              %td= link_to shipment.ticket_nbr, shipments_path(ticket_number: shipment.ticket_nbr, :show_thumbnails => @show_thumbnails) unless shipment.ticket_nbr.blank?
               - unless browser.device.mobile?
-                %td= shipment['CAMERA_NAME']
+                %td= shipment.camera_name
               - unless browser.device.mobile?
-                %td= link_to shipment['EVENT_CODE'], shipments_path("search[event_code]" => shipment['EVENT_CODE'], :show_thumbnails => @show_thumbnails) unless shipment['EVENT_CODE'].blank?
+                %td= link_to shipment.event_code, shipments_path(event_code: shipment.event_code, :show_thumbnails => @show_thumbnails) unless shipment.event_code.blank?
               - unless browser.device.mobile?
-                %td= "#{(shipment['HIDDEN'].blank? or shipment['HIDDEN'] == '0') ? 'No' : 'Yes'}"
+                %td= "#{(shipment.hidden.blank? or shipment.hidden == '0') ? 'No' : 'Yes'}"
               - unless browser.device.mobile?
-                %td= shipment['CAPTURE_SEQ_NBR']
+                %td= shipment.capture_seq_nbr
               %td
-                %a.btn.btn-sm.btn-primary.new_line_item_picture_button{href: '#new_shipment', "data-target" => "#new_shipment", "data-toggle" => "modal", "data-ticket-number" => shipment['TICKET_NBR'], "data-customer-name" => shipment['CUST_NAME'], "data-event-code" => shipment['EVENT_CODE']}
+                %a.btn.btn-sm.btn-primary.new_line_item_picture_button{href: '#new_shipment', "data-target" => "#new_shipment", "data-toggle" => "modal", "data-ticket-number" => shipment.ticket_nbr, "data-customer-name" => shipment.cust_name, "data-event-code" => shipment.event_code}
                   %i.fa.fa-plus
                 
 
             =# render partial: 'shipments/modal', locals: {shipment: shipment}
     - else
       %p None
-  .card-footer= paginate @shipments
+  .card-footer=# paginate @shipments

@@ -7,23 +7,29 @@
           .card-header
             %h4.card-title.text-center 
               %i.fa.fa-photo
-              = @shipment['CAPTURE_SEQ_NBR']
+              = @shipment.capture_seq_nbr
               .pull-right= link_to "<i class='fa fa-close'></i>".html_safe, :back
           =# image_tag(show_jpeg_image_shipment_path(@shipment['CAPTURE_SEQ_NBR']), alt: @shipment['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
-          = image_tag(Shipment.jpeg_image_source(@shipment['CAPTURE_SEQ_NBR'], current_user.company_id), alt: @shipment['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
+          %p= image_tag("#{request.protocol}#{request.host}#{@shipment.url}", alt: @shipment.capture_seq_nbr, class: 'img img-fluid img-thumbnail')
           .card-body
             %p.card-text
-              = @shipment['SYS_DATE_TIME']
+              = @shipment.sys_date_time
               %br
-              %strong= shipment_ticket_nbr_field_description
-              = link_to @shipment['TICKET_NBR'], shipments_path("search[ticket_number]" => @shipment['TICKET_NBR']) unless @shipment['TICKET_NBR'].blank?
+              %strong
+                =# shipment_ticket_nbr_field_description
+                Ticket Number
+              = link_to @shipment.ticket_nbr, shipments_path(ticket_number: @shipment.ticket_nbr) unless @shipment.ticket_nbr.blank?
               %br
               %strong Camera
-              = @shipment['CAMERA_NAME']
+              = @shipment.camera_name
               %br
-              %strong= shipment_event_code_field_description
-              = link_to @shipment['EVENT_CODE'], shipments_path("search[event_code]" => @shipment['EVENT_CODE']) unless @shipment['EVENT_CODE'].blank?
+              %strong
+                =# shipment_event_code_field_description
+                Event Code
+              = link_to @shipment.event_code, shipments_path(event_code: @shipment.event_code) unless @shipment.event_code.blank?
               - unless current_user.external?
                 %br
-                %strong= shipment_cust_name_field_description
-                = link_to @shipment['CUST_NAME'], shipments_path("search[customer_name]" => @shipment['CUST_NAME']) unless @shipment['CUST_NAME'].blank?
+                %strong
+                  =# shipment_cust_name_field_description
+                  Customer Name
+                = link_to @shipment.cust_name, shipments_path(customer_name: @shipment.cust_name) unless @shipment.cust_name.blank?

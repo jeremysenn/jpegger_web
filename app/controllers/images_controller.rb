@@ -1,5 +1,5 @@
 class ImagesController < ApplicationController
-#  before_action :set_image_field_descriptions, if: -> { current_user and not current_user.super? and FieldDescription.search_images_table?(current_user)}
+  before_action :set_image_field_descriptions, if: -> { current_user and not current_user.super? and FieldDescription.search_images_table?(current_user)}
   before_action :authenticate_user!
   before_action :set_image, only: [:show, :edit, :update, :destroy]
   load_and_authorize_resource only: [:index]
@@ -15,7 +15,7 @@ class ImagesController < ApplicationController
     @start_date = params[:start_date]
     @end_date = params[:end_date]
     @images = Image.find(:all, :params => { ticket_nbr: @ticket_number, yardid: @yard_id, cust_name: @customer_name,
-        event_code: @event_code, start_date:  @start_date, end_date:  @end_date})
+        event_code: @event_code, start_date:  @start_date, end_date:  @end_date, limit: 100})
     @show_thumbnails = params[:show_thumbnails]
     @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
     

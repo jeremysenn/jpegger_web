@@ -43,6 +43,14 @@ Rails.application.routes.draw do
     end
   end
   
+  resources :cust_pics do
+    member do
+      get 'show_jpeg_image'
+      get 'show_preview_image'
+      get 'send_pdf_data'
+    end
+  end
+  
   resources :companies
   resources :searches
   resources :signatures

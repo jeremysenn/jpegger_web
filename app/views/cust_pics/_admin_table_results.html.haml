@@ -1,0 +1,68 @@
+.card
+  .card-header.card-header-icon
+    .card-icon
+      %i.fa.fa-user-circle.fa-2x
+    %h4.card-title 
+      CustPics
+      .pull-right
+        %a.btn.btn-sm.btn-primary{href: '#new_cust_pic', "data-target" => "#new_cust_pic", "data-toggle" => "modal"}
+          %i.fa.fa-plus
+  = render 'cust_pic_files/new_modal'
+  .card-body.table-responsive
+    - unless @cust_pics.blank?
+      %table.table.table-hover
+        %thead.text-warning
+          %th CustPic
+          %th Date
+          %th
+            First Name
+          %th
+            Last Name
+          %th
+            Customer Number
+          - unless browser.device.mobile?
+            %th Camera Name
+          - unless browser.device.mobile?
+            %th
+              Event Code
+          - unless browser.device.mobile?
+            %th Hidden
+          - unless browser.device.mobile?
+            %th
+              Capture Sequence Number
+          %th
+        %tbody{id: 'cust_pic_search_results'}
+          - @cust_pics.each do |cust_pic|
+            %tr
+              %td
+                - if @show_thumbnails == '1'
+                  %a{href: cust_pic_path(cust_pic.capture_seq_nbr)}
+                    = image_tag("#{request.protocol}#{request.host}#{cust_pic.thumbnail_url}", alt: cust_pic.capture_seq_nbr, class: 'col-sm-6 img img-fluid')
+                - else
+                  - unless browser.device.mobile?
+                    %a.btn.btn-sm{href: cust_pic_path(cust_pic.capture_seq_nbr)}
+                      Show
+                  - else
+                    %a{href: cust_pic_path(cust_pic.capture_seq_nbr)}
+                      %i.fa.fa-photo
+              %td= cust_pic.sys_date_time
+              %td= link_to cust_pic.first_name, cust_pics_path(first_name: cust_pic.first_name, :show_thumbnails => @show_thumbnails) unless cust_pic.first_name.blank?
+              %td= link_to cust_pic.last_name, cust_pics_path(last_name: cust_pic.last_name, :show_thumbnails => @show_thumbnails) unless cust_pic.last_name.blank?
+              %td= link_to cust_pic.cust_nbr, cust_pics_path(customer_number: cust_pic.cust_nbr, :show_thumbnails => @show_thumbnails) unless cust_pic.cust_nbr.blank?
+              - unless browser.device.mobile?
+                %td= cust_pic.camera_name
+              - unless browser.device.mobile?
+                %td= link_to cust_pic.event_code, cust_pics_path(event_code: cust_pic.event_code, :show_thumbnails => @show_thumbnails) unless cust_pic.event_code.blank?
+              - unless browser.device.mobile?
+                %td= "#{(cust_pic.hidden.blank? or cust_pic.hidden == '0') ? 'No' : 'Yes'}"
+              - unless browser.device.mobile?
+                %td= cust_pic.capture_seq_nbr
+              %td
+                %a.btn.btn-sm.btn-primary.new_line_item_picture_button{href: '#new_cust_pic', "data-target" => "#new_cust_pic", "data-toggle" => "modal", "data-customer-number" => cust_pic.cust_nbr, "data-first-name" => cust_pic.first_name, "data-last-name" => cust_pic.last_name, "data-event-code" => cust_pic.event_code}
+                  %i.fa.fa-plus
+                
+
+            =# render partial: 'cust_pics/modal', locals: {cust_pic: cust_pic}
+    - else
+      %p None
+  .card-footer=# paginate @cust_pics

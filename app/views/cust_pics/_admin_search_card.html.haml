@@ -1,0 +1,44 @@
+.card.card-stats
+  .card-header.card-header-icon
+    .card-icon
+      %i.material-icons search
+    %p.card-category CustPic Search
+    -# %h3.card-title= "#{pluralize(number_with_delimiter(@all_cust_pics.count), 'cust_pic')} found."
+    %h3.card-title= "#{pluralize(number_with_delimiter(@cust_pics.count), 'cust_pic')} found."
+  .card-body
+    = form_tag url, :method => 'get' do
+      %ul.nav.justify-content-center
+        %li.nav-item
+          .form-group
+            %label{:for => :start_date} Start
+            = text_field_tag :start_date, nil, type: 'date', :placeholder => "yyyy-mm-dd", value: @start_date, class: "form-control"
+        %li.nav-item
+          &nbsp;
+        %li.nav-item
+          .form-group
+            %label{:for => :end_date} End
+            = text_field_tag :end_date, nil, type: 'date', :placeholder => "yyyy-mm-dd", value: @end_date, class: "form-control"
+      .row
+        .col-sm-12.col-md-3
+          .form-group
+            = text_field_tag :cust_nbr, nil, :placeholder => "Customer Number", value: @customer_number, class: "form-control"
+        .col-sm-12.col-md-2
+          .form-group
+            = text_field_tag :first_name, nil, :placeholder => "First Name", value: @first_name, class: "form-control"
+        .col-sm-12.col-md-2
+          .form-group
+            = text_field_tag :last_name, nil, :placeholder => "Last Name", value: @last_name, class: "form-control"
+        .col-sm-12.col-md-3
+          .form-group
+            = text_field_tag :event_code, nil, :placeholder => "Event Code", value: @event_code, class: "form-control"
+        .col-sm-12.col-md-2
+          .form-check
+            %label.form-check-label
+              %input.form-check-input{id: 'show_thumbnails', name: 'show_thumbnails', :type => "checkbox", :value => 1, checked: @show_thumbnails}/
+              Thumbnails
+              %span.form-check-sign
+                %span.check
+          .form-group
+            = button_tag(:type => 'submit', :class => 'btn') do
+              %i.material-icons search
+              Search

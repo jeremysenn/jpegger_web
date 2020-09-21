@@ -52,6 +52,10 @@ class Ability
       ############
       can :index, Shipment
       
+      # CustPics
+      ############
+      can :index, CustPic
+      
       # Searches
       ############
       can :manage, Search do |search|

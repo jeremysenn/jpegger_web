@@ -30,9 +30,13 @@
                     %tbody
                       - @cameras.each do |camera|
                         %tr
-                          %td= link_to camera.camera_name, camera_path(camera)
+                          %td
+                            =# link_to camera.camera_name, camera_path(camera)
+                            = camera.camera_name
                           %td= camera.device_name
-                          %td= camera.camera_type
+                          %td
+                            =# camera.type.Description unless camera.type.blank?
+                            = camera.camera_type
                           %td= camera.ip_address
                           %td= camera.port_nbr
                           %td= camera.yardid

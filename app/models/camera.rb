@@ -1,7 +1,6 @@
 class Camera < ActiveResource::Base
-  self.site = "http://localhost:3000/api/v1"
-  
-#  belongs_to :camera_type
+#  self.site = "http://localhost:3000/api/v1"
+  self.site = "http://api:3000/api/v1"
   
   schema do
     string :camera_name
@@ -24,5 +23,9 @@ class Camera < ActiveResource::Base
     string :yardid
     integer :disallow_live_feed
     float :UTCOffset
+  end
+  
+  def type
+    CameraType.find(camera_type)
   end
 end
