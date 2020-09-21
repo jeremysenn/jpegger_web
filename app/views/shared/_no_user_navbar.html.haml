@@ -1,8 +1,10 @@
-%nav.navbar.navbar-expand-lg.navbar-light.bg-dark
+%nav.navbar.navbar-expand-lg.navbar-light.bg-light
   .container
     %a.navbar-brand{:href => "#"} 
-      %i.fa.fa-photo
-      JPEGger
+      = image_tag('JPEGger_powered_by_Tranact_Logo_extra_small.png', class: 'img-fluid')
+      -#
+        %i.fa.fa-photo
+        JPEGger
     %button.navbar-toggler{"aria-controls" => "navbarNavDropdown", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarNavDropdown", "data-toggle" => "collapse", :type => "button"}
       %span.navbar-toggler-icon
     #navbarNavDropdown.collapse.navbar-collapse
@@ -11,18 +13,20 @@
           %a.nav-link{:href => "#"}
             Home
             %span.sr-only (current)
-        %li.nav-item
-          %a.nav-link{:href => "#"} Features
-        %li.nav-item
-          %a.nav-link{:href => "#"} Pricing
-        %li.nav-item.dropdown
-          %a#navbarDropdownMenuLink.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
-            More
-          .dropdown-menu{"aria-labelledby" => "navbarDropdownMenuLink"}
-            %a.dropdown-item{:href => "#"} Action
-            %a.dropdown-item{:href => "#"} Another action
-            %a.dropdown-item{:href => "#"} Something else here
+        -#
+          %li.nav-item
+            %a.nav-link{:href => "#"} Features
+          %li.nav-item
+            %a.nav-link{:href => "#"} Pricing
+          %li.nav-item.dropdown
+            %a#navbarDropdownMenuLink.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
+              More
+            .dropdown-menu{"aria-labelledby" => "navbarDropdownMenuLink"}
+              %a.dropdown-item{:href => "#"} Action
+              %a.dropdown-item{:href => "#"} Another action
+              %a.dropdown-item{:href => "#"} Something else here
+          %li.nav-item
+            %a.nav-link{:href => new_user_registration_path} Sign Up
         %li.nav-item
           %a.nav-link{:href => new_user_session_path} Log In
-        %li.nav-item
-          %a.nav-link{:href => new_user_registration_path} Sign Up
+        

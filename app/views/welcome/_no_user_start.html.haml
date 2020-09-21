@@ -3,14 +3,18 @@
   .row
     .col-sm-6.offset-sm-3
       .text-center
-        %h1.bd-title
-          %i.fa.fa-photo
-          %br
-          JPEGger
+        = image_tag('JPEGger_powered_by_Tranact_Logo.png', class: 'img-fluid')
+        -#
+          %h1.bd-title
+            %i.fa.fa-photo
+            %br
+            JPEGger
         %p.bd-lead
-          Capture and manage all your images with JPEGger
+          -#
+            Capture and manage all your images with JPEGger
           %ul.list-inline
-            %li.list-inline-item
-              %a.btn.btn-primary{:href => new_user_registration_path} Sign Up
+            -#
+              %li.list-inline-item
+                %a.btn.btn-primary{:href => new_user_registration_path} Sign Up
             %li.list-inline-item
               %a.btn.btn-default{:href => new_user_session_path} Log In
