@@ -39,7 +39,7 @@
                                   - images.each do |image|
                                     %li.list-inline-item
                                       %a{href: image_path(image.capture_seq_nbr)}
-                                        = image_tag("#{request.protocol}#{request.host}#{image.thumbnail_url}", alt: image.capture_seq_nbr, class: 'col-sm-3 img img-fluid')
+                                        = image_tag("#{request.protocol}#{request.host}#{image.thumbnail_url}", alt: image.capture_seq_nbr, class: 'thumbnail img img-fluid')
 
               .card-footer
                 %a{href: suspect_lists_path}

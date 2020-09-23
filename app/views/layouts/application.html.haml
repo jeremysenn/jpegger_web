@@ -3,7 +3,11 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %title JPEGger
-    =# favicon_link_tag asset_path('favicon.ico')
+    = favicon_link_tag asset_path('favicon.ico')
+    %link{:href => image_path("apple-touch-icon.png"), :rel => "apple-touch-icon", :sizes => "180x180"}/
+    %link{:href => image_path("favicon-32x32.png"), :rel => "icon", :sizes => "32x32", :type => "image/png"}/
+    %link{:href => image_path("favicon-16x16.png"), :rel => "icon", :sizes => "16x16", :type => "image/png"}/
+    %link{:href => image_path("site.webmanifest"), :rel => "manifest"}/
     %meta{:content => "JPEGger", :name => "apple-mobile-web-app-title"}/
     %meta{:content => "JPEGger", :name => "application-name"}/
 
