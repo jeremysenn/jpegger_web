@@ -70,6 +70,9 @@ class Ability
       ############
 #      can :manage, Signature
 #      can :create, Signature
+
+      # SuspectLists
+      can :manage, SuspectList
       
     elsif user.external?
       

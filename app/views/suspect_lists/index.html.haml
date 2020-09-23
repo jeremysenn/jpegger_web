@@ -1,0 +1,66 @@
+.wrapper
+  = render 'shared/admin_sidebar'
+  .main-panel
+    = render 'shared/admin_dashboard_navbar'
+    .content{style: 'margin-top: 0px;'}
+      .container-fluid
+        = render 'shared/flash_messages'
+        .row
+          .col-lg-12.col-md-12
+            .card
+              .card-header.card-header-icon
+                .card-icon
+                  %i.fa.fa-search-plus.fa-2x
+                %h4.card-title 
+                  Suspect Lists
+                  .pull-right
+                    %a{:href => new_suspect_list_path, class: 'btn btn-primary'}
+                      %i.fa.fa-plus
+                      New
+              .card-body.table-responsive-lg
+                - unless @suspect_lists.blank?
+                  %table.table.table-hover
+                    %thead
+                      %th Name
+                      %th File
+                    %tbody
+                      - @suspect_lists.each do |suspect_list|
+                        %tr
+                          %td
+                            = link_to suspect_list.name, suspect_list_path(suspect_list)
+                          %td= suspect_list.file.url unless suspect_list.file.blank?
+                - else
+                  %p None
+              .card-footer
+                =# paginate @suspect_lists
+
+-#
+  %h1 Listing suspect_lists
+
+  %table
+    %thead
+      %tr
+        %th Name
+        %th File
+        %th Delimiter
+        %th User
+        %th Company
+        %th
+        %th
+        %th
+
+    %tbody
+      - @suspect_lists.each do |suspect_list|
+        %tr
+          %td= suspect_list.name
+          %td= suspect_list.file
+          %td= suspect_list.delimiter
+          %td= suspect_list.user
+          %td= suspect_list.company
+          %td= link_to 'Show', suspect_list
+          %td= link_to 'Edit', edit_suspect_list_path(suspect_list)
+          %td= link_to 'Destroy', suspect_list, method: :delete, data: { confirm: 'Are you sure?' }
+
+  %br
+
+  = link_to 'New Suspect list', new_suspect_list_path

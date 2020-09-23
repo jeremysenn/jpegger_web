@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :suspect_lists
   namespace :admin do
       resources :image_files
       resources :users
@@ -59,5 +60,7 @@ Rails.application.routes.draw do
       get 'capture_image'
     end
   end
+  
+  resources :suspect_lists
   
 end

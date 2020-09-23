@@ -1,0 +1,87 @@
+.wrapper
+  = render 'shared/admin_sidebar'
+  .main-panel
+    = render 'shared/admin_dashboard_navbar'
+    .content{style: 'margin-top: 0px;'}
+      .container-fluid
+        = render 'shared/flash_messages'
+        .row
+          .col-lg-12.col-md-12
+            .card
+              .card-header
+                %h4.card-title
+                  = "#{@suspect_list.name}"
+                  .pull-right
+                    %a{href: '#', class: 'btn btn-default'}
+                      %i.fa.fa-download
+                      Download
+                    %a{href: edit_suspect_list_path(@suspect_list), class: 'btn btn-primary'}
+                      %i.fa.fa-pencil-square-o
+                      Edit
+              .card-body
+                - unless @suspect_list.file.blank? or @suspect_list.file.path.blank?
+                  .table-responsive
+                    %table.table
+                      - CSV.read(@suspect_list.file.path.tr("\r", '')).each_with_index do |row, index|
+                        - if index == 0
+                          %tr
+                            - row.each do |element|
+                              %th= element
+                        - else
+                          %tr
+                            - row.each_with_index do |element, index|
+                              %td
+                                = element
+                            - images = Image.find(:all, :params => { ticket_nbr: row[0]})
+                            %tr
+                              %td{colspan: 100}
+                                %ul.list-inline
+                                  - images.each do |image|
+                                    %li.list-inline-item
+                                      %a{href: image_path(image.capture_seq_nbr)}
+                                        = image_tag("#{request.protocol}#{request.host}#{image.thumbnail_url}", alt: image.capture_seq_nbr, class: 'col-sm-3 img img-fluid')
+
+              .card-footer
+                %a{href: suspect_lists_path}
+                  %i.fa.fa-angle-left
+                  Back
+                .pull-right
+                  = link_to 'Delete', @suspect_list, :method => :delete, class: 'btn btn-danger btn-sm', :data => { :confirm => 'Are you sure you want to delete this Suspect List?' }
+
+-#
+  %p#notice= notice
+
+  %p
+    %b Name:
+    = @suspect_list.name
+  %p
+    %b File:
+    = @suspect_list.file
+
+  %p.lead
+    - unless @suspect_list.file.blank? or @suspect_list.file.path.blank?
+      .table-responsive
+        %table.table
+          - CSV.read(@suspect_list.file.path.tr("\r", '')).each_with_index do |row, index|
+            - if index == 0
+              %tr
+                - row.each do |element|
+                  %th= element
+            - else
+              %tr
+                - row.each_with_index do |element, index|
+                  %td
+                    = element
+                - images = Image.find(:all, :params => { ticket_nbr: row[0]})
+                %tr
+                  %td{colspan: 100}
+                    %ul.list-inline
+                      - images.each do |image|
+                        %li.list-inline-item
+                          %a{href: image_path(image.capture_seq_nbr)}
+                            = image_tag("#{request.protocol}#{request.host}#{image.thumbnail_url}", alt: image.capture_seq_nbr, class: 'col-sm-3 img img-fluid')
+
+
+  = link_to 'Edit', edit_suspect_list_path(@suspect_list)
+  \|
+  = link_to 'Back', suspect_lists_path

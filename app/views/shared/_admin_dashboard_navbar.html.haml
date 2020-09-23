@@ -42,6 +42,10 @@
               %i.fa.fa-camera
               &nbsp;
               Cameras
+            %a.dropdown-item{:href => suspect_lists_path, :class => (params[:controller] == 'suspect_lists') ?  "active" : ""}
+              %i.fa.fa-search-plus
+              &nbsp;
+              Suspect Lists
             %a.dropdown-item{:href => users_admin_index_path}
               %i.fa.fa-users
               &nbsp;

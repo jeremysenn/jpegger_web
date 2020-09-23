@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_22_132744) do
+ActiveRecord::Schema.define(version: 2020_09_22_182135) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "companies", force: :cascade do |t|
     t.string "name", null: false
@@ -91,6 +94,18 @@ ActiveRecord::Schema.define(version: 2019_10_22_132744) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "suspect_lists", force: :cascade do |t|
+    t.string "name"
+    t.string "file"
+    t.string "delimiter"
+    t.bigint "user_id"
+    t.bigint "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_suspect_lists_on_company_id"
+    t.index ["user_id"], name: "index_suspect_lists_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -124,4 +139,6 @@ ActiveRecord::Schema.define(version: 2019_10_22_132744) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "suspect_lists", "companies"
+  add_foreign_key "suspect_lists", "users"
 end
