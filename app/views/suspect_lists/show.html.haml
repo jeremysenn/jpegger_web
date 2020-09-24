@@ -25,21 +25,23 @@
                       - CSV.read(@suspect_list.file.path.tr("\r", '')).each_with_index do |row, index|
                         - if index == 0
                           %tr
+                            %th
                             - row.each do |element|
                               %th= element
                         - else
-                          %tr
+                          %tr.accordion-toggle.collapsed{"data-toggle" => "collapse", :href => "##{index}_details"}
+                            %td.expand-button.text-primary
                             - row.each_with_index do |element, index|
-                              %td
-                                = element
-                            - images = Image.find(:all, :params => { ticket_nbr: row[0]})
-                            %tr
-                              %td{colspan: 100}
+                              %td= element
+                          %tr.hide-table-padding
+                            %td{:colspan => "100"}
+                              .collapse.in{id: "#{index}_details"}
+                                - images = Image.find(:all, :params => { ticket_nbr: row[0]})
                                 %ul.list-inline
                                   - images.each do |image|
                                     %li.list-inline-item
                                       %a{href: image_path(image.capture_seq_nbr)}
-                                        = image_tag("#{request.protocol}#{request.host}#{image.thumbnail_url}", alt: image.capture_seq_nbr, class: 'thumbnail img img-fluid')
+                                        = image_tag("#{request.protocol}#{request.host}#{image.thumbnail_url}", alt: image.capture_seq_nbr, class: 'col-sm-3 img img-fluid')
 
               .card-footer
                 %a{href: suspect_lists_path}
