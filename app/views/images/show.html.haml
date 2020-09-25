@@ -10,7 +10,9 @@
               = @image.capture_seq_nbr
               .pull-right= link_to "<i class='fa fa-close'></i>".html_safe, :back
           .card-body
-            %p= image_tag("#{request.protocol}#{request.host}#{@image.url}", alt: @image.capture_seq_nbr, class: 'img img-fluid img-thumbnail')
+            %p
+              =# image_tag("#{request.protocol}#{request.host}#{@image.url}", alt: @image.capture_seq_nbr, class: 'img img-fluid img-thumbnail')
+              = image_tag(@image.url, alt: @image.capture_seq_nbr, class: 'img img-fluid img-thumbnail')
             %p.card-text
               = @image.sys_date_time
               %br
