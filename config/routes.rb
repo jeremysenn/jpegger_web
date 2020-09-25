@@ -61,6 +61,11 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :suspect_lists
+  resources :suspect_lists do
+    member do
+#      get 'images_download'
+      post :images_download, to: "suspect_lists#images_download"
+    end
+  end
   
 end

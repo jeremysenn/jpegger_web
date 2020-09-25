@@ -1,6 +1,7 @@
 class Image < ActiveResource::Base
   self.site = "http://localhost:3000/api/v1" # Azure container group API
 #  self.site = "http://api:3000/api/v1" # Docker container group API
+#  self.ssl_options = {:verify_mode  => OpenSSL::SSL::VERIFY_NONE}
   
   validates_presence_of :ticket_nbr
   validates_presence_of :file

@@ -1,7 +1,10 @@
 class SuspectListsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_suspect_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_suspect_list, only: [:show, :edit, :update, :destroy, :images_download]
   load_and_authorize_resource
+  include ActionController::Live # required for streaming
+  include ZipTricks::RailsStreaming
+    
 
   # GET /suspect_lists
   # GET /suspect_lists.json
@@ -13,6 +16,12 @@ class SuspectListsController < ApplicationController
   # GET /suspect_lists/1.json
   def show
     require 'csv'
+    unless @suspect_list.file.blank? or @suspect_list.file.path.blank?
+      @headers = @suspect_list.csv_file_headers
+      csv_table = @suspect_list.csv_file_table
+      @number_of_table_rows = csv_table.count unless csv_table.blank?
+      @csv_table = Kaminari.paginate_array(csv_table).page(params[:page]).per(10)
+    end
   end
 
   # GET /suspect_lists/new
@@ -62,6 +71,36 @@ class SuspectListsController < ApplicationController
       format.html { redirect_to suspect_lists_url, notice: 'Suspect list was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+  
+  # POST /suspect_lists/1/images_download
+  def images_download
+    zipname = "Suspect_List_#{@suspect_list.name}_#{@suspect_list.id}.zip"
+    disposition = "attachment; filename=\"#{zipname}\""
+    response.headers["Content-Disposition"] = disposition
+    response.headers["Content-Type"] = "application/zip"
+    response.headers["Last-Modified"] = Time.now.httpdate.to_s
+    response.headers["X-Accel-Buffering"] = "no"
+    
+    writer = ZipTricks::BlockWrite.new do |chunk| 
+      response.stream.write(chunk)
+    end
+    
+    ZipTricks::Streamer.open(writer, auto_rename_duplicate_filenames: true) do |zip|
+      @suspect_list.csv_file_table.uniq.each do |row|
+        ticket_number = row.first[1]
+        images = Image.find(:all, :params => { ticket_nbr: ticket_number})
+        images.each do |image|
+          file_name = "/ticket_#{ticket_number}/ticket_#{ticket_number}_id_#{image.capture_seq_nbr}.jpg"
+          zip.write_deflated_file(file_name) do |file_writer|
+            file = Down.download(image.url)
+            file_writer << file.read
+          end
+        end
+      end
+    end
+  ensure
+    response.stream.close
   end
 
   private

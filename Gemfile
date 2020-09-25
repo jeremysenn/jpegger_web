@@ -104,6 +104,17 @@ gem "administrate"
 # Connects business objects and Representational State Transfer (REST) web services
 gem 'activeresource'
 
+# Creating zip files
+gem 'rubyzip'
+#gem 'zipline'
+gem 'zip_tricks'
+
+# Better downloading
+gem 'down'
+
+# transform HTML into PDFs, PNGs or JPEGs using Google Puppeteer and Chromium
+gem 'grover'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
