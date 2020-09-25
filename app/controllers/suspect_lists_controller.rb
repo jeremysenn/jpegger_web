@@ -93,7 +93,8 @@ class SuspectListsController < ApplicationController
         images.each do |image|
           file_name = "/ticket_#{ticket_number}/ticket_#{ticket_number}_id_#{image.capture_seq_nbr}.jpg"
           zip.write_deflated_file(file_name) do |file_writer|
-            file = Down.download(image.url)
+#            file = Down.download(image.url)
+            file = Down.download("#{request.protocol}#{request.host}#{image.url}", :verify_mode  => OpenSSL::SSL::VERIFY_NONE)
             file_writer << file.read
           end
         end

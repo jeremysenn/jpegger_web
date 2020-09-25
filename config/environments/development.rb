@@ -44,6 +44,8 @@ Rails.application.configure do
     user_name: ENV["GMAIL_USERNAME"],
     password: ENV["GMAIL_PASSWORD"]
   }
+  
+  Rails.application.routes.default_url_options[:host] = "https://#{ENV['APPLICATION_HOST'].blank? ? 'localhost' : ENV['APPLICATION_HOST']}"
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
