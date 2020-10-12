@@ -15,6 +15,10 @@ class Image < ActiveResource::Base
     text :file
   end
   
+  def download_uri
+    "#{Image.site}images/#{capture_seq_nbr}/display"
+  end
+  
 end
 
 

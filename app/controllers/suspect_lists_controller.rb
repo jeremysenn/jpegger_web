@@ -75,6 +75,7 @@ class SuspectListsController < ApplicationController
   
   # POST /suspect_lists/1/images_download
   def images_download
+    require 'down'
     zipname = "Suspect_List_#{@suspect_list.name}_#{@suspect_list.id}.zip"
     disposition = "attachment; filename=\"#{zipname}\""
     response.headers["Content-Disposition"] = disposition
@@ -93,9 +94,8 @@ class SuspectListsController < ApplicationController
         images.each do |image|
           file_name = "/ticket_#{ticket_number}/ticket_#{ticket_number}_id_#{image.capture_seq_nbr}.jpg"
           zip.write_deflated_file(file_name) do |file_writer|
-#            file = Down.download(image.url)
 #            file = Down::NetHttp.open("#{request.protocol}#{request.host}#{image.url}", ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE)
-            file = Down.download(image.url)
+            file = Down.download(image.download_uri)
             file_writer << file.read
           end
         end
