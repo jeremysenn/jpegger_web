@@ -46,7 +46,7 @@
                 - if @show_thumbnails == '1'
                   %a{href: image_path(image.capture_seq_nbr)}
                     =# image_tag("#{request.protocol}#{request.host}#{image.thumbnail_url}", alt: image.capture_seq_nbr, class: 'col-sm-6 img img-fluid')
-                    = image_tag(image.thumbnail_url, alt: image.capture_seq_nbr, class: 'col-sm-6 img img-fluid')
+                    = image_tag(image.thumbnail_url, alt: image.capture_seq_nbr, class: 'col-sm-6 img img-fluid') unless image.thumbnail_url.blank?
                 - else
                   - unless browser.device.mobile?
                     %a.btn.btn-sm{href: image_path(image.capture_seq_nbr)}
