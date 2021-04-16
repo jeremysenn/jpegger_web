@@ -40,31 +40,40 @@ class ImageFile < ActiveRecord::Base
       leads_online_store_id = ""
     end
 #    large_image_blob_data = MiniMagick::Image.open(Rails.root.to_s + "/public" + self.file_url).to_blob
-    large_image_blob_data = open(self.file.path)
-    image = Image.create(ticket_nbr: self.ticket_number,
-      event_code: event_code_name,
-      leadsonline: leads_online_string,
-      lol_store_id: leads_online_store_id,
-      file_name: self.file_url,
-      branch_code: self.branch_code,
-      yardid: self.yard_id,
-      container_nbr: self.container_number,
-      booking_nbr: self.booking_number,
-      contr_nbr: self.contract_number,
-      camera_name: self.user.full_name.parameterize.underscore,
-      camera_group: "JPEGger Web",
-      cust_nbr: self.customer_number,
-      cust_name: self.customer_name,
-      tare_seq_nbr: self.tare_seq_nbr,
-      cmdy_nbr: self.tare_seq_nbr,
-      cmdy_name: self.commodity_name,
-      weight: self.weight,
-      vin: self.vin_number,
-      tagnbr: self.tag_number,
-      service_req_nbr: self.service_request_number,
-      file: large_image_blob_data)
+    blob_data = open(self.file.path)
+    api_url = "#{Image.site.to_s}/images"
+    
+    params = {:image => {:file => blob_data, :branch_code => self.branch_code, :yardid => self.yard_id, :ticket_nbr => self.ticket_number,
+      :container_nbr => self.container_number, :booking_nbr => self.booking_number, :contr_nbr => self.contract_number, :camera_name => self.user.full_name.parameterize.underscore, :camera_group => "JPEGger Web",
+      :sys_date_time => self.created_at, :event_code => event_code_name, :cust_nbr => self.customer_number, :cust_name => self.customer_name, :hidden => self.hidden,
+      :tare_seq_nbr => self.tare_seq_nbr, :cmdy_nbr =>  self.tare_seq_nbr, :cmdy_name => self.commodity_name, :weight => self.weight.to_i,
+      "VIN" => self.vin_number, "TagNbr" => self.tag_number, :leadsonline => leads_online_string, :lol_store_id => leads_online_store_id, :file_name => self.file_url}}
+  
+    RestClient::Request.execute(method: :post, url: api_url, verify_ssl: false, payload: params)
+    
+#    image = Image.create(ticket_nbr: self.ticket_number,
+#      event_code: event_code_name,
+#      leadsonline: leads_online_string,
+#      lol_store_id: leads_online_store_id,
+#      file_name: self.file_url,
+#      branch_code: self.branch_code,
+#      yardid: self.yard_id,
+#      container_nbr: self.container_number,
+#      booking_nbr: self.booking_number,
+#      contr_nbr: self.contract_number,
+#      camera_name: self.user.full_name.parameterize.underscore,
+#      camera_group: "JPEGger Web",
+#      cust_nbr: self.customer_number,
+#      cust_name: self.customer_name,
+#      tare_seq_nbr: self.tare_seq_nbr,
+#      cmdy_nbr: self.tare_seq_nbr,
+#      cmdy_name: self.commodity_name,
+#      weight: self.weight,
+#      vin: self.vin_number,
+#      tagnbr: self.tag_number,
+#      service_req_nbr: self.service_request_number,
 #      file: Base64.encode64(large_image_blob_data))
-            
+
     pn = Pathname.new(self.file_url) # Get the path to the file
     self.remove_file! # Remove the file and its versions
     FileUtils.remove_dir "#{Rails.root}/public#{pn.dirname}" # Remove the now empty directory
