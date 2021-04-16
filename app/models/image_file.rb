@@ -39,7 +39,8 @@ class ImageFile < ActiveRecord::Base
       leads_online_string = ""
       leads_online_store_id = ""
     end
-    large_image_blob_data = MiniMagick::Image.open(Rails.root.to_s + "/public" + self.file_url).to_blob
+#    large_image_blob_data = MiniMagick::Image.open(Rails.root.to_s + "/public" + self.file_url).to_blob
+    large_image_blob_data = open(self.file.path)
     image = Image.create(ticket_nbr: self.ticket_number,
       event_code: event_code_name,
       leadsonline: leads_online_string,
@@ -61,7 +62,8 @@ class ImageFile < ActiveRecord::Base
       vin: self.vin_number,
       tagnbr: self.tag_number,
       service_req_nbr: self.service_request_number,
-      file: Base64.encode64(large_image_blob_data))
+      file: large_image_blob_data)
+#      file: Base64.encode64(large_image_blob_data))
             
     pn = Pathname.new(self.file_url) # Get the path to the file
     self.remove_file! # Remove the file and its versions

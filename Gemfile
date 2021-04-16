@@ -104,6 +104,9 @@ gem "administrate"
 # Connects business objects and Representational State Transfer (REST) web services
 gem 'activeresource'
 
+# REST api calls
+gem 'rest-client', require: 'rest-client'
+
 # Creating zip files
 gem 'rubyzip'
 #gem 'zipline'
