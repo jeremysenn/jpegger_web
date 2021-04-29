@@ -39,6 +39,6 @@
               %span.form-check-sign
                 %span.check
           .form-group
-            = button_tag(:type => 'submit', :class => 'btn') do
+            = button_tag(:type => 'submit', :class => 'btn', data: { disable_with: "<i class='fa fa-spinner fa-spin'></i> Search" }) do
               %i.material-icons search
               Search
