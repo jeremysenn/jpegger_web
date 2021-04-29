@@ -1,6 +1,6 @@
 class Camera < ActiveResource::Base
-#  self.site = "http://localhost:3000/api/v1"
-  self.site = "http://api:3000/api/v1"
+#  self.site = "http://localhost:3000/api/v1" # Azure container group API
+  self.site = "http://api:3000/api/v1" # Docker container group API
   
   schema do
     string :camera_name

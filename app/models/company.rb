@@ -1,6 +1,6 @@
 class Company < ApplicationRecord
-  before_save :default_jpegger_service_ip
-  before_save :default_jpegger_service_port
+#  before_save :default_jpegger_service_ip
+#  before_save :default_jpegger_service_port
   
   has_many :users
   has_many :searches, through: :users

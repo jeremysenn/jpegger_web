@@ -12,8 +12,8 @@ class CustPicsController < ApplicationController
     @first_name = params[:first_name]
     @last_name = params[:last_name]
     @event_code = params[:event_code]
-    @start_date = params[:start_date]
-    @end_date = params[:end_date]
+    @start_date = params[:start_date].blank? ? Date.today.last_week.to_s : params[:start_date]
+    @end_date = params[:end_date].blank? ? Date.today.to_s : params[:end_date]
     @cust_pics = CustPic.find(:all, :params => { cust_nbr: @customer_number, yardid: @yard_id, first_name: @first_name, last_name: @last_name,
         event_code: @event_code, start_date:  @start_date, end_date:  @end_date, limit: 100})
     @show_thumbnails = params[:show_thumbnails]

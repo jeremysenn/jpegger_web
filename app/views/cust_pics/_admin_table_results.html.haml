@@ -37,7 +37,8 @@
               %td
                 - if @show_thumbnails == '1'
                   %a{href: cust_pic_path(cust_pic.capture_seq_nbr)}
-                    = image_tag("#{request.protocol}#{request.host}#{cust_pic.thumbnail_url}", alt: cust_pic.capture_seq_nbr, class: 'col-sm-6 img img-fluid') unless cust_pic.thumbnail_url.blank?
+                    =# image_tag("#{request.protocol}#{request.host}#{cust_pic.thumbnail_url}", alt: cust_pic.capture_seq_nbr, class: 'col-sm-6 img img-fluid') unless cust_pic.thumbnail_url.blank?
+                    = image_tag(cust_pic.thumbnail_url, alt: cust_pic.capture_seq_nbr, class: 'col-sm-6 img img-fluid') unless cust_pic.thumbnail_url.blank?
                 - else
                   - unless browser.device.mobile?
                     %a.btn.btn-sm{href: cust_pic_path(cust_pic.capture_seq_nbr)}

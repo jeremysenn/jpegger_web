@@ -41,7 +41,8 @@
                   %a{href: shipment_path(shipment.capture_seq_nbr)}
                     =# image_tag(show_preview_shipment_shipment_path(shipment['CAPTURE_SEQ_NBR']), alt: shipment['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
                     =# image_tag(Shipment.preview_source(shipment['CAPTURE_SEQ_NBR'], current_user.company_id), alt: shipment['CAPTURE_SEQ_NBR'], class: 'col-sm-6 img img-fluid')
-                    = image_tag("#{request.protocol}#{request.host}#{shipment.thumbnail_url}", alt: shipment.capture_seq_nbr, class: 'col-sm-6 img img-fluid')
+                    =# image_tag("#{request.protocol}#{request.host}#{shipment.thumbnail_url}", alt: shipment.capture_seq_nbr, class: 'col-sm-6 img img-fluid')
+                    = image_tag(shipment.thumbnail_url, alt: shipment.capture_seq_nbr, class: 'col-sm-6 img img-fluid') unless shipment.thumbnail_url.blank?
                 - else
                   - unless browser.device.mobile?
                     %a.btn.btn-sm{href: shipment_path(shipment.capture_seq_nbr)}

@@ -9,9 +9,10 @@
               %i.fa.fa-photo
               = @shipment.capture_seq_nbr
               .pull-right= link_to "<i class='fa fa-close'></i>".html_safe, :back
-          =# image_tag(show_jpeg_image_shipment_path(@shipment['CAPTURE_SEQ_NBR']), alt: @shipment['CAPTURE_SEQ_NBR'], class: 'card-img-top', style: 'width: 100%')
-          %p= image_tag("#{request.protocol}#{request.host}#{@shipment.url}", alt: @shipment.capture_seq_nbr, class: 'img img-fluid img-thumbnail')
           .card-body
+            %p
+              =# image_tag("#{request.protocol}#{request.host}#{@shipment.url}", alt: @shipment.capture_seq_nbr, class: 'img img-fluid img-thumbnail')
+              = image_tag(@shipment.azure_url, alt: @shipment.capture_seq_nbr, class: 'img img-fluid img-thumbnail')
             %p.card-text
               = @shipment.sys_date_time
               %br

@@ -11,8 +11,8 @@ class ShipmentsController < ApplicationController
     @yard_id = params[:yardid]
     @customer_name = params[:customer_name]
     @event_code = params[:event_code]
-    @start_date = params[:start_date]
-    @end_date = params[:end_date]
+    @start_date = params[:start_date].blank? ? Date.today.last_week.to_s : params[:start_date]
+    @end_date = params[:end_date].blank? ? Date.today.to_s : params[:end_date]
     @shipments = Shipment.find(:all, :params => { ticket_nbr: @ticket_number, yardid: @yard_id, cust_name: @customer_name,
         event_code: @event_code, start_date:  @start_date, end_date:  @end_date, limit: 100})
     @show_thumbnails = params[:show_thumbnails]
