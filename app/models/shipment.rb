@@ -1,6 +1,5 @@
 class Shipment < ActiveResource::Base
-#  self.site = "http://localhost:3000/api/v1" # Azure container group API
-  self.site = "http://api:3000/api/v1" # Docker container group API
+  self.site = "#{ENV['JPEGGER_API_URL']}" # Docker container group API
   
 #  validates_presence_of :ticket_nbr
 #  validates_presence_of :file
