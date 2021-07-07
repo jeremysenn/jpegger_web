@@ -7,6 +7,7 @@
     %h3.card-title= "#{pluralize(number_with_delimiter(@images.count), 'image')} found."
   .card-body
     = form_tag url, :method => 'get' do
+      = hidden_field_tag :yardid, nil, value: @yard_id
       %ul.nav.justify-content-center
         %li.nav-item
           .form-group

@@ -1,11 +1,14 @@
 .wrapper
-  - if current_user.admin?
+  - if current_user.blank?
+    = render 'shared/no_user_sidebar'
+  - elsif current_user.admin?
     = render 'shared/admin_sidebar'
   - elsif current_user.external?
     = render 'shared/external_user_sidebar'
   .main-panel
-    =# render 'shared/admin_images_navbar'
-    - if current_user.admin?
+    - if current_user.blank?
+      = render 'shared/no_user_dashboard_navbar'
+    - elsif current_user.admin?
       = render 'shared/admin_dashboard_navbar'
     - elsif current_user.external?
       = render 'shared/external_user_dashboard_navbar'
@@ -17,10 +20,14 @@
             = render 'image_files/alert_card'
         .row
           .col-lg-12.col-md-12.col-sm-12
-            = render partial: 'images/admin_search_card', locals: { url: images_path } if current_user.admin?
-            = render partial: 'images/external_user_search_card', locals: { url: images_path } if current_user.external?
+            - if current_user.blank? or current_user.admin?
+              = render partial: 'images/admin_search_card', locals: { url: images_path } 
+            - elsif current_user.external?
+              = render partial: 'images/external_user_search_card', locals: { url: images_path }
         .row
           .col-lg-12.col-md-12
             =# render 'admin_thumbnail_results' if current_user.admin?
-            = render 'admin_table_results' if current_user.admin?
-            = render 'external_user_thumbnail_results' if current_user.external?
+            - if current_user.blank? or current_user.admin?
+              = render 'admin_table_results'
+            - elsif current_user.external?
+              = render 'external_user_thumbnail_results' 

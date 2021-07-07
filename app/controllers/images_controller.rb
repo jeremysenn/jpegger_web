@@ -1,23 +1,53 @@
 class ImagesController < ApplicationController
 #  before_action :set_image_field_descriptions, if: -> { current_user and not current_user.super? and FieldDescription.search_images_table?(current_user)}
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: :index
   before_action :set_image, only: [:show, :edit, :update, :destroy]
-  load_and_authorize_resource only: [:index]
+#  load_and_authorize_resource only: [:index]
 
   # GET /images
   # GET /images.json
   def index
 #    @images = Image.all
-    @ticket_number = params[:ticket_number]
-    @yard_id = params[:yardid]
-    @customer_name = params[:customer_name]
-    @event_code = params[:event_code]
-    @start_date = params[:start_date].blank? ? Date.today.last_week.to_s : params[:start_date]
-    @end_date = params[:end_date].blank? ? Date.today.to_s : params[:end_date]
-    @images = Image.find(:all, :params => { ticket_nbr: @ticket_number, yardid: @yard_id, cust_name: @customer_name,
-        event_code: @event_code, start_date:  @start_date, end_date:  @end_date, limit: 100})
-    @show_thumbnails = params[:show_thumbnails]
-    @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
+    if current_user.blank? and params[:token].blank?
+      flash[:error] = "You must login before accessing that page."
+      redirect_to new_user_session_path
+    elsif current_user.blank? and not params[:token].blank?
+      decrypted_token = Decrypt.base64_decode_decrypt(params[:token])
+      Rails.logger.debug "*********** decrypted_token: #{decrypted_token}"
+      unless decrypted_token.blank?
+        token_date_time = decrypted_token.to_datetime
+        if Time.now < token_date_time
+          @ticket_number = params[:ticket_number]
+          @yard_id = params[:yardid]
+          @customer_name = params[:customer_name]
+          @event_code = params[:event_code]
+          @start_date = params[:start_date].blank? ? Date.today.last_week.to_s : params[:start_date]
+          @end_date = params[:end_date].blank? ? Date.today.to_s : params[:end_date]
+          @images = Image.find(:all, :params => { ticket_nbr: @ticket_number, yardid: @yard_id, cust_name: @customer_name,
+              event_code: @event_code, start_date:  @start_date, end_date:  @end_date, limit: 100})
+          @show_thumbnails = params[:show_thumbnails]
+          @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
+        else
+          flash[:error] = "Token has expired."
+          redirect_to new_user_session_path
+        end
+      else
+        flash[:error] = "Invalid token."
+        redirect_to new_user_session_path
+      end
+    else
+      authorize! :index, :images
+      @ticket_number = params[:ticket_number]
+      @yard_id = params[:yardid]
+      @customer_name = params[:customer_name]
+      @event_code = params[:event_code]
+      @start_date = params[:start_date].blank? ? Date.today.last_week.to_s : params[:start_date]
+      @end_date = params[:end_date].blank? ? Date.today.to_s : params[:end_date]
+      @images = Image.find(:all, :params => { ticket_nbr: @ticket_number, yardid: @yard_id, cust_name: @customer_name,
+          event_code: @event_code, start_date:  @start_date, end_date:  @end_date, limit: 100})
+      @show_thumbnails = params[:show_thumbnails]
+      @image_file = ImageFile.find(flash[:image_file_id]) unless flash[:image_file_id].blank?
+    end
     
 #    unless current_user.blank?
 #      unless params[:search].blank?
